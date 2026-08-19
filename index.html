@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Konrad Jendryś — analiza spółek i rynków kapitałowych</title>
+<meta name="description" content="Student Analityki Finansowej UE Katowice, kandydat na Maklera Papierów Wartościowych. Analiza fundamentalna spółek giełdowych.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#050607;
+  --text:#EDEBE6;
+  --muted:#98A0AA;
+  --faint:#646C76;
+  --line:#1A1F25;
+  --up:#2FD39A;
+  --down:#FF6B5A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',system-ui,sans-serif;
+  font-size:16px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* ---------- tło: żywy wykres ---------- */
+#chart{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:0;
+  opacity:.95;
+}
+/* przyciemnienie promieniste: najjaśniej tam, gdzie kończy się wykres
+   (prawa górna część), ciemno przy tekście po lewej i na dole */
+.veil{
+  position:fixed;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  background:
+    radial-gradient(62% 50% at 74% 26%,
+      rgba(5,6,7,.06) 0%,
+      rgba(5,6,7,.38) 44%,
+      rgba(5,6,7,.78) 80%,
+      rgba(5,6,7,.92) 100%),
+    linear-gradient(to bottom right,
+      rgba(5,6,7,.66) 0%,
+      rgba(5,6,7,.28) 45%,
+      rgba(5,6,7,.76) 100%);
+}
+
+/* ---------- układ ---------- */
+.shell{position:relative;z-index:2;flex:1;display:flex;flex-direction:column}
+.wrap{width:100%;max-width:880px;margin:0 auto;padding:0 28px}
+
+/* ---------- nagłówek ---------- */
+header{border-bottom:1px solid var(--line)}
+.head-in{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  height:72px;
+  flex-wrap:wrap;
+}
+.name{
+  font-family:'Newsreader',Georgia,serif;
+  font-size:21px;
+  font-weight:400;
+  letter-spacing:.01em;
+  white-space:nowrap;
+}
+nav{display:flex;gap:4px}
+nav button{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:13px;
+  letter-spacing:.02em;
+  color:var(--muted);
+  background:none;
+  border:none;
+  border-bottom:1px solid transparent;
+  padding:6px 12px;
+  cursor:pointer;
+  transition:color .18s ease,border-color .18s ease;
+}
+nav button:hover{color:var(--text)}
+nav button[aria-selected="true"]{color:var(--text);border-bottom-color:var(--up)}
+nav button:focus-visible{outline:1px solid var(--up);outline-offset:3px}
+
+/* ---------- panele ---------- */
+main{flex:1;padding:76px 0 90px}
+.panel{display:none;animation:in .35s ease both}
+.panel.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.lead{
+  font-family:'Newsreader',Georgia,serif;
+  font-weight:300;
+  font-size:clamp(30px,5vw,46px);
+  line-height:1.18;
+  letter-spacing:-.01em;
+  max-width:680px;
+  margin-bottom:28px;
+}
+.lead em{font-style:italic;color:var(--up)}
+
+p{color:var(--muted);max-width:620px;margin-bottom:18px}
+p strong{color:var(--text);font-weight:500}
+
+.meta{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--faint);
+  margin-bottom:26px;
+}
+
+/* ---------- dane ---------- */
+.rows{border-top:1px solid var(--line);margin-top:38px}
+.row{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:20px;
+  padding:15px 0;
+  border-bottom:1px solid var(--line);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:13.5px;
+}
+.row .k{color:var(--faint)}
+.row .v{color:var(--text);text-align:right}
+
+/* ---------- pozycje listy ---------- */
+.item{
+  border-bottom:1px solid var(--line);
+  padding:26px 0;
+  display:block;
+  text-decoration:none;
+  color:inherit;
+  transition:opacity .18s ease;
+}
+.item:first-of-type{border-top:1px solid var(--line)}
+a.item:hover{opacity:.72}
+.item-top{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11.5px;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:var(--faint);
+  margin-bottom:12px;
+}
+.item h3{
+  font-family:'Newsreader',Georgia,serif;
+  font-weight:400;
+  font-size:23px;
+  letter-spacing:-.005em;
+  margin-bottom:8px;
+}
+.item p{margin-bottom:0;font-size:15px}
+
+/* ---------- kontakt ---------- */
+.link{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:15px;
+  color:var(--text);
+  text-decoration:none;
+  border-bottom:1px solid var(--faint);
+  padding-bottom:2px;
+  transition:border-color .18s ease,color .18s ease;
+}
+.link:hover{color:var(--up);border-bottom-color:var(--up)}
+.contact-list{display:flex;flex-direction:column;gap:18px;margin-top:32px;align-items:flex-start}
+
+/* ---------- stopka ---------- */
+footer{border-top:1px solid var(--line);padding:22px 0 30px}
+.foot-in{
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:10px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11.5px;
+  color:var(--faint);
+}
+.readout{display:flex;gap:10px;align-items:baseline}
+.readout .lbl{color:var(--faint)}
+.readout .px{color:var(--text)}
+
+@media(max-width:620px){
+  .head-in{height:auto;padding:16px 0;gap:12px}
+  nav{width:100%;overflow-x:auto}
+  nav button{padding:6px 10px}
+  main{padding:52px 0 64px}
+  .wrap{padding:0 20px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+
+<canvas id="chart"></canvas>
+<div class="veil"></div>
+
+<div class="shell">
+
+  <header>
+    <div class="wrap head-in">
+      <div class="name">Konrad Jendryś</div>
+      <nav role="tablist">
+        <button role="tab" aria-selected="true"  data-tab="about">O mnie</button>
+        <button role="tab" aria-selected="false" data-tab="work">Projekty</button>
+        <button role="tab" aria-selected="false" data-tab="notes">Notatki</button>
+        <button role="tab" aria-selected="false" data-tab="contact">Kontakt</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+
+      <!-- ============ O MNIE ============ -->
+      <section class="panel on" id="about" role="tabpanel">
+        <div class="meta">Analiza fundamentalna · Rynki kapitałowe</div>
+        <h1 class="lead">Oceniam spółki po tym, ile <em>gotówki</em> naprawdę zostaje.</h1>
+
+        <p>
+          Studiuję Analitykę Finansową na Uniwersytecie Ekonomicznym w Katowicach i przygotowuję się
+          do egzaminu na <strong>Maklera Papierów Wartościowych</strong>.
+        </p>
+        <p>
+          Prowadzę własny portfel na IKE i przepuszczam każdą spółkę przez ten sam zestaw kryteriów:
+          <strong>ROIC</strong>, <strong>Real FCF</strong> liczony jako przepływy operacyjne minus CapEx
+          minus wynagrodzenia w akcjach, oraz rentowność wolnych przepływów porównana z obligacjami
+          skarbowymi. Zysk księgowy potrafi być kwestią założeń — gotówka nie.
+        </p>
+        <p>
+          Ta strona zbiera to, co z tego wychodzi: notatki analityczne, narzędzia i materiały wideo.
+        </p>
+
+        <div class="rows">
+          <div class="row"><span class="k">Kierunek</span><span class="v">Analityk Finansowy 2.0, UE Katowice</span></div>
+          <div class="row"><span class="k">Egzamin MPW</span><span class="v">październik 2026</span></div>
+          <div class="row"><span class="k">Narzędzia</span><span class="v">Excel · Python · SQL · Power BI</span></div>
+          <div class="row"><span class="k">Koło naukowe</span><span class="v">Modelowanie Finansowe Quantum</span></div>
+          <div class="row"><span class="k">Lokalizacja</span><span class="v">Chorzów / Katowice</span></div>
+        </div>
+      </section>
+
+      <!-- ============ PROJEKTY ============ -->
+      <section class="panel" id="work" role="tabpanel">
+        <div class="meta">Narzędzia i materiały</div>
+        <h2 class="lead">Projekty</h2>
+
+        <!-- WKLEJ link do filmu o Mastercardzie w href poniżej -->
+        <a class="item" href="#">
+          <div class="item-top"><span>Wideo · YouTube</span><span>wkrótce</span></div>
+          <h3>Mastercard — analiza spółki</h3>
+          <p>Dwudziestominutowe omówienie modelu biznesowego, źródeł przychodu i fundamentów spółki płatniczej.</p>
+        </a>
+
+        <a class="item" href="#">
+          <div class="item-top"><span>Python</span><span>wkrótce</span></div>
+          <h3>Screener jakości: ROIC i Real FCF</h3>
+          <p>Skrypt pobierający sprawozdania spółki i liczący wskaźniki, których używam do oceny jakości biznesu — z korektą o wynagrodzenia w akcjach.</p>
+        </a>
+
+        <a class="item" href="#">
+          <div class="item-top"><span>Excel</span><span>wkrótce</span></div>
+          <h3>Model DCF z analizą wrażliwości</h3>
+          <p>Wycena metodą zdyskontowanych przepływów w trzech scenariuszach, z tabelą wrażliwości na koszt kapitału i stopę wzrostu rezydualnego.</p>
+        </a>
+      </section>
+
+      <!-- ============ NOTATKI ============ -->
+      <section class="panel" id="notes" role="tabpanel">
+        <div class="meta">Notatki analityczne</div>
+        <h2 class="lead">Notatki</h2>
+        <p style="margin-bottom:34px">
+          Każda notatka ma tę samą strukturę: teza, model biznesowy, wycena, ryzyka i katalizatory.
+          Wszystkie są datowane — po to, żeby dało się je później rozliczyć.
+        </p>
+
+        <a class="item" href="#">
+          <div class="item-top"><span>Alphabet · GOOGL</span><span>w przygotowaniu</span></div>
+          <h3>Alphabet — koszt utrzymania pozycji w wyszukiwarce</h3>
+          <p>Co rosnące nakłady na infrastrukturę AI robią z rentownością Google Services i jak to zmienia obraz wolnych przepływów.</p>
+        </a>
+
+        <a class="item" href="#">
+          <div class="item-top"><span>Kolejna spółka</span><span>w przygotowaniu</span></div>
+          <h3>Następna analiza</h3>
+          <p>Spółka z portfela przepuszczona przez ten sam zestaw kryteriów jakości.</p>
+        </a>
+      </section>
+
+      <!-- ============ KONTAKT ============ -->
+      <section class="panel" id="contact" role="tabpanel">
+        <div class="meta">Kontakt</div>
+        <h2 class="lead">Otwarty na pierwsze doświadczenie w branży finansowej.</h2>
+        <p>Najszybciej odpowiadam na LinkedInie.</p>
+
+        <div class="contact-list">
+          <a class="link" href="https://www.linkedin.com/in/konradjendrys" target="_blank" rel="noopener">linkedin.com/in/konradjendrys</a>
+          <a class="link" href="https://github.com/konradjendrys" target="_blank" rel="noopener">github.com/konradjendrys</a>
+          <a class="link" href="mailto:konrad.af.jendrys@gmail.com">konrad.af.jendrys@gmail.com</a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap foot-in">
+      <span>© 2026 Konrad Jendryś</span>
+      <span class="readout">
+        <span class="lbl">wykres poglądowy</span>
+        <span class="px" id="px">—</span>
+        <span id="tick">—</span>
+      </span>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+/* ============================================================
+   Żywy wykres świecowy w tle.
+   Świece dorastają w czasie rzeczywistym; co kilka sekund
+   bieżąca świeca się zamyka i otwiera nowa. Dane są losowe
+   (błądzenie losowe) — to element wizualny, nie notowania.
+   ============================================================ */
+(function(){
+  const cv  = document.getElementById('chart');
+  const ctx = cv.getContext('2d');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const CSS  = getComputedStyle(document.documentElement);
+  const UP   = CSS.getPropertyValue('--up').trim()   || '#2FD39A';
+  const DOWN = CSS.getPropertyValue('--down').trim() || '#FF6B5A';
+  const MA_C = '#8B95A1';
+
+  const MA_PERIOD   = 12;
+  const TICK_MS     = 110;   // co ile odświeża się bieżąca świeca
+  const TICKS_CANDLE = 26;   // ile ticków trwa jedna świeca (~2,9 s)
+
+  let W, H, dpr;
+  let candles = [];
+  let maxCandles = 40;
+  let vol = 1.4, drift = 0;
+  let tickCount = 0;
+  let scale = null;          // wygładzana skala pionowa
+
+  /* --- nowa świeca otwiera się na zamknięciu poprzedniej --- */
+  function newCandle(prevClose){
+    return {open:prevClose, close:prevClose, high:prevClose, low:prevClose};
+  }
+
+  /* --- ruch ceny wewnątrz świecy --- */
+  function step(c){
+    const shock = Math.random() < 0.03 ? (Math.random() - 0.5) * vol * 3 : 0;
+    const move  = (Math.random() - 0.5) * vol * 0.55 + drift * 0.05 + shock;
+    c.close = Math.max(5, c.close + move);
+    if (c.close > c.high) c.high = c.close;
+    if (c.close < c.low)  c.low  = c.close;
+  }
+
+  function seed(){
+    const count = Math.max(14, Math.round(maxCandles * 0.7));
+    let price = 100;
+    drift = (Math.random() - 0.45) * 0.9;
+    vol   = 1.1 + Math.random() * 1.4;
+    candles = [];
+    for (let i = 0; i < count; i++){
+      const c = newCandle(price);
+      for (let k = 0; k < TICKS_CANDLE; k++) step(c);
+      candles.push(c);
+      price = c.close;
+    }
+  }
+
+  function movingAverage(data, period){
+    const out = [];
+    for (let i = 0; i < data.length; i++){
+      if (i < period - 1){ out.push(null); continue; }
+      let s = 0;
+      for (let j = i - period + 1; j <= i; j++) s += data[j].close;
+      out.push(s / period);
+    }
+    return out;
+  }
+
+  function layout(){
+    dpr = window.devicePixelRatio || 1;
+    W = cv.clientWidth;
+    H = cv.clientHeight;
+    cv.width  = W * dpr;
+    cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    maxCandles = Math.max(20, Math.round((W * 0.75) / 20));
+  }
+
+  function draw(){
+    ctx.clearRect(0, 0, W, H);
+    if (!candles.length) return;
+
+    // obszar rysowania: kończy się na 75% szerokości i siedzi w górnej części ekranu
+    const RIGHT = W * 0.75;
+    const TOP   = H * 0.08;
+    const BOT   = H * 0.62;
+    const BAND  = BOT - TOP;
+
+    const n     = candles.length;
+    const slotW = RIGHT / maxCandles;
+    const bodyW = Math.max(3, Math.min(13, slotW * 0.58));
+
+    // skala pionowa wygładzana, żeby nie skakała przy nowej świecy
+    let hi = -Infinity, lo = Infinity;
+    for (const c of candles){ if (c.high > hi) hi = c.high; if (c.low < lo) lo = c.low; }
+    const pad = (hi - lo) * 0.16 || 1;
+    hi += pad; lo -= pad;
+    if (!scale) scale = {hi, lo};
+    scale.hi += (hi - scale.hi) * 0.06;
+    scale.lo += (lo - scale.lo) * 0.06;
+
+    const y = v => BOT - ((v - scale.lo) / (scale.hi - scale.lo)) * BAND;
+    const sma = movingAverage(candles, MA_PERIOD);
+
+    // świece kończą się na prawej krawędzi obszaru, nie na krawędzi ekranu
+    const offset = RIGHT - n * slotW;
+
+    for (let i = 0; i < n; i++){
+      const c  = candles[i];
+      const cx = offset + i * slotW + slotW / 2;
+      const rising = c.close >= c.open;
+      const col = rising ? UP : DOWN;
+
+      // im bardziej w prawo, tym jaśniejsza świeca
+      const t = n > 1 ? i / (n - 1) : 1;
+      const fade = 0.34 + 0.66 * Math.pow(t, 1.35);
+
+      ctx.strokeStyle = col;
+      ctx.fillStyle   = col;
+      ctx.lineWidth   = 1.2;
+      ctx.globalAlpha = fade;
+
+      const yo = y(c.open), yc = y(c.close);
+      const top = Math.min(yo, yc);
+      const h   = Math.max(1.4, Math.abs(yc - yo));
+      const bot = top + h;
+      const xw  = Math.round(cx) + .5;
+
+      // knot rysowany tylko nad i pod korpusem, żeby nie prześwitywał przez środek
+      ctx.beginPath();
+      ctx.moveTo(xw, y(c.high));
+      ctx.lineTo(xw, top);
+      ctx.moveTo(xw, bot);
+      ctx.lineTo(xw, y(c.low));
+      ctx.stroke();
+
+      if (rising){
+        ctx.globalAlpha = fade * .32;
+        ctx.fillRect(cx - bodyW/2, top, bodyW, h);
+        ctx.globalAlpha = fade;
+        ctx.strokeRect(cx - bodyW/2, top, bodyW, h);
+      } else {
+        ctx.fillRect(cx - bodyW/2, top, bodyW, h);
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    // średnia krocząca
+    // średnia krocząca — rozjaśnia się ku prawej razem ze świecami
+    const maGrad = ctx.createLinearGradient(offset, 0, RIGHT, 0);
+    maGrad.addColorStop(0,    'rgba(139,149,161,0.14)');
+    maGrad.addColorStop(0.5,  'rgba(139,149,161,0.42)');
+    maGrad.addColorStop(1,    'rgba(176,187,199,0.85)');
+    ctx.strokeStyle = maGrad;
+    ctx.lineWidth = 1.5;
+    ctx.globalAlpha = 1;
+    ctx.beginPath();
+    let started = false;
+    for (let i = 0; i < n; i++){
+      const v = sma[i];
+      if (v == null) continue;
+      const cx = offset + i * slotW + slotW / 2;
+      if (!started){ ctx.moveTo(cx, y(v)); started = true; }
+      else ctx.lineTo(cx, y(v));
+    }
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+
+    // linia bieżącej ceny
+    const last = candles[n - 1];
+    ctx.strokeStyle = last.close >= last.open ? UP : DOWN;
+    ctx.globalAlpha = .35;
+    ctx.setLineDash([3, 5]);
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(Math.max(0, offset - slotW * 3), y(last.close));
+    ctx.lineTo(RIGHT + slotW * 1.5, y(last.close));
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.globalAlpha = 1;
+  }
+
+  /* --- odczyt w stopce: bieżąca cena i zmiana w oknie wykresu --- */
+  function readout(){
+    const first = candles[0].open;
+    const last  = candles[candles.length - 1].close;
+    const pct = ((last - first) / first) * 100;
+    const pxEl = document.getElementById('px');
+    const tkEl = document.getElementById('tick');
+    if (pxEl) pxEl.textContent = last.toFixed(2);
+    if (tkEl){
+      tkEl.textContent = (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%';
+      tkEl.style.color = pct >= 0 ? UP : DOWN;
+    }
+  }
+
+  function frame(){
+    const cur = candles[candles.length - 1];
+    step(cur);
+    tickCount++;
+
+    if (tickCount >= TICKS_CANDLE){
+      tickCount = 0;
+      candles.push(newCandle(cur.close));
+      if (candles.length > maxCandles) candles.shift();
+      // rynek co jakiś czas zmienia charakter
+      if (Math.random() < 0.12) drift = (Math.random() - 0.45) * 0.9;
+    }
+
+    draw();
+    readout();
+  }
+
+  let timer = null;
+  function start(){
+    layout();
+    seed();
+    scale = null;
+    draw();
+    readout();
+    if (timer) clearInterval(timer);
+    if (!reduced) timer = setInterval(frame, TICK_MS);
+  }
+
+  // pauza, gdy karta jest w tle — nie marnuje baterii
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden){ if (timer){ clearInterval(timer); timer = null; } }
+    else if (!reduced && !timer){ timer = setInterval(frame, TICK_MS); }
+  });
+
+  let rt;
+  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(start, 220); });
+  start();
+})();
+
+/* ============================================================
+   Zakładki
+   ============================================================ */
+(function(){
+  const tabs   = document.querySelectorAll('nav button');
+  const panels = document.querySelectorAll('.panel');
+
+  function show(id){
+    panels.forEach(p => p.classList.toggle('on', p.id === id));
+    tabs.forEach(b => b.setAttribute('aria-selected', b.dataset.tab === id));
+    // w podglądzie w ramce zapis adresu bywa zablokowany — nie przerywamy działania
+    try { history.replaceState(null, '', '#' + id); } catch (e) {}
+  }
+
+  tabs.forEach(b => b.addEventListener('click', () => show(b.dataset.tab)));
+
+  let start = '';
+  try { start = location.hash.replace('#', ''); } catch (e) {}
+  if (start && document.getElementById(start)) show(start);
+})();
+</script>
+
+</body>
+</html>
