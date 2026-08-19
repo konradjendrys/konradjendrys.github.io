@@ -190,6 +190,39 @@ a.item:hover{opacity:.72}
 }
 .item p{margin-bottom:0;font-size:15px}
 
+/* ---------- znaczniki źródła ---------- */
+.src{display:inline-flex;align-items:center;gap:7px}
+.src::before{
+  content:'';width:7px;height:7px;border-radius:50%;
+  background:currentColor;flex:none;
+}
+.src-meta{color:#3E8BFF}
+.src-yt{color:#FF3B30}
+.src-py{color:#F0C14B}
+.src-xls{color:#4E9E7F}
+
+/* ---------- linia danych pod tytułem ---------- */
+.facts{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12.5px;
+  color:var(--muted);
+  margin:14px 0 16px;
+  line-height:1.9;
+}
+.facts b{color:var(--text);font-weight:500}
+.facts .rec{color:var(--up);font-weight:500;letter-spacing:.06em}
+.facts i{color:#333B44;font-style:normal;margin:0 9px}
+
+.cta{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:13px;
+  color:var(--faint);
+  border-bottom:1px solid #232A32;
+  padding-bottom:3px;
+  transition:color .18s ease,border-color .18s ease;
+}
+a.item:hover .cta{color:var(--up);border-bottom-color:rgba(47,211,154,.45)}
+
 /* ---------- osadzone wideo ---------- */
 .embed{
   position:relative;
@@ -310,14 +343,18 @@ footer{border-top:1px solid var(--line);padding:22px 0 30px}
 
         <!-- notatka o Mecie -->
         <a class="item" href="meta.html">
-          <div class="item-top"><span>Notatka · META</span><span>19.08.2026</span></div>
-          <h3>Meta — czy rynek wycenia nakłady na AI według złego precedensu</h3>
-          <p>Rekomendacja KUPUJ, cena docelowa 720 USD. Dlaczego cena za reklamę jest lepszą miarą zwrotu z CapEx niż osobny segment chmurowy — i dlaczego ryzyko prawne, a nie fundamenty, jest głównym argumentem przeciw.</p>
+          <div class="item-top"><span class="src src-meta">Notatka · META</span><span>19.08.2026</span></div>
+          <h3>Czy rynek wycenia nakłady Mety na AI według złego precedensu</h3>
+          <p>Rynek dyskontuje CapEx Mety tak, jakby to była powtórka Reality Labs. Twierdzę, że właściwą miarą zwrotu jest cena za reklamę — bo tej nie da się podnieść decyzją produktową — a głównym argumentem przeciw są nie fundamenty, lecz ryzyko prawne.</p>
+          <div class="facts">
+            <span class="rec">KUPUJ</span><i>/</i>cena docelowa <b>720 USD</b><i>/</i>potencjał <b>+31%</b><i>/</i>P/E fwd <b>18x</b><i>/</i>ROIC <b>25,4%</b>
+          </div>
+          <span class="cta">Czytaj notatkę →</span>
         </a>
 
         <!-- film o Mastercardzie -->
         <div class="item">
-          <div class="item-top"><span>Wideo · YouTube</span><span>Mastercard</span></div>
+          <div class="item-top"><span class="src src-yt">Wideo · YouTube</span><span>Mastercard</span></div>
           <h3>Mastercard — analiza spółki</h3>
           <p style="margin-bottom:20px">Dwudziestominutowe omówienie modelu biznesowego, źródeł przychodu i fundamentów spółki płatniczej.</p>
           <div class="embed">
@@ -332,19 +369,19 @@ footer{border-top:1px solid var(--line);padding:22px 0 30px}
         </div>
 
         <a class="item" href="#">
-          <div class="item-top"><span>Notatka · GOOGL</span><span>w przygotowaniu</span></div>
+          <div class="item-top"><span class="src src-meta" style="color:#5B8DEF">Notatka · GOOGL</span><span>w przygotowaniu</span></div>
           <h3>Alphabet — koszt utrzymania pozycji w wyszukiwarce</h3>
           <p>Co rosnące nakłady na infrastrukturę AI robią z rentownością Google Services i jak to zmienia obraz wolnych przepływów.</p>
         </a>
 
         <a class="item" href="#">
-          <div class="item-top"><span>Python</span><span>w przygotowaniu</span></div>
+          <div class="item-top"><span class="src src-py">Python</span><span>w przygotowaniu</span></div>
           <h3>Screener jakości: ROIC i Real FCF</h3>
           <p>Skrypt pobierający sprawozdania spółki i liczący wskaźniki, których używam do oceny jakości biznesu — z korektą o wynagrodzenia w akcjach.</p>
         </a>
 
         <a class="item" href="#">
-          <div class="item-top"><span>Excel</span><span>w przygotowaniu</span></div>
+          <div class="item-top"><span class="src src-xls">Excel</span><span>w przygotowaniu</span></div>
           <h3>Model DCF z analizą wrażliwości</h3>
           <p>Wycena metodą zdyskontowanych przepływów w trzech scenariuszach, z tabelą wrażliwości na koszt kapitału i stopę wzrostu rezydualnego.</p>
         </a>
