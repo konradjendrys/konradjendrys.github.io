@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meta Platforms (META) — notatka inwestycyjna | Konrad Jendryś</title>
+<meta name="description" content="Notatka inwestycyjna Meta Platforms (NASDAQ: META). Analiza fundamentalna, wycena, ryzyka. Konrad Jendryś, 19 sierpnia 2026.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500;6..72,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#050607;
+  --text:#EDEBE6;
+  --muted:#98A0AA;
+  --faint:#646C76;
+  --line:#1A1F25;
+  --up:#2FD39A;
+  --down:#FF6B5A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',system-ui,sans-serif;
+  font-size:16px;
+  line-height:1.72;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{width:100%;max-width:820px;margin:0 auto;padding:0 28px}
+
+/* ---- pasek górny ---- */
+header{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(5,6,7,.94);backdrop-filter:blur(6px);z-index:20}
+.head-in{display:flex;align-items:center;justify-content:space-between;gap:20px;height:62px}
+.back{
+  font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--muted);
+  text-decoration:none;transition:color .18s ease;
+}
+.back:hover{color:var(--up)}
+.tag{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+
+/* ---- tytuł notatki ---- */
+.masthead{padding:64px 0 38px;border-bottom:1px solid var(--line)}
+.ticker{font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:.12em;color:var(--up);margin-bottom:18px}
+h1{
+  font-family:'Newsreader',Georgia,serif;font-weight:400;
+  font-size:clamp(32px,5.4vw,50px);line-height:1.1;letter-spacing:-.015em;margin-bottom:18px;
+}
+.byline{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--faint)}
+
+/* ---- spis treści ---- */
+.toc{
+  border-bottom:1px solid var(--line);padding:26px 0;
+  display:flex;flex-wrap:wrap;gap:6px 18px;
+  font-family:'IBM Plex Mono',monospace;font-size:12.5px;
+}
+.toc a{color:var(--muted);text-decoration:none;transition:color .18s ease}
+.toc a:hover{color:var(--up)}
+
+/* ---- treść ---- */
+main{padding:44px 0 90px}
+h2{
+  font-family:'Newsreader',Georgia,serif;font-weight:400;
+  font-size:clamp(24px,3.6vw,32px);letter-spacing:-.01em;
+  margin:58px 0 20px;padding-top:14px;border-top:1px solid var(--line);
+  scroll-margin-top:80px;
+}
+h2:first-of-type{margin-top:0;border-top:none;padding-top:0}
+h3{
+  font-family:'Inter',sans-serif;font-weight:600;font-size:17px;
+  letter-spacing:.005em;margin:36px 0 14px;color:var(--text);
+}
+h4,.sub{
+  font-family:'IBM Plex Mono',monospace;font-weight:500;font-size:12px;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--up);
+  margin:30px 0 12px;
+}
+p{color:var(--muted);margin-bottom:18px}
+p strong{color:var(--text);font-weight:600}
+strong{color:var(--text);font-weight:600}
+em{font-style:italic}
+ul,ol{color:var(--muted);margin:0 0 20px 22px}
+li{margin-bottom:9px}
+hr{border:none;border-top:1px solid var(--line);margin:44px 0;display:none}
+a{color:var(--up)}
+
+/* ---- tabele ---- */
+table{
+  width:100%;border-collapse:collapse;margin:24px 0 30px;
+  font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.55;
+}
+thead th{
+  text-align:left;color:var(--faint);font-weight:500;
+  font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  padding:0 14px 10px 0;border-bottom:1px solid #2A323B;
+}
+tbody td{
+  padding:11px 14px 11px 0;border-bottom:1px solid var(--line);
+  color:var(--muted);vertical-align:top;
+}
+tbody td:first-child{color:var(--text)}
+tbody td strong{color:var(--up);font-weight:500}
+tbody tr:hover td{background:rgba(255,255,255,.018)}
+
+/* ---- panel kluczowych danych (pierwsza tabela) ---- */
+.keystats{
+  border:1px solid #262D35;border-radius:4px;
+  background:rgba(255,255,255,.022);
+  margin:6px 0 34px;font-size:13.5px;
+}
+.keystats thead{display:none}
+.keystats tbody td{
+  padding:10px 18px;border-bottom:1px solid var(--line);
+}
+.keystats tbody tr:last-child td{border-bottom:none}
+.keystats tbody td:first-child{color:var(--faint);width:52%}
+.keystats tbody td:last-child{color:var(--text);text-align:right}
+.keystats tbody td strong{color:var(--up);font-weight:600}
+
+/* ---- stopka ---- */
+footer{border-top:1px solid var(--line);padding:26px 0 44px}
+.foot-in{
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--faint);
+}
+.foot-in a{color:var(--faint);text-decoration:none}
+.foot-in a:hover{color:var(--up)}
+
+@media(max-width:640px){
+  .wrap{padding:0 20px}
+  .masthead{padding:40px 0 28px}
+  main{padding:32px 0 60px}
+  table{font-size:11.5px;display:block;overflow-x:auto;white-space:nowrap}
+  h2{margin:42px 0 16px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+@media print{
+  body{background:#fff;color:#111}
+  header,.toc,footer{display:none}
+  a{color:#111}
+  p,td,ul,ol{color:#333}
+  table{font-size:10px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap head-in">
+    <a class="back" href="index.html">← Portfolio</a>
+    <span class="tag">Notatka inwestycyjna</span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="masthead">
+    <div class="ticker">NASDAQ: META</div>
+    <h1>Meta Platforms, Inc.</h1>
+    <div class="byline">Konrad Jendryś · 19 sierpnia 2026</div>
+  </div>
+
+  <nav class="toc"><a href="#1-teza-inwestycyjna">1. Teza inwestycyjna</a>
+<a href="#2-model-biznesowy-i-drivery">2. Model biznesowy i drivery</a>
+<a href="#3-opcja-na-zewnętrzną-monetyzację-mocy-obliczeniowej">3. Opcja na zewnętrzną monetyzację mocy obliczeniowej</a>
+<a href="#4-elastyczność-finansowa">4. Elastyczność finansowa</a>
+<a href="#5-wycena">5. Wycena</a>
+<a href="#6-ryzyka">6. Ryzyka</a>
+<a href="#7-katalizatory">7. Katalizatory</a>
+<a href="#8-podsumowanie-i-warunki-unieważnienia-tezy">8. Podsumowanie i warunki unieważnienia tezy</a>
+<a href="#zastrzeżenia-i-ujawnienia">Zastrzeżenia i ujawnienia</a></nav>
+
+  <main>
+<table class="keystats">
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rekomendacja</td>
+<td><strong>KUPUJ</strong></td>
+</tr>
+<tr>
+<td>Cena docelowa (12M)</td>
+<td><strong>720 USD</strong></td>
+</tr>
+<tr>
+<td>Cena bieżąca (18.08.2026)</td>
+<td>ok. 548 USD</td>
+</tr>
+<tr>
+<td>Potencjał wzrostu</td>
+<td>+31%</td>
+</tr>
+<tr>
+<td>Kapitalizacja</td>
+<td>ok. 1,40 bln USD</td>
+</tr>
+<tr>
+<td>Liczba akcji</td>
+<td>2,55 mld (−1,1% r/r)</td>
+</tr>
+<tr>
+<td>Zakres 52-tygodniowy</td>
+<td>519,78 – 790,80 USD</td>
+</tr>
+<tr>
+<td>P/E (TTM)</td>
+<td>ok. 20x</td>
+</tr>
+<tr>
+<td>P/E (forward)</td>
+<td>ok. 18x</td>
+</tr>
+<tr>
+<td>Mediana P/E 10 lat</td>
+<td>27,96x</td>
+</tr>
+<tr>
+<td>EV/EBITDA</td>
+<td>13,9x</td>
+</tr>
+<tr>
+<td>ROIC</td>
+<td>25,4%</td>
+</tr>
+<tr>
+<td>Rentowność zysku (E/P)</td>
+<td>4,9%</td>
+</tr>
+<tr>
+<td>Rentowność 10-letnich obligacji USA</td>
+<td>4,70%</td>
+</tr>
+<tr>
+<td>Mediana ceny docelowej sell-side</td>
+<td>ok. 750 USD (70 analityków)</td>
+</tr>
+</tbody>
+</table>
+<p>Meta traci ok. 31% od szczytu i ok. 24% w ujęciu dwunastomiesięcznym. W tym samym okresie dynamika przychodów przyspieszyła z 16% w I kw. 2025 r. do 33% w I kw. 2026 r. i 28% w II kw. 2026 r. Ta rozbieżność jest punktem wyjścia niniejszej notatki.</p>
+<p>Za przecenę odpowiadają trzy czynniki: kompresja marży wywołana nakładami na infrastrukturę AI, eskalacja ryzyka prawnego oraz brak zewnętrznie monetyzowanego segmentu chmurowego. Moim zdaniem pierwszy i trzeci są przez rynek wyceniane błędnie. Drugi — zasadnie, i to on stanowi główny argument przeciwko rekomendacji.</p>
+<hr />
+<h2 id="1-teza-inwestycyjna">1. Teza inwestycyjna</h2>
+<h3>1.1 Na czym polega błąd rynku</h3>
+<p>Alphabet, Amazon i Microsoft mają segmenty chmurowe, w których zwrot z nakładów widać wprost w raportowanym przychodzie. Dane za II kwartał 2026 r.:</p>
+<table>
+<thead>
+<tr>
+<th>Podmiot</th>
+<th>Przychód segmentu</th>
+<th>Dynamika r/r</th>
+<th>Marża operacyjna segmentu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Google Cloud</td>
+<td>24,8 mld USD</td>
+<td>+82% (z +63% w I kw.)</td>
+<td>35,6%</td>
+</tr>
+<tr>
+<td>AWS</td>
+<td>42,2 mld USD</td>
+<td>+37% (z +28% w I kw.)</td>
+<td>36,8%</td>
+</tr>
+<tr>
+<td>Azure i pozostałe usługi chmurowe</td>
+<td>powyżej 100 mld USD w roku fiskalnym 2026</td>
+<td>+43%</td>
+<td>brak danych segmentowych</td>
+</tr>
+<tr>
+<td>Meta</td>
+<td>brak odpowiednika</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Wniosek rynku jest prosty: trzej konkurenci pokazują rachunek zwrotu z inwestycji, Meta go nie pokazuje.</p>
+<p>Uważam ten wniosek za błąd kategorii. Brak osobnej linii przychodowej nie dowodzi braku zwrotu — dowodzi jedynie, że zwrot nie jest raportowany osobno. W przypadku Mety materializuje się on wewnątrz biznesu reklamowego, poprzez wyższą skuteczność targetowania i wyższą cenę uzyskiwaną za tę samą powierzchnię reklamową. Poniżej pokazuję, czym go zmierzyć.</p>
+<h3>1.2 Dynamika przychodów przyspiesza mimo rosnącej bazy</h3>
+<p>Przy skali 200 mld USD rocznego przychodu prawo wielkich liczb powinno wymuszać spowolnienie. Dane pokazują coś przeciwnego.</p>
+<table>
+<thead>
+<tr>
+<th>Kwartał</th>
+<th>Przychody (mld USD)</th>
+<th>Dynamika r/r</th>
+<th>Przychody reklamowe r/r</th>
+<th>Wyświetlenia r/r</th>
+<th>Cena za reklamę r/r</th>
+<th>CapEx kwartalny (mld USD)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>I kw. 2025</td>
+<td>42,31</td>
+<td>+16%</td>
+<td>+16%</td>
+<td>+5%</td>
+<td>+10%</td>
+<td>13,69</td>
+</tr>
+<tr>
+<td>II kw. 2025</td>
+<td>47,52</td>
+<td>+22%</td>
+<td>+21%</td>
+<td>ok. +11% (implikowane)</td>
+<td>+9%</td>
+<td>brak danych</td>
+</tr>
+<tr>
+<td>III kw. 2025</td>
+<td>51,24</td>
+<td>+26%</td>
+<td>+26%</td>
+<td>+14%</td>
+<td>+10%</td>
+<td>19,37</td>
+</tr>
+<tr>
+<td>IV kw. 2025</td>
+<td>59,89</td>
+<td>+24%</td>
+<td>+24%</td>
+<td>+18%</td>
+<td>+6%</td>
+<td>brak danych</td>
+</tr>
+<tr>
+<td>I kw. 2026</td>
+<td>56,31</td>
+<td><strong>+33%</strong></td>
+<td>+33%</td>
+<td>+19%</td>
+<td><strong>+12%</strong></td>
+<td>19,84</td>
+</tr>
+<tr>
+<td>II kw. 2026</td>
+<td>60,80</td>
+<td>+28%</td>
+<td>+27%</td>
+<td>+14%</td>
+<td><strong>+12%</strong></td>
+<td>31,08</td>
+</tr>
+</tbody>
+</table>
+<p>Ujęcie roczne: 2024 — 164,50 mld USD (+22%); 2025 — 200,97 mld USD (+22%), w tym przychody reklamowe 196,18 mld USD. Annualizacja II kw. 2026 r. daje ok. 243 mld USD.</p>
+<p>Dynamika wzrosła z 16% do przedziału 28–33% w ciągu pięciu kwartałów. Stało się to w okresie, w którym nakłady inwestycyjne rosły z 39,23 mld USD (2024) przez 72,22 mld USD (2025) do prognozowanych 130–145 mld USD na 2026 r. Sformułowanie „tempo utrzymuje się mimo większej skali" byłoby tu zbyt ostrożne. Tempo wzrosło przy podwojonej bazie przychodowej.</p>
+<h3>1.3 Cena za reklamę jako właściwa metryka</h3>
+<p>Przyspieszenie ceny za reklamę z +6% w IV kw. 2025 r. do +12% w dwóch kolejnych kwartałach uważam za istotniejsze niż samą dynamikę przychodu. Powód jest metodyczny: obie składowe przychodu reklamowego mają różną wartość dowodową.</p>
+<p>Liczbę wyświetleń można zwiększyć decyzją produktową — gęstszym upakowaniem reklam w feedzie albo otwarciem nowych powierzchni, takich jak Threads czy WhatsApp Status. Wzrost wolumenu sam w sobie niczego o jakości nie mówi.</p>
+<p>Cena za reklamę jest natomiast wynikiem aukcji. Rośnie wyłącznie wtedy, gdy reklamodawca uzyskuje wyższą konwersję i w konsekwencji licytuje wyżej. Nie da się jej podnieść administracyjnie. Meta definiuje ją jako całkowity przychód reklamowy podzielony przez liczbę dostarczonych reklam, więc jest to miara monetyzacji całej platformy, a nie CPM pojedynczej kampanii.</p>
+<p>Wzrost ceny przy jednoczesnym wzroście wolumenu o 14% jest zatem śladem poprawy skuteczności targetowania. Gdyby Meta jedynie zwiększała podaż, cena musiałaby spadać.</p>
+<p>Rozkład regionalny za II kw. 2026 r. wzmacnia ten odczyt. Przy średniej światowej +12% rozpiętość wynosiła od +1% w Azji i Pacyfiku do +21% w regionie Rest of World, a USA i Kanada zanotowały +20% ceny przy zaledwie +9% wyświetleń. Na rynkach dojrzałych, gdzie przyrost podaży jest ograniczony, cena rośnie znacznie szybciej niż wolumen — czyli dokładnie tam, gdzie efekt jakości powinien być najlepiej widoczny.</p>
+<p>Trzeba uczciwie dodać, że Meta przypisuje wzrost ceny w II kw. 2026 r. trzem czynnikom łącznie: poprawie skuteczności reklam, korzystniejszemu otoczeniu makroekonomicznemu niż rok wcześniej oraz efektom kursowym. Są to wyjaśnienia spółki, nie ustalenia niezależne.</p>
+<h3>1.4 Dlaczego to nie jest powtórka Reality Labs</h3>
+<p>Rynek zakłada, że obecny cykl inwestycyjny powtarza scenariusz metaverse. Zestawienie liczbowe pokazuje, że mowa o dwóch nieporównywalnych sytuacjach.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Reality Labs</th>
+<th>AI w reklamie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Skumulowana strata operacyjna od końca 2020 r.</td>
+<td>ponad 80 mld USD</td>
+<td>nie dotyczy — wdrożenie w istniejący segment</td>
+</tr>
+<tr>
+<td>Skumulowany przychód segmentu</td>
+<td>ok. 11,8 mld USD w pięć lat</td>
+<td>nie dotyczy</td>
+</tr>
+<tr>
+<td>Wynik roczny po pięciu latach</td>
+<td>przychód 2,2 mld USD przy stracie 19,2 mld USD (2025)</td>
+<td>nie dotyczy</td>
+</tr>
+<tr>
+<td>Baza przychodowa w momencie startu</td>
+<td>rynek nieistniejący, budowany od zera</td>
+<td>200,97 mld USD przychodu w 2025 r.</td>
+</tr>
+<tr>
+<td>Run-rate narzędzi reklamowych opartych na AI</td>
+<td>—</td>
+<td>ponad 60 mld USD (koniec III kw. 2025)</td>
+</tr>
+<tr>
+<td>Run-rate pakietu Value Optimization</td>
+<td>—</td>
+<td>ponad 20 mld USD (I kw. 2026), ponad dwukrotnie r/r</td>
+</tr>
+<tr>
+<td>Adopcja narzędzi kreatywnych AI</td>
+<td>—</td>
+<td>8 mln reklamodawców (I kw. 2026), dwukrotnie r/r</td>
+</tr>
+<tr>
+<td>Deklarowana efektywność modelu rankingowego GEM</td>
+<td>—</td>
+<td>czterokrotnie wyższa skuteczność wobec modeli poprzedniej generacji (dane spółki z telekonferencji za III kw. 2025)</td>
+</tr>
+</tbody>
+</table>
+<p>Reality Labs po pięciu latach i ponad 80 mld USD nakładów generuje 2,2 mld USD przychodu rocznie. Narzędzia reklamowe oparte na AI przekroczyły 60 mld USD run-rate'u przy nieporównywalnie niższym koszcie wejścia, ponieważ trafiły do istniejącego produktu, istniejącej bazy reklamodawców i istniejącego kanału sprzedaży.</p>
+<p>Na tym polega różnica. Reality Labs był zakładem o powstanie rynku. AI jest usprawnieniem rynku, który już istnieje i już przynosi 200 mld USD rocznie.</p>
+<h3>1.5 Kwantyfikacja różnicy zdań z rynkiem</h3>
+<p>Wycena na poziomie ok. 18x zysk forward wobec mediany dziesięcioletniej 27,96x oznacza, że rynek dyskontuje jeden z trzech scenariuszy: trwałe spowolnienie dynamiki przychodów, trwałą kompresję marży poniżej 30%, albo istotną sankcję prawną.</p>
+<p>Mój pogląd: pierwszy scenariusz jest sprzeczny z danymi za ostatnie pięć kwartałów. Drugi jest częściowo uzasadniony, ale ma charakter przejściowy i wynika z fazy cyklu inwestycyjnego, nie z pogorszenia ekonomiki rdzenia — marża Family of Apps wynosi nadal ok. 39%. Trzeci jest realny i nie da się go wykluczyć, co znajduje odzwierciedlenie w tym, że stawiam cenę docelową poniżej mediany sell-side.</p>
+<p>Konsensus prognoz EPS na lata 2026–2027 — brak danych; wymaga dostępu do terminala Bloomberg lub Refinitiv, którym nie dysponuję. Zamiast tego w sekcji 5.2 podaję, jaki EPS jest wymagany dla ceny docelowej przy różnych mnożnikach, a w 5.6 własne scenariusze.</p>
+<hr />
+<h2 id="2-model-biznesowy-i-drivery">2. Model biznesowy i drivery</h2>
+<h3>2.1 Skala i struktura wyniku</h3>
+<table>
+<thead>
+<tr>
+<th>Pozycja</th>
+<th>II kw. 2026</th>
+<th>I kw. 2026</th>
+<th>2025 (rok)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Przychody</td>
+<td>60,80 mld (+28%)</td>
+<td>56,31 mld (+33%)</td>
+<td>200,97 mld (+22%)</td>
+</tr>
+<tr>
+<td>Koszty i wydatki</td>
+<td>42,03 mld (+55%)</td>
+<td>33,44 mld (+35%)</td>
+<td>117,69 mld (+24%)</td>
+</tr>
+<tr>
+<td>Zysk operacyjny</td>
+<td>18,78 mld (−8%)</td>
+<td>22,87 mld (+30%)</td>
+<td>83,28 mld (+20%)</td>
+</tr>
+<tr>
+<td>Marża operacyjna</td>
+<td>31% (43% rok wcześniej)</td>
+<td>41%</td>
+<td>41%</td>
+</tr>
+<tr>
+<td>Zysk netto</td>
+<td>15,85 mld (−14%)</td>
+<td>26,77 mld</td>
+<td>60,46 mld (−3%)</td>
+</tr>
+<tr>
+<td>EPS rozwodniony</td>
+<td>6,18 USD</td>
+<td>10,44 USD</td>
+<td>23,49 USD</td>
+</tr>
+<tr>
+<td>Family of Apps: przychód / wynik</td>
+<td>60,37 / +23,39 mld</td>
+<td>55,91 / +26,90 mld</td>
+<td>brak rozbicia w komunikacie</td>
+</tr>
+<tr>
+<td>Reality Labs: przychód / wynik</td>
+<td>0,43 / −4,62 mld</td>
+<td>0,40 / −4,03 mld</td>
+<td>2,2 / −19,2 mld</td>
+</tr>
+<tr>
+<td>DAP (Family)</td>
+<td>3,60 mld (+3%)</td>
+<td>3,56 mld (+4%)</td>
+<td>3,58 mld (grudzień)</td>
+</tr>
+<tr>
+<td>Zatrudnienie</td>
+<td>75 472</td>
+<td>brak danych w komunikacie</td>
+<td>78 865</td>
+</tr>
+<tr>
+<td>Efektywna stopa podatkowa</td>
+<td>16%</td>
+<td>−23% (efekt CAMT)</td>
+<td>30% (efekt OBBBA)</td>
+</tr>
+</tbody>
+</table>
+<p>Spadek zysku operacyjnego w II kw. 2026 r. wynika w całości z pozycji jednorazowych: 2,4 mld USD rezerw na postępowania prawne oraz 1,18 mld USD odpraw związanych z redukcją ok. 8 000 etatów przeprowadzoną w maju. Po ich wyłączeniu zysk operacyjny wzrósłby o 9% rok do roku.</p>
+<p>Zmiana struktury kosztów ma jednak charakter trwały. Koszty badań i rozwoju wzrosły o 67% do 21,7 mld USD i odpowiadają za 36% przychodów wobec 27% w II kw. 2024 r.</p>
+<p>Porównania na poziomie EPS wymagają w tym okresie ostrożności ze względu na dwa zdarzenia podatkowe: jednorazowe obciążenie 15,93 mld USD w III kw. 2025 r. związane z ustawą OBBBA (efektywna stopa 87%) oraz korzyść 8,03 mld USD w I kw. 2026 r. wynikającą z ulgi przejściowej w federalnym podatku minimalnym CAMT (stopa ujemna 23%). Bez ich wyłączenia porównania rok do roku są bezużyteczne.</p>
+<h3>2.2 Struktura kontroli</h3>
+<p>Akcje klasy A dają jeden głos, akcje klasy B — dziesięć. Mark Zuckerberg kontroluje 99,7% akcji klasy B, co przy udziale w kapitale rzędu 13,5% przekłada się na ok. 61% głosów. Dokładna proporcja zmienia się wraz z darowiznami i sprzedażami, więc przy każdej aktualizacji notatki należy ją odczytać z bieżącego proxy statement (DEF 14A).</p>
+<p>Decyzje strategiczne są zatem niezależne od woli pozostałych akcjonariuszy. Czynnik ten działa dwustronnie: umożliwia prowadzenie polityki inwestycyjnej w horyzoncie wieloletnim bez presji na wynik kwartalny, ale zarazem eliminuje mechanizm korygujący w przypadku błędnej alokacji kapitału. Reality Labs jest przykładem drugiego działania tej dźwigni.</p>
+<h3>2.3 Fosa: efekt sieciowy i przewaga dystrybucyjna</h3>
+<p>Trwałość pozycji Mety opiera się na dystrybucji, nie na innowacji produktowej. Model szybkiego naśladowcy przenosi ryzyko produktowe na konkurencję — wejście następuje po walidacji formatu przez rynek.</p>
+<p><strong>Stories (2016).</strong> Odpowiedź na wzrost Snapchata wśród młodszych użytkowników; format przeniesiony do Instagrama. Snap osiągnął szczyt 83,34 USD 24 września 2021 r., a 27 marca 2026 r. ustanowił historyczne minimum 3,81 USD. Przy kapitalizacji ok. 8,8 mld USD daje to przecenę rzędu 94–95% od szczytu.</p>
+<p><strong>Reels (2020).</strong> Odpowiedź na dominację TikToka w formacie krótkiego wideo. Zamiast osobnej aplikacji format wdrożono wewnątrz Instagrama i Facebooka.</p>
+<p>Mechanizm umożliwiający tę strategię to efekt sieciowy połączony z przewagą dystrybucyjną: 3,60 mld osób korzystających dziennie z co najmniej jednej aplikacji ekosystemu. Nowy podmiot musi sfinansować budowę bazy od zera, Meta wdraża tę samą funkcję do istniejącego ekosystemu przy krańcowym koszcie dotarcia bliskim zeru.</p>
+<p>Uczciwość analityczna wymaga odnotowania trzech zastrzeżeń, których pomijanie osłabiłoby wiarygodność tej sekcji. Po pierwsze, lista udanych klonów jest wynikiem selekcji — Meta ma również porażki: Poke, Slingshot, Lasso, a spoza kategorii klonów projekt Libra/Diem. Po drugie, Reels monetyzuje się gorzej niż klasyczny Feed, co Meta sama wskazywała jako czynnik hamujący średnią cenę za reklamę. Po trzecie, TikTok mimo wprowadzenia Reels nie stracił pozycji w zaangażowaniu użytkowników. Strategia klonowania ograniczyła erozję udziałów, ale nie wyeliminowała konkurenta.</p>
+<h3>2.4 Geneza strategii nakładowej: lekcja z ATT</h3>
+<p>Wprowadzony przez Apple w 2021 r. mechanizm App Tracking Transparency wymagał od aplikacji uzyskania wyraźnej zgody użytkownika na śledzenie aktywności między aplikacjami. Odsetek odmów: niezależni dostawcy danych podawali wartości w przedziale ok. 60–85% w zależności od rynku i metodologii pomiaru; Meta nigdy nie opublikowała własnej liczby, więc każda pojedyncza wartość cytowana jako precyzyjna jest nadinterpretacją.</p>
+<table>
+<thead>
+<tr>
+<th>Zdarzenie</th>
+<th>Wartość</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Szacowana utrata przychodów w 2022 r. (deklaracja CFO Dave'a Wehnera, luty 2022)</td>
+<td>ok. 10 mld USD</td>
+</tr>
+<tr>
+<td>Spadek kursu w sesji 3 lutego 2022 r.</td>
+<td>−26,4%</td>
+</tr>
+<tr>
+<td>Ubytek kapitalizacji w jeden dzień</td>
+<td>ponad 230 mld USD (wówczas rekord Wall Street, później pobity)</td>
+</tr>
+<tr>
+<td>Przecena szczyt–dołek (IX 2021 → XI 2022)</td>
+<td>ok. 382 → ok. 88 USD, tj. ponad −76%</td>
+</tr>
+</tbody>
+</table>
+<p>Wniosek strategiczny brzmiał: model biznesowy jest zależny od decyzji podmiotu kontrolującego warstwę pośredniczącą między użytkownikiem a aplikacją. Obecna strategia odpowiada na to ryzyko dwutorowo. Pierwszy tor to zastąpienie utraconego sygnału mocą obliczeniową, czyli modelami rankingowymi i narzędziami Advantage+, które rekonstruują precyzję targetowania z uboższych danych wejściowych. Drugi to utowarowienie warstwy AI poprzez otwarte modele, tak aby nie stała się ona kolejnym punktem kontroli analogicznym do systemów operacyjnych smartfonów.</p>
+<h3>2.5 Trajektoria nakładów</h3>
+<table>
+<thead>
+<tr>
+<th>Okres</th>
+<th>CapEx wraz z płatnościami kapitałowymi leasingu finansowego</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2024</td>
+<td>39,23 mld USD</td>
+</tr>
+<tr>
+<td>2025</td>
+<td>72,22 mld USD</td>
+</tr>
+<tr>
+<td>2026 — prognoza ze stycznia 2026</td>
+<td>115–135 mld USD</td>
+</tr>
+<tr>
+<td>2026 — prognoza z kwietnia 2026</td>
+<td>125–145 mld USD</td>
+</tr>
+<tr>
+<td><strong>2026 — prognoza z lipca 2026 (aktualna)</strong></td>
+<td><strong>130–145 mld USD</strong></td>
+</tr>
+<tr>
+<td>I kw. 2026 (wykonanie)</td>
+<td>19,84 mld USD</td>
+</tr>
+<tr>
+<td>II kw. 2026 (wykonanie)</td>
+<td>31,08 mld USD</td>
+</tr>
+</tbody>
+</table>
+<p>Prognozę podnoszono dwukrotnie w ciągu sześciu miesięcy. Zobowiązania na infrastrukturę AI w kolejnych latach wynosiły na koniec I kw. 2026 r. ok. 182,9 mld USD.</p>
+<p>Pozostałe elementy prognozy zarządu na 2026 r.: przychody III kw. w przedziale 61–64 mld USD, koszty całoroczne 165–169 mld USD, zysk operacyjny powyżej poziomu z 2025 r., efektywna stopa podatkowa 13–16%.</p>
+<hr />
+<h2 id="3-opcja-na-zewnętrzną-monetyzację-mocy-obliczeniowej">3. Opcja na zewnętrzną monetyzację mocy obliczeniowej</h2>
+<p>Element, którego rynek w mojej ocenie nie wycenia w pełni, a który adresuje wprost zarzut o braku chmury.</p>
+<p><strong>Chronologia.</strong> 27 maja 2026 r. na walnym zgromadzeniu Zuckerberg stwierdził, że wejście na rynek chmury jest „zdecydowanie na stole", dodając, że firmy zgłaszają się po dostęp do modeli lub wolnej mocy obliczeniowej praktycznie co tydzień. 1 lipca Bloomberg ujawnił inicjatywę <strong>Meta Compute</strong>, kierowaną przez Santosha Janardhana (infrastruktura), Daniela Grossa (Meta Superintelligence Labs) i Dinę Powell McCormick (prezes). Rozważane są dwa modele: sprzedaż dostępu do modeli hostowanych na własnej infrastrukturze, analogicznie do AWS Bedrock, z modelem Muse Spark o zamkniętych wagach, albo sprzedaż surowej mocy obliczeniowej w modelu neocloudów typu CoreWeave. Kurs Mety wzrósł tego dnia o ok. 9%. Na telekonferencji 29 lipca Zuckerberg doprecyzował, że spółka wykorzystuje obecnie całą dostępną moc i widzi znaczny popyt wewnętrzny, dodając, że „byłoby nierozsądne sprzedać całą moc obliczeniową i wziąć krótkoterminowy zysk".</p>
+<p><strong>Dlaczego to ma znaczenie analityczne.</strong> Reakcja +9% na samą informację o rozważaniu tego kierunku jest obserwowalnym dowodem, że dyskonto opisane w sekcji 1.1 istnieje i jest odwracalne. Rynek nie wycenił wtedy żadnych nowych przychodów — wycenił opcję na ich powstanie.</p>
+<p><strong>Punkt odniesienia dla wyceny tej opcji.</strong> Rynek najmu mocy obliczeniowej ma już obserwowalne ceny. xAI wynajmuje Anthropic cały kampus Colossus 1 w Memphis, ok. 300 MW i ponad 200 tys. układów Nvidii, za ok. 1,25 mld USD miesięcznie, czyli ok. 15 mld USD rocznie z jednego obiektu. Meta buduje między innymi kampus Hyperion w Luizjanie oraz kampus w Ohio o powierzchni porównywalnej z Manhattanem.</p>
+<p><strong>Konsekwencja dla scenariusza negatywnego.</strong> Standardowy zarzut brzmi: jeżeli Meta przeinwestuje, aktywa pozostaną nieużyte i trzeba je będzie odpisać. Istnienie płynnego rynku najmu zmienia ten scenariusz. Nadmiarowa moc nie jest aktywem bezużytecznym, lecz aktywem możliwym do wynajęcia po obserwowalnej cenie. To odróżnia obecny cykl od Reality Labs, gdzie nakłady na rozwój produktu bez rynku nie miały wartości odzyskowej.</p>
+<p><strong>Zastrzeżenia.</strong> Zuckerberg wprost stwierdził, że Meta nie ma obecnie nadwyżki mocy — opcja ma charakter warunkowy. Chmura korporacyjna to biznes usługowy z umowami SLA, zespołami inżynierii sprzedaży i cyklami zakupowymi, których Meta nigdy nie prowadziła. Spółka nie raportuje przychodów z Meta AI ani z Llamy, brakuje więc publicznego dowodu na popyt zewnętrzny na jej modele. Wreszcie uruchomienie takiego segmentu obniżyłoby marżę mieszaną: chmura pracuje na marżach rzędu 35–37%, podczas gdy Family of Apps utrzymuje ok. 39%.</p>
+<hr />
+<h2 id="4-elastyczność-finansowa">4. Elastyczność finansowa</h2>
+<p>Scenariusz negatywny zakłada implicite, że Meta jest uwięziona w cyklu inwestycyjnym. Dane bilansowe tego nie potwierdzają.</p>
+<table>
+<thead>
+<tr>
+<th>Pozycja</th>
+<th>Wartość</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Przepływy operacyjne (2025)</td>
+<td>115,80 mld USD</td>
+</tr>
+<tr>
+<td>Przepływy operacyjne (TTM do VI 2026)</td>
+<td>130,30 mld USD</td>
+</tr>
+<tr>
+<td>Gotówka i papiery zbywalne (30.06.2026)</td>
+<td>90,26 mld USD</td>
+</tr>
+<tr>
+<td>Zadłużenie długoterminowe (31.12.2025)</td>
+<td>58,74 mld USD</td>
+</tr>
+<tr>
+<td>Zadłużenie długoterminowe (30.06.2026)</td>
+<td>83,66 mld USD</td>
+</tr>
+<tr>
+<td>Zysk operacyjny Family of Apps (II kw. 2026)</td>
+<td>23,39 mld USD przy marży ok. 39%</td>
+</tr>
+</tbody>
+</table>
+<p>CapEx jest w znacznej części nakładem uznaniowym, rozłożonym na kontrakty i etapy budowy, a nie zobowiązaniem sztywnym. Przy przepływach operacyjnych rzędu 130 mld USD rocznie ograniczenie nakładów do poziomu odtworzeniowego przywróciłoby wysokie dodatnie przepływy w ciągu jednego lub dwóch kwartałów. Rdzeń biznesu wygenerował w II kw. 2026 r. 23,39 mld USD zysku operacyjnego i to on finansuje całą konstrukcję.</p>
+<p>Spółka wykazała też zdolność do szybkiej redukcji kosztów. Zwolnienie ok. 8 000 osób w maju 2026 r. Zuckerberg uzasadnił wprost budżetem infrastrukturalnym, a zatrudnienie spadło z 78 865 w grudniu 2025 r. do 75 472 w czerwcu 2026 r. Meta korzysta również z finansowania pozabilansowego — w lipcu 2026 r. ogłoszono wspólne przedsięwzięcie z BlackRock dotyczące kampusu centrów danych w El Paso o wartości ponad 10 mld USD.</p>
+<p>Ograniczenie tego argumentu trzeba jednak wskazać. Wstrzymanie nakładów jest wykonalne bilansowo, ale kosztowne strategicznie. Moc obliczeniowa pozostaje zasobem limitowanym, a rezygnacja z zakontraktowanych mocy oznacza utratę miejsca w kolejce u dostawców i potencjalnie trwałą utratę pozycji konkurencyjnej. Teza „mogą przestać w dowolnym momencie" jest prawdziwa w wymiarze finansowym i uproszczona w wymiarze strategicznym.</p>
+<hr />
+<h2 id="5-wycena">5. Wycena</h2>
+<h3>5.1 Mnożniki bieżące i porównanie do historii</h3>
+<table>
+<thead>
+<tr>
+<th>Wskaźnik</th>
+<th>Meta</th>
+<th>Odniesienie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P/E (TTM, EPS 26,90 USD)</td>
+<td>ok. 20x</td>
+<td>mediana 10-letnia 27,96x</td>
+</tr>
+<tr>
+<td>P/E (forward)</td>
+<td>ok. 18x</td>
+<td>średnia 5-letnia 23,2x; 3-letnia 25,02x</td>
+</tr>
+<tr>
+<td>PEG</td>
+<td>0,89</td>
+<td>—</td>
+</tr>
+<tr>
+<td>EV/EBITDA</td>
+<td>13,9x</td>
+<td>—</td>
+</tr>
+<tr>
+<td>EV/FCF</td>
+<td>37,2x</td>
+<td>—</td>
+</tr>
+<tr>
+<td>ROIC</td>
+<td>25,4%</td>
+<td>próg mojego procesu: powyżej 15% — spełniony</td>
+</tr>
+<tr>
+<td>ROE</td>
+<td>29,9%</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Stopa dywidendy</td>
+<td>0,38% (2,10 USD rocznie)</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Meta jest wyceniana ok. 28% poniżej własnej mediany dziesięcioletniej i ok. 22% poniżej średniej pięcioletniej, przy dynamice przychodów wyższej niż w którymkolwiek z tych okresów.</p>
+<h3>5.2 Rentowność wobec stopy wolnej od ryzyka</h3>
+<p>Element mojego procesu, który w tym przypadku daje wynik niekorzystny i wymaga podania wprost.</p>
+<table>
+<thead>
+<tr>
+<th>Miara</th>
+<th>Wartość</th>
+<th>Porównanie z 10-letnimi obligacjami USA (4,70%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rentowność zysku (EPS 26,90 / cena 548)</td>
+<td>4,91%</td>
+<td>powyżej o 21 pb</td>
+</tr>
+<tr>
+<td>Rentowność FCF raportowanego (40,98 mld / 1,40 bln)</td>
+<td>2,93%</td>
+<td>poniżej o 177 pb</td>
+</tr>
+<tr>
+<td>Rentowność FCF realnego (ok. 17 mld / 1,40 bln)</td>
+<td>1,21%</td>
+<td>poniżej o 349 pb</td>
+</tr>
+</tbody>
+</table>
+<p>Odczyt jest jednoznaczny: obecna wycena broni się na poziomie zysku księgowego, ale nie na poziomie gotówki. Przy rentowności dziesięciolatek na poziomie 4,70%, najwyższym od dwudziestu miesięcy, teza opiera się na założeniu, że obecna zapaść FCF jest zjawiskiem cyklicznym, a nie strukturalnym. Jest to najsłabszy punkt całej rekomendacji od strony ilościowej.</p>
+<h3>5.3 Uzasadnienie ceny docelowej 720 USD</h3>
+<p>Cena docelowa implikuje 26,8x zysk TTM (26,90 USD na akcję) oraz ok. 24x zysk forward. Oba poziomy pozostają poniżej mediany dziesięcioletniej.</p>
+<table>
+<thead>
+<tr>
+<th>Zastosowany mnożnik</th>
+<th>EPS wymagany dla 720 USD</th>
+<th>Zmiana wobec EPS TTM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>22x</td>
+<td>32,73 USD</td>
+<td>+21,7%</td>
+</tr>
+<tr>
+<td>25x</td>
+<td>28,80 USD</td>
+<td>+7,1%</td>
+</tr>
+<tr>
+<td>26,8x (implikowany)</td>
+<td>26,90 USD</td>
+<td>bez zmian</td>
+</tr>
+<tr>
+<td>28x (mediana 10-letnia)</td>
+<td>25,71 USD</td>
+<td>−4,4%</td>
+</tr>
+</tbody>
+</table>
+<p>Aby uzasadnić 720 USD, nie trzeba zakładać ponadprzeciętnego wzrostu zysku ani ekspansji mnożnika ponad historyczną normę. Wystarczy powrót mnożnika do dziesięcioletniej mediany przy zysku na obecnym poziomie. Ujęcie odwrotne: utrzymanie obecnego mnożnika 20x wymagałoby EPS rzędu 36 USD, co przy dynamice przychodów 28% nie jest scenariuszem skrajnym w horyzoncie dwuletnim, o ile spółka opanuje dynamikę kosztów.</p>
+<p>Cena docelowa 720 USD leży poniżej mediany sell-side wynoszącej ok. 750 USD. Niniejsza notatka nie jest zatem kontrariańska wobec analityków — jest od nich ostrożniejsza, a kontrariańska wobec bieżącej wyceny rynkowej.</p>
+<h3>5.4 Przepływy pieniężne</h3>
+<table>
+<thead>
+<tr>
+<th>Okres</th>
+<th>OCF</th>
+<th>CapEx</th>
+<th>FCF raportowany</th>
+<th>SBC</th>
+<th>FCF realny (OCF − CapEx − SBC)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2024</td>
+<td>brak w komunikacie rocznym</td>
+<td>39,23 mld</td>
+<td>52,10 mld</td>
+<td>16,69 mld</td>
+<td>ok. 35 mld</td>
+</tr>
+<tr>
+<td>2025</td>
+<td>115,80 mld</td>
+<td>72,22 mld</td>
+<td>43,59 mld</td>
+<td>20,43 mld</td>
+<td><strong>23,16 mld</strong></td>
+</tr>
+<tr>
+<td>I kw. 2026</td>
+<td>brak w komunikacie</td>
+<td>19,84 mld</td>
+<td>ok. 12,4 mld</td>
+<td>6,03 mld</td>
+<td>ok. 6,4 mld</td>
+</tr>
+<tr>
+<td>II kw. 2026</td>
+<td>31,90 mld</td>
+<td>31,08 mld</td>
+<td><strong>0,78 mld (−91% r/r)</strong></td>
+<td>ok. 6,3 mld</td>
+<td><strong>ok. −5,5 mld</strong></td>
+</tr>
+<tr>
+<td>TTM (do VI 2026)</td>
+<td>130,30 mld</td>
+<td>89,33 mld</td>
+<td>40,98 mld</td>
+<td>ok. 24 mld</td>
+<td><strong>ok. 17 mld</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Projekcja na 2026 r. przy prognozie CapEx 130–145 mld USD (środek przedziału 137,5 mld) i przepływach operacyjnych rzędu 145–155 mld USD:</p>
+<ul>
+<li>FCF raportowany: od ok. −7 mld do +25 mld USD, czyli w okolicach zera lub ujemny.</li>
+<li>FCF realny po odjęciu wynagrodzeń w akcjach rzędu 26 mld USD: od ok. −33 mld do −1 mld USD, czyli ujemny w każdym rozsądnym scenariuszu.</li>
+</ul>
+<p>Osobnej uwagi wymaga wynagrodzenie w akcjach. Koszt wykazany w rachunku wyników za 2025 r. wyniósł 20,43 mld USD i jest to wartość z dnia przyznania. Rzeczywisty koszt gotówkowy skupu akcji neutralizującego rozwodnienie wyniósł natomiast ok. 44,6 mld USD — różnica wynika ze wzrostu kursu między przyznaniem a nabyciem uprawnień. Ta druga wielkość skonsumowała ok. 96% raportowanego FCF za 2025 r. Jest to realny argument strony przeciwnej i nie należy go pomijać.</p>
+<p>Pozycja bilansowa pozostaje mimo to mocna: 90,26 mld USD gotówki i papierów zbywalnych wobec 83,66 mld USD zadłużenia długoterminowego.</p>
+<h3>5.5 Amortyzacja jako mechanizm transmisji CapEx na zysk</h3>
+<p>Najbardziej niedoceniana pozycja w całej analizie. Nakłady inwestycyjne nie obciążają zysku w momencie poniesienia — obciążają go przez kolejne lata w postaci amortyzacji.</p>
+<p>Historia polityki amortyzacyjnej Mety dla serwerów i sprzętu sieciowego: ok. 3 lata w 2020 r., następnie kolejno 4 lata, 4,5 roku, 5 lat, a od stycznia 2025 r. — 5,5 roku. Ostatnie wydłużenie obniżyło amortyzację za 2025 r. o ok. 2,9 mld USD, co odpowiadało blisko 4% szacowanego zysku przed opodatkowaniem.</p>
+<p>Kontekst branżowy jest tu istotny. Alphabet stosuje sześć lat. Amazon natomiast w lutym 2025 r. <strong>skrócił</strong> okres z sześciu do pięciu lat, powołując się na przyspieszone tempo rozwoju technologii AI. Dwie spółki kupujące ten sam sprzęt od tego samego dostawcy wyciągnęły przeciwne wnioski w tym samym miesiącu. Sam ten fakt jest argumentem za tym, że dłuższe harmonogramy są agresywne.</p>
+<h4 class="sub">Struktura środków trwałych według noty „Property and equipment"</h4>
+<p>Rozbicie nakładów na kategorie o różnych okresach użytkowania jest warunkiem wiarygodnego oszacowania obciążenia amortyzacyjnego. Stan na 31 grudnia 2025 r. (wartości brutto):</p>
+<table>
+<thead>
+<tr>
+<th>Kategoria</th>
+<th>Wartość brutto</th>
+<th>Udział w bazie amortyzowanej w użyciu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Serwery i sprzęt sieciowy</td>
+<td>98 040 mln USD</td>
+<td><strong>54,6%</strong></td>
+</tr>
+<tr>
+<td>Budynki</td>
+<td>55 568 mln USD</td>
+<td>31,0%</td>
+</tr>
+<tr>
+<td>Sprzęt i pozostałe</td>
+<td>9 377 mln USD</td>
+<td>5,2%</td>
+</tr>
+<tr>
+<td>Ulepszenia w obcych środkach trwałych</td>
+<td>8 346 mln USD</td>
+<td>4,6%</td>
+</tr>
+<tr>
+<td>Aktywa z tytułu leasingu finansowego</td>
+<td>8 187 mln USD</td>
+<td>4,6%</td>
+</tr>
+<tr>
+<td>Środki trwałe w budowie</td>
+<td>50 521 mln USD</td>
+<td>nie podlegają amortyzacji do oddania</td>
+</tr>
+<tr>
+<td>Grunty</td>
+<td>3 687 mln USD</td>
+<td>nie podlegają amortyzacji</td>
+</tr>
+<tr>
+<td><strong>Środki trwałe brutto razem</strong></td>
+<td><strong>233 726 mln USD</strong></td>
+<td>—</td>
+</tr>
+<tr>
+<td>Umorzenie</td>
+<td>−57 326 mln USD</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Środki trwałe netto</strong></td>
+<td><strong>176 400 mln USD</strong></td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Baza amortyzowana pozostająca w użyciu wynosi 179 518 mln USD po wyłączeniu gruntów i środków w budowie. Serwery i sprzęt sieciowy stanowią w niej ok. 55%, budynki ok. 31%.</p>
+<p>Dwie obserwacje poboczne. Po pierwsze, środki trwałe w budowie osiągnęły 50 521 mln USD wobec 24 269 mln USD w 2023 r. — jest to skala budowy centrów danych, która nie obciąża jeszcze wyniku, ale zacznie go obciążać po oddaniu obiektów. Po drugie, amortyzacja za 2025 r. wyniosła 18,0 mld USD wobec ok. 15,3 mld USD w 2024 r.</p>
+<h4 class="sub">Obciążenie wynikające z rocznika 2026</h4>
+<p>Przyjmuję środek prognozowanego przedziału nakładów, tj. 137,5 mld USD, oraz okresy użytkowania: 5,5 roku dla serwerów, 20 lat dla budynków i konstrukcji, 7 lat dla pozostałych kategorii. Udział serwerów w roczniku 2026 podaję jako przedział, ponieważ struktura bieżących nakładów nie jest raportowana odrębnie, a cykl AI jest bardziej sprzętochłonny niż historyczna struktura bilansu.</p>
+<table>
+<thead>
+<tr>
+<th>Zakładany udział serwerów w nakładach</th>
+<th>Serwery (5,5 roku)</th>
+<th>Budynki (20 lat)</th>
+<th>Pozostałe (7 lat)</th>
+<th>Roczna amortyzacja z rocznika 2026</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>50%</td>
+<td>12,5 mld USD</td>
+<td>3,1 mld USD</td>
+<td>1,0 mld USD</td>
+<td><strong>16,6 mld USD</strong></td>
+</tr>
+<tr>
+<td>60% (założenie bazowe)</td>
+<td>15,0 mld USD</td>
+<td>2,4 mld USD</td>
+<td>1,0 mld USD</td>
+<td><strong>18,4 mld USD</strong></td>
+</tr>
+<tr>
+<td>70%</td>
+<td>17,5 mld USD</td>
+<td>1,7 mld USD</td>
+<td>1,0 mld USD</td>
+<td><strong>20,2 mld USD</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Dla porównania: przypisanie całości nakładów do harmonogramu serwerowego dawało 25,0 mld USD rocznie. Uwzględnienie struktury rzeczowej obniża to oszacowanie o 19–34% w zależności od przyjętego udziału. Wcześniejsza wersja tej sekcji operowała wyłącznie górnym oszacowaniem.</p>
+<p>Rocznik 2025 o wartości 72,2 mld USD daje przy tej samej metodzie ok. 9,7 mld USD rocznie w scenariuszu bazowym. Oba roczniki dodają zatem w stanie ustalonym ok. 28 mld USD rocznej amortyzacji, wobec 18,0 mld USD całkowitej amortyzacji spółki w 2025 r. Skala transmisji pozostaje istotna również po korekcie.</p>
+<h4 class="sub">Wrażliwość na okres użytkowania serwerów</h4>
+<p>Spór o harmonogramy dotyczy wyłącznie części sprzętowej, więc wrażliwość należy liczyć na niej, a nie na całości nakładów.</p>
+<table>
+<thead>
+<tr>
+<th>Udział serwerów</th>
+<th>Różnica 5,5 roku vs 4 lata</th>
+<th>Na akcję (przed opodatkowaniem)</th>
+<th>Po opodatkowaniu 14%</th>
+<th>Udział w EPS TTM (26,90 USD)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>50%</td>
+<td>4,69 mld USD</td>
+<td>1,84 USD</td>
+<td>1,58 USD</td>
+<td>5,9%</td>
+</tr>
+<tr>
+<td>60%</td>
+<td>5,62 mld USD</td>
+<td>2,21 USD</td>
+<td>1,90 USD</td>
+<td><strong>7,1%</strong></td>
+</tr>
+<tr>
+<td>70%</td>
+<td>6,56 mld USD</td>
+<td>2,57 USD</td>
+<td>2,21 USD</td>
+<td>8,2%</td>
+</tr>
+</tbody>
+</table>
+<p>W scenariuszu bazowym skrócenie okresu użytkowania serwerów z 5,5 roku do 4 lat obniżyłoby zysk na akcję o ok. 1,90 USD, czyli ok. 7% EPS TTM. Jest to korekta istotna, ale nie rozstrzygająca dla tezy — inaczej niż sugerowałoby wcześniejsze oszacowanie na poziomie 12%, oparte na przypisaniu całości nakładów do harmonogramu serwerowego.</p>
+<p>Zastrzeżenia metodyczne. Udział serwerów w roczniku 2026 jest założeniem autora, nie danymi spółki — Meta nie publikuje struktury bieżących nakładów. Okres 20 lat dla budynków przyjęto szacunkowo. Amortyzacja rocznika liczona jest metodą liniową od pełnej wartości, podczas gdy w rzeczywistości aktywa wchodzą do użytkowania stopniowo w ciągu roku, co przesuwa część obciążenia na rok kolejny. Wartości bilansowe pochodzą z noty „Property and equipment" w sprawozdaniu rocznym za 2025 r.</p>
+<h3>5.6 Scenariusze</h3>
+<table>
+<thead>
+<tr>
+<th>Scenariusz</th>
+<th>Założenia</th>
+<th>EPS</th>
+<th>Mnożnik</th>
+<th>Cena docelowa</th>
+<th>Prawdopodobieństwo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Optymistyczny</td>
+<td>dynamika przychodów utrzymana powyżej 25%, cena za reklamę powyżej 10%, uruchomienie Meta Compute, ugoda prawna poniżej 20 mld USD</td>
+<td>33 USD</td>
+<td>26x</td>
+<td>858 USD</td>
+<td>25%</td>
+</tr>
+<tr>
+<td>Bazowy</td>
+<td>dynamika przychodów 20–25%, marża stabilizuje się w okolicach 32–35%, sankcja prawna w przedziale 20–50 mld USD rozłożona w czasie</td>
+<td>28 USD</td>
+<td>25,7x</td>
+<td><strong>720 USD</strong></td>
+<td>45%</td>
+</tr>
+<tr>
+<td>Pesymistyczny</td>
+<td>sankcja rzędu 150–200 mld USD lub nakaz usunięcia modeli, kompresja mnożnika przy wzroście stopy wolnej od ryzyka</td>
+<td>22 USD</td>
+<td>15x</td>
+<td>330 USD</td>
+<td>30%</td>
+</tr>
+</tbody>
+</table>
+<p>Wartość oczekiwana przy powyższych wagach: ok. 638 USD. Fakt, że jest ona niższa od ceny docelowej, wynika ze skrajnej asymetrii scenariusza pesymistycznego i jest świadomą właściwością tej rekomendacji, a nie niespójnością. Cena docelowa opisuje scenariusz bazowy; wartość oczekiwana uwzględnia ogon rozkładu. Inwestor o niskiej tolerancji na ryzyko binarne powinien opierać się na drugiej liczbie.</p>
+<h3>5.7 Grupa porównawcza</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Meta</th>
+<th>Alphabet</th>
+<th>Amazon</th>
+<th>Microsoft</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P/E (TTM)</td>
+<td>ok. 20x</td>
+<td>brak danych na wspólną datę</td>
+<td>brak danych na wspólną datę</td>
+<td>brak danych na wspólną datę</td>
+</tr>
+<tr>
+<td>P/E (forward)</td>
+<td>ok. 18x</td>
+<td>brak danych na wspólną datę</td>
+<td>brak danych na wspólną datę</td>
+<td>brak danych na wspólną datę</td>
+</tr>
+<tr>
+<td>Dynamika chmury (II kw. 2026)</td>
+<td>brak segmentu</td>
+<td>+82%</td>
+<td>+37%</td>
+<td>+43%</td>
+</tr>
+<tr>
+<td>CapEx 2026 (prognoza)</td>
+<td>130–145 mld USD</td>
+<td>195–205 mld USD</td>
+<td>brak danych</td>
+<td>brak danych</td>
+</tr>
+<tr>
+<td>Status FCF</td>
+<td>dodatni, ale zapaść w II kw.</td>
+<td>ujemny w II kw. 2026 — pierwszy raz w historii spółki</td>
+<td>brak danych</td>
+<td>brak danych</td>
+</tr>
+<tr>
+<td>Zachowanie kursu YTD 2026</td>
+<td>poniżej S&amp;P 500</td>
+<td>poniżej S&amp;P 500</td>
+<td>powyżej S&amp;P 500</td>
+<td>poniżej S&amp;P 500</td>
+</tr>
+</tbody>
+</table>
+<p>Mnożniki dla spółek porównywalnych wymagają pobrania na jedną wspólną datę i celowo nie zostały uzupełnione wartościami z różnych dni — zestawienie mnożników odczytanych w odstępie kilku tygodni w okresie tak wysokiej zmienności byłoby mylące. Warto natomiast odnotować, że w II kw. 2026 r. wolne przepływy pieniężne Alphabetu były ujemne po raz pierwszy w historii spółki, przy prognozie nakładów podniesionej do 195–205 mld USD. Presja na przepływy nie jest zatem specyfiką Mety, lecz cechą całej grupy w tej fazie cyklu.</p>
+<hr />
+<h2 id="6-ryzyka">6. Ryzyka</h2>
+<h3>6.1 Ryzyko prawne</h3>
+<p>Sytuacja zmieniła się jakościowo w ciągu ostatnich pięciu miesięcy i przestała być zagadnieniem wyłącznie kosztowym.</p>
+<p><strong>Nowy Meksyk — pierwsza instancja zakończona.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Data</th>
+<th>Rozstrzygnięcie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>24 marca 2026</td>
+<td>Wyrok ławy przysięgłych po sześciotygodniowym procesie: 375 mln USD kar cywilnych</td>
+</tr>
+<tr>
+<td>6 sierpnia 2026</td>
+<td>Dodatkowe 567 mln USD na usunięcie skutków szkód</td>
+</tr>
+<tr>
+<td>Łącznie</td>
+<td><strong>942 mln USD</strong>; Meta zapowiedziała apelację, termin rozprawy odwoławczej nie został podany do wiadomości publicznej</td>
+</tr>
+</tbody>
+</table>
+<p>Był to pierwszy przypadek skutecznego pozwu stanowego przeciwko Mecie w sprawie bezpieczeństwa małoletnich.</p>
+<p><strong>Postępowanie federalne w Oakland — w toku.</strong> Pozew 29 prokuratorów generalnych stanów złożony w 2023 r., Sąd Federalny dla Północnego Dystryktu Kalifornii, sędzia Yvonne Gonzalez Rogers. Mowy otwierające wygłoszono 18 sierpnia 2026 r. Sprawę prowadzą Kalifornia, Kolorado, Kentucky i New Jersey; pozostałych 25 stanów czeka na późniejszy termin. Odrębne postępowanie federalne z udziałem okręgów szkolnych spodziewane jest w Kalifornii Północnej w przyszłym roku.</p>
+<p>Kluczowa cecha proceduralna: ława przysięgłych pełni wyłącznie funkcję doradczą, a o odpowiedzialności i wysokości sankcji rozstrzyga sąd. To istotnie zmienia profil ryzyka względem sprawy nowomeksykańskiej.</p>
+<table>
+<thead>
+<tr>
+<th>Wielkość roszczenia</th>
+<th>Wartość</th>
+<th>Udział w kapitalizacji</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Maksimum teoretyczne wskazane przez Metę w dokumentach procesowych</td>
+<td>1,4 bln USD</td>
+<td>ok. 100%</td>
+</tr>
+<tr>
+<td>Kwota wskazana przez pełnomocników stanów jako bardziej prawdopodobna</td>
+<td>200 mld USD</td>
+<td>ok. 14%</td>
+</tr>
+<tr>
+<td>Kwota podana na rozprawie przez pełnomocniczkę Kalifornii</td>
+<td>ok. 193 mld USD</td>
+<td>ok. 14%</td>
+</tr>
+<tr>
+<td>Punkt odniesienia: ugoda tytoniowa z 1998 r.</td>
+<td>ok. 206 mld USD</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Meta określiła żądania jako nieproporcjonalne. Prokurator generalny Nowego Meksyku Raúl Torrez wskazał publicznie, że jego zdaniem rynek nie wycenia tego ryzyka prawidłowo.</p>
+<p>Dla tezy inwestycyjnej krytyczny jest element niepieniężny. Stany domagają się usunięcia danych osobowych zebranych od użytkowników poniżej trzynastego roku życia oraz algorytmów i modeli wytrenowanych na tych danych. Wniosek uderza bezpośrednio w aktywo, którego budowę uzasadniają nakłady opisane w sekcjach 1–3. Jest to jedyne znane mi ryzyko zdolne unieważnić całą tezę niezależnie od wyników operacyjnych.</p>
+<p>CFO Susan Li przy publikacji wyników za II kw. 2026 r. wskazała, że toczące się postępowania dotyczące małoletnich mogą skutkować istotną stratą. W samym II kw. zawiązano z tego tytułu 2,4 mld USD rezerw.</p>
+<p>Argument łagodzący, który uważam za uzasadniony, ale niewystarczający: sądy zasądzają zwykle kwoty wielokrotnie niższe od żądanych przez powodów, a maksimum 1,4 bln USD ma charakter negocjacyjny. Nie zmienia to jednak faktu, że rozkład możliwych wyników jest tu wyjątkowo szeroki i nie da się go rzetelnie sprowadzić do jednej wartości oczekiwanej.</p>
+<h3>6.2 Ryzyko alokacji kapitału</h3>
+<p>Reality Labs zgromadził od końca 2020 r. ponad 80 mld USD skumulowanej straty operacyjnej przy ok. 11,8 mld USD skumulowanych przychodów. Strata za 2025 r. wyniosła 19,2 mld USD przy 2,2 mld USD przychodów. Zuckerberg zapowiedział, że 2026 r. powinien być szczytem strat segmentu, a inwestycje kierowane są obecnie głównie na okulary i urządzenia noszone.</p>
+<p>Argument strony przeciwnej: spółka, która zaalokowała ponad 80 mld USD w projekt bez zwrotu, przy strukturze właścicielskiej uniemożliwiającej korektę ze strony akcjonariuszy, alokuje obecnie 130–145 mld USD rocznie w przedsięwzięcie, którego zwrot jest z zewnątrz nieweryfikowalny.</p>
+<p>Kontrargumenty przedstawione w sekcjach 1.4, 3 i 4 odpowiadają na ten zarzut, ale go nie rozstrzygają. Nie da się oddzielić, jaka część przyspieszenia dynamiki wynika z nakładów na AI, a jaka z ogólnej koniunktury na rynku reklamy cyfrowej.</p>
+<h3>6.3 Ryzyko kompresji marży</h3>
+<p>Koszty rosną szybciej niż przychody: +55% wobec +28% w II kw. 2026 r., przy wzroście kosztów badań i rozwoju o 67%. Marża operacyjna spadła z 43% do 31% rok do roku. Przy prognozie kosztów całorocznych 165–169 mld USD i przychodach rzędu 235–240 mld USD marża roczna za 2026 r. wypada w okolicach 29–30% wobec 41% w 2025 r. Jeżeli dynamika przychodów spowolni przy utrzymanej dynamice kosztów, dźwignia operacyjna zadziała w drugą stronę.</p>
+<h3>6.4 Ryzyko konkurencyjne</h3>
+<p>Sekcja o fosie opisuje przewagi trwałe, ale nie zwalnia z opisania zagrożeń.</p>
+<p>TikTok pozostaje głównym konkurentem w walce o czas użytkownika. Wprowadzenie Reels ograniczyło erozję udziałów Mety, lecz nie odwróciło pozycji TikToka w formacie krótkiego wideo. YouTube konkuruje jednocześnie o czas i o budżety reklamowe, dysponując przy tym zapleczem infrastrukturalnym Alphabetu.</p>
+<p>Osobnym zagrożeniem jest zmiana sposobu wyszukiwania informacji przez młodszych użytkowników — przenoszenie zapytań do aplikacji społecznościowych i asystentów AI zamiast wyszukiwarek. Meta może na tym skorzystać jako właściciel powierzchni, ale może też stracić, jeżeli punkt wejścia przesunie się do asystentów kontrolowanych przez innych dostawców. Jest to wariant ryzyka platformowego opisanego w sekcji 6.5, przeniesiony o jedną warstwę wyżej.</p>
+<p>Postępowanie federalne opisane w sekcji 6.1 może to ryzyko zaostrzyć, jeżeli nałoży na Metę ograniczenia projektowe dotyczące małoletnich, których konkurenci spoza jurysdykcji nie będą musieli stosować.</p>
+<h3>6.5 Ryzyko platformowe i koncentracji przychodowej</h3>
+<p>Ok. 98% przychodów Mety pochodzi z reklamy internetowej. Dostęp do użytkownika pozostaje zależny od systemów operacyjnych kontrolowanych przez Apple i Alphabet. Epizod ATT pokazał, że pojedyncza zmiana polityki podmiotu trzeciego usuwa z wyniku ok. 10 mld USD rocznie.</p>
+<h3>6.6 Ryzyko ładu korporacyjnego</h3>
+<p>Kontrola ok. 61% głosów przy ok. 13,5% udziału w kapitale oznacza brak realnego nadzoru właścicielskiego. Element pokrewny: w marcu 2026 r. Meta przyznała kadrze kierowniczej opcje na akcje o wartości do 921 mln USD, ogłaszając tego samego dnia zwolnienie 700 pracowników.</p>
+<hr />
+<h2 id="7-katalizatory">7. Katalizatory</h2>
+<table>
+<thead>
+<tr>
+<th>Katalizator</th>
+<th>Termin</th>
+<th>Kierunek</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Przebieg i rozstrzygnięcie procesu federalnego w Oakland</td>
+<td>proces od 18.08.2026</td>
+<td>dwustronny, o najwyższej wadze</td>
+</tr>
+<tr>
+<td>Rozstrzygnięcie apelacji w sprawie nowomeksykańskiej</td>
+<td>termin niepodany</td>
+<td>dwustronny</td>
+</tr>
+<tr>
+<td>Wyniki za III kw. 2026 r. i weryfikacja prognozy 61–64 mld USD</td>
+<td>koniec października 2026 (spółka raportowała 25.10.2023, 30.10.2024 i 29.10.2025)</td>
+<td>dwustronny</td>
+</tr>
+<tr>
+<td>Utrzymanie dynamiki ceny za reklamę na poziomie co najmniej 10%</td>
+<td>dane kwartalne</td>
+<td>potwierdzenie tezy głównej</td>
+</tr>
+<tr>
+<td>Formalne uruchomienie i pierwsze kontrakty Meta Compute</td>
+<td>brak ogłoszonej daty</td>
+<td>pozytywny, potencjalnie istotny</td>
+</tr>
+<tr>
+<td>Prognoza nakładów i kosztów na 2027 r.</td>
+<td>styczeń 2027</td>
+<td>dwustronny</td>
+</tr>
+<tr>
+<td>Ograniczenie strat Reality Labs po deklarowanym szczycie</td>
+<td>wyniki za IV kw. 2026</td>
+<td>pozytywny</td>
+</tr>
+<tr>
+<td>Zmiana okresu amortyzacji sprzętu</td>
+<td>dowolny raport okresowy</td>
+<td>negatywny przy skróceniu</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="8-podsumowanie-i-warunki-unieważnienia-tezy">8. Podsumowanie i warunki unieważnienia tezy</h2>
+<p>Rynek dyskontuje nakłady inwestycyjne Mety według precedensu Reality Labs, podczas gdy właściwym punktem odniesienia jest wdrożenie technologii w istniejący biznes generujący 200 mld USD przychodu rocznie. Dowodem, że mechanizm działa, jest przyspieszenie dynamiki przychodów z 16% do 28–33% przy podwojonej bazie oraz przyspieszenie ceny za reklamę z 6% do 12% — metryki, której nie da się podnieść decyzją produktową. Ryzyko przeinwestowania jest ograniczone z dwóch stron: przez wartość odzyskową mocy obliczeniowej na obserwowalnym rynku najmu oraz przez zdolność spółki do wstrzymania nakładów przy przepływach operacyjnych rzędu 130 mld USD rocznie.</p>
+<p>Przy wycenie ok. 18x zysk forward wobec mediany dziesięcioletniej 27,96x cena docelowa 720 USD nie wymaga założenia ponadprzeciętnego wzrostu. Wymaga normalizacji mnożnika.</p>
+<p>Główną przesłanką przeciwko tezie nie są fundamenty operacyjne, lecz ryzyko prawne o wyjątkowo szerokim rozkładzie możliwych wyników. Drugą w kolejności jest ujemna rentowność wolnych przepływów pieniężnych wobec stopy wolnej od ryzyka na poziomie 4,70%.</p>
+<p><strong>Warunki unieważnienia tezy:</strong></p>
+<ol>
+<li>Spowolnienie dynamiki ceny za reklamę poniżej 5% rok do roku przy dalszym wzroście nakładów. Oznaczałoby, że CapEx przestał konwertować się na wynik. Podstawowa metryka do monitorowania.</li>
+<li>Niekorzystne rozstrzygnięcie w Oakland z sankcją zbliżoną do rzędu wielkości wskazywanego przez stany albo z nakazem usunięcia modeli wytrenowanych na danych małoletnich.</li>
+<li>Trzecia w ciągu roku podwyżka prognozy nakładów bez towarzyszącego przyspieszenia przychodów.</li>
+<li>Skrócenie okresu amortyzacji sprzętu przy utrzymaniu poziomu nakładów.</li>
+</ol>
+<hr />
+<h2 id="zastrzeżenia-i-ujawnienia">Zastrzeżenia i ujawnienia</h2>
+<p><strong>Ujawnienie pozycji własnej.</strong> Autor posiada akcje Meta Platforms, Inc. (META) w portfelu prowadzonym w ramach indywidualnego konta emerytalnego. Notatka może być obarczona wynikającym z tego błędem potwierdzenia i należy ją czytać z tym zastrzeżeniem.</p>
+<p><strong>Charakter materiału.</strong> Opracowanie nie stanowi rekomendacji inwestycyjnej w rozumieniu Rozporządzenia Parlamentu Europejskiego i Rady (UE) nr 596/2014 w sprawie nadużyć na rynku (MAR) ani rekomendacji w rozumieniu Rozporządzenia delegowanego Komisji (UE) 2016/958. Nie stanowi porady inwestycyjnej, podatkowej ani prawnej. Ma charakter analityczno-edukacyjny i prezentuje wyłącznie opinię autora. Autor nie jest licencjonowanym doradcą inwestycyjnym. Każdy inwestor powinien podjąć decyzję samodzielnie, na podstawie własnej analizy.</p>
+<p><strong>Źródła.</strong> Raporty okresowe Meta Platforms za I i II kwartał 2026 r. oraz za IV kwartał i cały rok 2025; formularz 10-K za 2025 r., w tym nota „Property and equipment", oraz formularze 10-Q za 2025–2026 r.; transkrypcje telekonferencji wynikowych; raporty okresowe Alphabet, Amazon i Microsoft za II kwartał 2026 r.; dane rynkowe z serwisów Macrotrends, StockAnalysis i CNBC; doniesienia agencyjne Bloomberga, CNBC, Reutersa i Associated Press dotyczące inicjatywy Meta Compute oraz postępowań sądowych w Nowym Meksyku i przed sądem federalnym w Oakland; dane o rentowności obligacji skarbowych z Departamentu Skarbu USA.</p>
+<p><strong>Daty.</strong> Notatkę sporządził Konrad Jendryś 19 sierpnia 2026 r. Dane rynkowe według stanu na 18 sierpnia 2026 r. Dane finansowe spółki według ostatniego raportu okresowego opublikowanego 29 lipca 2026 r.</p>
+  </main>
+</div>
+
+<footer>
+  <div class="wrap foot-in">
+    <span>© 2026 Konrad Jendryś</span>
+    <a href="index.html">konradjendrys.github.io</a>
+  </div>
+</footer>
+
+</body>
+</html>

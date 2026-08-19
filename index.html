@@ -83,22 +83,37 @@ header{border-bottom:1px solid var(--line)}
   letter-spacing:.01em;
   white-space:nowrap;
 }
-nav{display:flex;gap:4px}
+nav{
+  display:flex;
+  border:1px solid #262D35;
+  border-radius:4px;
+  overflow:hidden;
+  background:rgba(9,11,14,.72);
+  backdrop-filter:blur(3px);
+}
 nav button{
   font-family:'IBM Plex Mono',monospace;
-  font-size:13px;
+  font-size:13.5px;
   letter-spacing:.02em;
-  color:var(--muted);
+  color:#AEB6C0;
   background:none;
   border:none;
-  border-bottom:1px solid transparent;
-  padding:6px 12px;
+  border-right:1px solid #202730;
+  padding:10px 18px;
   cursor:pointer;
-  transition:color .18s ease,border-color .18s ease;
+  position:relative;
+  white-space:nowrap;
+  transition:color .18s ease,background .18s ease;
 }
-nav button:hover{color:var(--text)}
-nav button[aria-selected="true"]{color:var(--text);border-bottom-color:var(--up)}
-nav button:focus-visible{outline:1px solid var(--up);outline-offset:3px}
+nav button:last-child{border-right:none}
+nav button:hover{color:var(--text);background:rgba(255,255,255,.045)}
+nav button[aria-selected="true"]{
+  color:#0A0C0E;
+  background:var(--up);
+  font-weight:500;
+}
+nav button[aria-selected="true"]:hover{background:var(--up)}
+nav button:focus-visible{outline:1px solid var(--up);outline-offset:2px;z-index:1}
 
 /* ---------- panele ---------- */
 main{flex:1;padding:76px 0 90px}
@@ -175,6 +190,25 @@ a.item:hover{opacity:.72}
 }
 .item p{margin-bottom:0;font-size:15px}
 
+/* ---------- osadzone wideo ---------- */
+.embed{
+  position:relative;
+  width:100%;
+  max-width:620px;
+  aspect-ratio:16/9;
+  border:1px solid #262D35;
+  border-radius:4px;
+  overflow:hidden;
+  background:#0A0C0E;
+}
+.embed iframe{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:0;
+}
+
 /* ---------- kontakt ---------- */
 .link{
   font-family:'IBM Plex Mono',monospace;
@@ -204,9 +238,9 @@ footer{border-top:1px solid var(--line);padding:22px 0 30px}
 .readout .px{color:var(--text)}
 
 @media(max-width:620px){
-  .head-in{height:auto;padding:16px 0;gap:12px}
-  nav{width:100%;overflow-x:auto}
-  nav button{padding:6px 10px}
+  .head-in{height:auto;padding:16px 0;gap:14px}
+  nav{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  nav button{padding:10px 14px;font-size:12.5px;flex:1}
   main{padding:52px 0 64px}
   .wrap{padding:0 20px}
 }
@@ -229,7 +263,6 @@ footer{border-top:1px solid var(--line);padding:22px 0 30px}
       <nav role="tablist">
         <button role="tab" aria-selected="true"  data-tab="about">O mnie</button>
         <button role="tab" aria-selected="false" data-tab="work">Projekty</button>
-        <button role="tab" aria-selected="false" data-tab="notes">Notatki</button>
         <button role="tab" aria-selected="false" data-tab="contact">Kontakt</button>
       </nav>
     </div>
@@ -266,50 +299,54 @@ footer{border-top:1px solid var(--line);padding:22px 0 30px}
         </div>
       </section>
 
-      <!-- ============ PROJEKTY ============ -->
+      <!-- ============ PROJEKTY I NOTATKI ============ -->
       <section class="panel" id="work" role="tabpanel">
-        <div class="meta">Narzędzia i materiały</div>
+        <div class="meta">Notatki analityczne · Wideo · Narzędzia</div>
         <h2 class="lead">Projekty</h2>
-
-        <!-- WKLEJ link do filmu o Mastercardzie w href poniżej -->
-        <a class="item" href="#">
-          <div class="item-top"><span>Wideo · YouTube</span><span>wkrótce</span></div>
-          <h3>Mastercard — analiza spółki</h3>
-          <p>Dwudziestominutowe omówienie modelu biznesowego, źródeł przychodu i fundamentów spółki płatniczej.</p>
-        </a>
-
-        <a class="item" href="#">
-          <div class="item-top"><span>Python</span><span>wkrótce</span></div>
-          <h3>Screener jakości: ROIC i Real FCF</h3>
-          <p>Skrypt pobierający sprawozdania spółki i liczący wskaźniki, których używam do oceny jakości biznesu — z korektą o wynagrodzenia w akcjach.</p>
-        </a>
-
-        <a class="item" href="#">
-          <div class="item-top"><span>Excel</span><span>wkrótce</span></div>
-          <h3>Model DCF z analizą wrażliwości</h3>
-          <p>Wycena metodą zdyskontowanych przepływów w trzech scenariuszach, z tabelą wrażliwości na koszt kapitału i stopę wzrostu rezydualnego.</p>
-        </a>
-      </section>
-
-      <!-- ============ NOTATKI ============ -->
-      <section class="panel" id="notes" role="tabpanel">
-        <div class="meta">Notatki analityczne</div>
-        <h2 class="lead">Notatki</h2>
-        <p style="margin-bottom:34px">
-          Każda notatka ma tę samą strukturę: teza, model biznesowy, wycena, ryzyka i katalizatory.
-          Wszystkie są datowane — po to, żeby dało się je później rozliczyć.
+        <p style="margin-bottom:38px">
+          Notatki mają stałą strukturę: teza, model biznesowy, wycena, ryzyka, katalizatory
+          i warunki unieważnienia tezy. Wszystkie są datowane — po to, żeby dało się je później rozliczyć.
         </p>
 
+        <!-- notatka o Mecie -->
+        <a class="item" href="meta.html">
+          <div class="item-top"><span>Notatka · META</span><span>19.08.2026</span></div>
+          <h3>Meta — czy rynek wycenia nakłady na AI według złego precedensu</h3>
+          <p>Rekomendacja KUPUJ, cena docelowa 720 USD. Dlaczego cena za reklamę jest lepszą miarą zwrotu z CapEx niż osobny segment chmurowy — i dlaczego ryzyko prawne, a nie fundamenty, jest głównym argumentem przeciw.</p>
+        </a>
+
+        <!-- film o Mastercardzie -->
+        <div class="item">
+          <div class="item-top"><span>Wideo · YouTube</span><span>Mastercard</span></div>
+          <h3>Mastercard — analiza spółki</h3>
+          <p style="margin-bottom:20px">Dwudziestominutowe omówienie modelu biznesowego, źródeł przychodu i fundamentów spółki płatniczej.</p>
+          <div class="embed">
+            <iframe
+              src="https://www.youtube-nocookie.com/embed/l_4fF0E6EC8"
+              title="Analiza Mastercard — Konrad Jendryś"
+              loading="lazy"
+              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen></iframe>
+          </div>
+        </div>
+
         <a class="item" href="#">
-          <div class="item-top"><span>Alphabet · GOOGL</span><span>w przygotowaniu</span></div>
+          <div class="item-top"><span>Notatka · GOOGL</span><span>w przygotowaniu</span></div>
           <h3>Alphabet — koszt utrzymania pozycji w wyszukiwarce</h3>
           <p>Co rosnące nakłady na infrastrukturę AI robią z rentownością Google Services i jak to zmienia obraz wolnych przepływów.</p>
         </a>
 
         <a class="item" href="#">
-          <div class="item-top"><span>Kolejna spółka</span><span>w przygotowaniu</span></div>
-          <h3>Następna analiza</h3>
-          <p>Spółka z portfela przepuszczona przez ten sam zestaw kryteriów jakości.</p>
+          <div class="item-top"><span>Python</span><span>w przygotowaniu</span></div>
+          <h3>Screener jakości: ROIC i Real FCF</h3>
+          <p>Skrypt pobierający sprawozdania spółki i liczący wskaźniki, których używam do oceny jakości biznesu — z korektą o wynagrodzenia w akcjach.</p>
+        </a>
+
+        <a class="item" href="#">
+          <div class="item-top"><span>Excel</span><span>w przygotowaniu</span></div>
+          <h3>Model DCF z analizą wrażliwości</h3>
+          <p>Wycena metodą zdyskontowanych przepływów w trzech scenariuszach, z tabelą wrażliwości na koszt kapitału i stopę wzrostu rezydualnego.</p>
         </a>
       </section>
 
