@@ -1,7 +1,6 @@
 {
   "ticker": "MA",
-  "price": null,
-  "close_date": null,
-  "updated": null,
-  "_uwaga": "Wartosci uzupelnia automat przy pierwszym uruchomieniu. Do tego czasu licznik na stronie pozostaje ukryty."
+  "price": 573.85,
+  "close_date": "2026-08-20",
+  "updated": "2026-08-21T12:30:23+00:00"
 }
