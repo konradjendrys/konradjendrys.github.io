@@ -210,18 +210,68 @@ a.item:hover{opacity:.72}
   line-height:1.9;
 }
 .facts b{color:var(--text);font-weight:500}
-.facts .rec{color:var(--up);font-weight:500;letter-spacing:.06em}
 .facts i{color:#333B44;font-style:normal;margin:0 9px}
 
 .cta{
   font-family:'IBM Plex Mono',monospace;
   font-size:13px;
-  color:var(--faint);
-  border-bottom:1px solid #232A32;
+  color:var(--up);
+  border-bottom:1px solid rgba(47,211,154,.4);
   padding-bottom:3px;
-  transition:color .18s ease,border-color .18s ease;
+  transition:border-color .18s ease;
+  text-decoration:none;
+  display:inline-block;
 }
-a.item:hover .cta{color:var(--up);border-bottom-color:rgba(47,211,154,.45)}
+a.item:hover .cta,a.cta:hover{border-bottom-color:var(--up)}
+
+/* ---------- zajawka rozwijana ---------- */
+.excerpt{
+  position:relative;
+  max-height:104px;
+  overflow:hidden;
+  transition:max-height .45s ease;
+  margin-bottom:6px;
+}
+.excerpt::after{
+  content:'';position:absolute;left:0;right:0;bottom:0;height:56px;
+  background:linear-gradient(to bottom,rgba(5,6,7,0),rgba(5,6,7,.97));
+  pointer-events:none;transition:opacity .3s ease;
+}
+.excerpt.open{max-height:1400px}
+.excerpt.open::after{opacity:0}
+.excerpt p{font-size:15px;margin-bottom:14px}
+.excerpt p:last-child{margin-bottom:0}
+
+.more{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12.5px;
+  letter-spacing:.03em;
+  color:var(--up);
+  background:none;
+  border:none;
+  padding:0;
+  cursor:pointer;
+  margin:0;
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  transition:opacity .18s ease;
+}
+.more:hover{opacity:.72}
+.more:focus-visible{outline:1px solid var(--up);outline-offset:4px}
+.more .chev{
+  display:inline-block;
+  font-size:11px;
+  animation:bob 2.4s ease-in-out infinite;
+  transition:transform .3s ease;
+}
+.more.open .chev{transform:rotate(180deg);animation:none}
+@keyframes bob{
+  0%,100%{transform:translateY(0);opacity:.65}
+  50%{transform:translateY(2.5px);opacity:1}
+}
+
+.actions{display:flex;flex-wrap:wrap;gap:26px;align-items:baseline;margin-top:18px}
 
 /* ---------- osadzone wideo ---------- */
 .embed{
@@ -341,20 +391,34 @@ footer{border-top:1px solid var(--line);padding:22px 0 30px}
           i warunki unieważnienia tezy. Wszystkie są datowane — po to, żeby dało się je później rozliczyć.
         </p>
 
-        <!-- notatka o Mecie -->
-        <a class="item" href="meta.html">
-          <div class="item-top"><span class="src src-meta">Notatka · META</span><span>19.08.2026</span></div>
-          <h3>Czy rynek wycenia nakłady Mety na AI według złego precedensu</h3>
-          <p>Rynek dyskontuje CapEx Mety tak, jakby to była powtórka Reality Labs. Twierdzę, że właściwą miarą zwrotu jest cena za reklamę — bo tej nie da się podnieść decyzją produktową — a głównym argumentem przeciw są nie fundamenty, lecz ryzyko prawne.</p>
-          <div class="facts">
-            <span class="rec">KUPUJ</span><i>/</i>cena docelowa <b>720 USD</b><i>/</i>potencjał <b>+31%</b><i>/</i>P/E fwd <b>18x</b><i>/</i>ROIC <b>25,4%</b>
-          </div>
-          <span class="cta">Czytaj notatkę →</span>
-        </a>
-
-        <!-- film o Mastercardzie -->
+        <!-- ===== 1. notatka o Mecie ===== -->
         <div class="item">
-          <div class="item-top"><span class="src src-yt">Wideo · YouTube</span><span>Mastercard</span></div>
+          <div class="item-top"><span class="src src-meta">Analiza · META</span><span>19.08.2026</span></div>
+          <h3>Czy rynek wycenia nakłady Mety na AI według złego precedensu</h3>
+
+          <div class="excerpt" id="ex-meta">
+            <p>Alphabet, Amazon i Microsoft mają segmenty chmurowe, w których zwrot z nakładów widać wprost w raportowanym przychodzie. Meta nie ma odpowiednika. Wniosek rynku jest prosty: trzej konkurenci pokazują rachunek zwrotu z inwestycji, Meta go nie pokazuje.</p>
+            <p>Uważam ten wniosek za błąd kategorii. Brak osobnej linii przychodowej nie dowodzi braku zwrotu — dowodzi jedynie, że zwrot nie jest raportowany osobno. W przypadku Mety materializuje się on wewnątrz biznesu reklamowego, poprzez wyższą skuteczność targetowania i wyższą cenę uzyskiwaną za tę samą powierzchnię reklamową.</p>
+            <p>Cena za reklamę jest tu miarą właściwą, ponieważ jako jedyna nie poddaje się decyzji produktowej. Liczbę wyświetleń można podnieść, zwiększając gęstość reklam w kanale — cenę podnosi wyłącznie reklamodawca, który uzyskuje lepszy zwrot z wydatku. Rosnąca cena przy rosnącym wolumenie oznacza, że popyt nadąża za podażą powierzchni.</p>
+            <p>Najmocniejszy argument przeciw nie leży w fundamentach, tylko w ryzyku prawnym: federalny proces w Oakland i wyrok w Nowym Meksyku tworzą ekspozycję, której nie da się ująć modelem przepływów. To dlatego wartość oczekiwana wypada u mnie poniżej scenariusza bazowego.</p>
+          </div>
+
+          <div class="facts">
+            P/E fwd <b>18x</b><i>/</i>mediana 10 lat <b>27,96x</b><i>/</i>ROIC <b>25,4%</b><i>/</i>cena reklamy <b>+12% r/r</b>
+          </div>
+
+          <div class="actions">
+            <button class="more" data-target="ex-meta">Rozwiń <span class="chev">▾</span></button>
+            <a class="cta" href="meta.html">Czytaj całość →</a>
+          </div>
+          <p style="font-size:12.5px;color:var(--faint);margin:16px 0 0">
+            Materiał analityczno-edukacyjny. Nie zawiera rekomendacji ani ceny docelowej. Autor posiada akcje omawianej spółki.
+          </p>
+        </div>
+
+        <!-- ===== 2. film o Mastercardzie ===== -->
+        <div class="item">
+          <div class="item-top"><span class="src src-yt">Wideo · YouTube</span><span>30.03.2026</span></div>
           <h3>Mastercard — analiza spółki</h3>
           <p style="margin-bottom:20px">Dwudziestominutowe omówienie modelu biznesowego, źródeł przychodu i fundamentów spółki płatniczej.</p>
           <div class="embed">
@@ -368,16 +432,34 @@ footer{border-top:1px solid var(--line);padding:22px 0 30px}
           </div>
         </div>
 
+        <!-- ===== 3. screener w Pythonie ===== -->
+        <div class="item">
+          <div class="item-top"><span class="src src-py">Python</span><span>kod na GitHubie</span></div>
+          <h3>Screener jakości: ROIC i Real FCF</h3>
+
+          <div class="excerpt" id="ex-py">
+            <p>Skrypt przepuszcza listę spółek przez trzy bramki, których używam przy przeglądzie portfela. Nie służy do wyceny — służy do odsiania spółek, którym nie warto poświęcać czasu.</p>
+            <p><b>ROIC powyżej 15%</b> — czy biznes zarabia więcej, niż kosztuje go kapitał. Liczony jako NOPAT do kapitału zainwestowanego, czyli długu plus kapitału własnego minus gotówki.</p>
+            <p><b>Real FCF powyżej zera</b> — przepływy operacyjne minus CapEx minus wynagrodzenia w akcjach. Odjęcie SBC jest celowe: to realny koszt dla akcjonariusza, choć nie wypływa z rachunku bankowego.</p>
+            <p><b>Rentowność Real FCF ponad dziesięciolatki</b> — czy w ogóle warto brać na siebie ryzyko akcji zamiast kupić obligację.</p>
+            <p>README opisuje też ograniczenia narzędzia: dane są wtórne, ROIC nie ma sensu dla spółek finansowych, a brakujące pozycje przesuwają wynik w konkretną stronę. Skrypt ostrzega o każdym z tych przypadków zamiast podawać liczbę bez kontekstu.</p>
+          </div>
+
+          <div class="facts">
+            Python<i>/</i>yfinance<i>/</i>pandas<i>/</i>dane z <b>Yahoo Finance</b>
+          </div>
+
+          <div class="actions">
+            <button class="more" data-target="ex-py">Rozwiń opis <span class="chev">▾</span></button>
+            <a class="cta" href="https://github.com/konradjendrys/konradjendrys.github.io/tree/main/screener" target="_blank" rel="noopener">Zobacz kod i README →</a>
+          </div>
+        </div>
+
+        <!-- ===== w przygotowaniu ===== -->
         <a class="item" href="#">
           <div class="item-top"><span class="src src-meta" style="color:#5B8DEF">Notatka · GOOGL</span><span>w przygotowaniu</span></div>
           <h3>Alphabet — koszt utrzymania pozycji w wyszukiwarce</h3>
           <p>Co rosnące nakłady na infrastrukturę AI robią z rentownością Google Services i jak to zmienia obraz wolnych przepływów.</p>
-        </a>
-
-        <a class="item" href="#">
-          <div class="item-top"><span class="src src-py">Python</span><span>w przygotowaniu</span></div>
-          <h3>Screener jakości: ROIC i Real FCF</h3>
-          <p>Skrypt pobierający sprawozdania spółki i liczący wskaźniki, których używam do oceny jakości biznesu — z korektą o wynagrodzenia w akcjach.</p>
         </a>
 
         <a class="item" href="#">
@@ -648,6 +730,23 @@ footer{border-top:1px solid var(--line);padding:22px 0 30px}
   let rt;
   window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(start, 220); });
   start();
+})();
+
+/* ============================================================
+   Rozwijane zajawki
+   ============================================================ */
+(function(){
+  document.querySelectorAll('.more').forEach(btn => {
+    const box = document.getElementById(btn.dataset.target);
+    if (!box) return;
+    btn.addEventListener('click', () => {
+      const open = box.classList.toggle('open');
+      btn.classList.toggle('open', open);
+      btn.firstChild.textContent = open
+        ? btn.firstChild.textContent.replace('Rozwiń', 'Zwiń')
+        : btn.firstChild.textContent.replace('Zwiń', 'Rozwiń');
+    });
+  });
 })();
 
 /* ============================================================
