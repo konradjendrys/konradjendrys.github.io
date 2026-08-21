@@ -4,7 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Konrad Jendryś — analiza spółek i rynków kapitałowych</title>
-<meta name="description" content="Student Analityki Finansowej UE Katowice, kandydat na Maklera Papierów Wartościowych. Analiza fundamentalna spółek giełdowych.">
+<meta name="description" content="Student Analityki Finansowej UE Katowice, kandydat na Maklera Papierów Wartościowych. Analizy spółek, wyceny i narzędzia analityczne.">
+
+<link rel="canonical" href="https://konradjendrys.github.io/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://konradjendrys.github.io/">
+<meta property="og:title" content="Konrad Jendryś — analiza fundamentalna i rynki kapitałowe">
+<meta property="og:description" content="Analizy spółek, wyceny i narzędzia analityczne. Meta Platforms, screener jakości w Pythonie, analiza wideo Mastercard.">
+<meta property="og:image" content="https://konradjendrys.github.io/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="pl_PL">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Konrad Jendryś — analiza fundamentalna i rynki kapitałowe">
+<meta name="twitter:description" content="Analizy spółek, wyceny i narzędzia analityczne.">
+<meta name="twitter:image" content="https://konradjendrys.github.io/og-image.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -93,13 +107,13 @@ nav{
 }
 nav button{
   font-family:'IBM Plex Mono',monospace;
-  font-size:13.5px;
+  font-size:14px;
   letter-spacing:.02em;
-  color:#AEB6C0;
+  color:#C3CAD3;
   background:none;
   border:none;
   border-right:1px solid #202730;
-  padding:10px 18px;
+  padding:12px 22px;
   cursor:pointer;
   position:relative;
   white-space:nowrap;
@@ -114,6 +128,29 @@ nav button[aria-selected="true"]{
 }
 nav button[aria-selected="true"]:hover{background:var(--up)}
 nav button:focus-visible{outline:1px solid var(--up);outline-offset:2px;z-index:1}
+.count{
+  font-size:11px;
+  color:var(--up);
+  background:rgba(47,211,154,.14);
+  border-radius:9px;
+  padding:1px 7px;
+  margin-left:6px;
+  vertical-align:1px;
+}
+nav button[aria-selected="true"] .count{color:#0A0C0E;background:rgba(0,0,0,.16)}
+
+/* przejscie na dole sekcji O mnie */
+.next{
+  display:inline-flex;align-items:baseline;gap:9px;
+  font-family:'IBM Plex Mono',monospace;font-size:13.5px;
+  color:var(--up);text-decoration:none;
+  border-bottom:1px solid rgba(47,211,154,.4);
+  padding-bottom:3px;margin-top:42px;
+  transition:border-color .18s ease;
+}
+.next:hover{border-bottom-color:var(--up)}
+.next .arw{animation:nudge 2.4s ease-in-out infinite;display:inline-block}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
 
 /* ---------- panele ---------- */
 main{flex:1;padding:76px 0 90px}
@@ -393,7 +430,7 @@ footer{border-top:1px solid var(--line);padding:22px 0 30px}
       <div class="name">Konrad Jendryś</div>
       <nav role="tablist">
         <button role="tab" aria-selected="true"  data-tab="about">O mnie</button>
-        <button role="tab" aria-selected="false" data-tab="work">Projekty</button>
+        <button role="tab" aria-selected="false" data-tab="work">Projekty <span class="count">3</span></button>
         <button role="tab" aria-selected="false" data-tab="contact">Kontakt</button>
       </nav>
     </div>
@@ -428,6 +465,8 @@ footer{border-top:1px solid var(--line);padding:22px 0 30px}
           <div class="row"><span class="k">Koło naukowe</span><span class="v">Modelowanie Finansowe Quantum</span></div>
           <div class="row"><span class="k">Lokalizacja</span><span class="v">Chorzów / Katowice</span></div>
         </div>
+
+        <a class="next" href="#work" data-goto="work">Zobacz projekty — analiza Mety, screener w Pythonie, wideo <span class="arw">→</span></a>
       </section>
 
       <!-- ============ PROJEKTY I NOTATKI ============ -->
@@ -872,6 +911,7 @@ Ostrzezenia:
           <a class="link" href="https://www.linkedin.com/in/konradjendrys" target="_blank" rel="noopener">linkedin.com/in/konradjendrys</a>
           <a class="link" href="https://github.com/konradjendrys" target="_blank" rel="noopener">github.com/konradjendrys</a>
           <a class="link" href="mailto:konrad.af.jendrys@gmail.com">konrad.af.jendrys@gmail.com</a>
+          <a class="link" href="tel:+48666651206">+48 666 651 206</a>
         </div>
       </section>
 
@@ -1161,6 +1201,15 @@ Ostrzezenia:
   }
 
   tabs.forEach(b => b.addEventListener('click', () => show(b.dataset.tab)));
+
+  // odnosniki w tresci przelaczajace zakladke
+  document.querySelectorAll('[data-goto]').forEach(link => {
+    link.addEventListener('click', event => {
+      event.preventDefault();
+      show(link.dataset.goto);
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+  });
 
   let start = '';
   try { start = location.hash.replace('#', ''); } catch (e) {}
