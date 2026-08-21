@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Konrad Jendryś — analiza spółek i rynków kapitałowych</title>
+<title>Konrad Jendryś, analiza spółek i rynków kapitałowych</title>
 <meta name="description" content="Student Analityki Finansowej UE Katowice, kandydat na Maklera Papierów Wartościowych. Analizy spółek, wyceny i narzędzia analityczne.">
 
 <link rel="canonical" href="https://konradjendrys.github.io/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://konradjendrys.github.io/">
-<meta property="og:title" content="Konrad Jendryś — analiza fundamentalna i rynki kapitałowe">
+<meta property="og:title" content="Konrad Jendryś, analiza fundamentalna i rynki kapitałowe">
 <meta property="og:description" content="Analizy spółek, wyceny i narzędzia analityczne. Meta Platforms, screener jakości w Pythonie, analiza wideo Mastercard.">
 <meta property="og:image" content="https://konradjendrys.github.io/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="pl_PL">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Konrad Jendryś — analiza fundamentalna i rynki kapitałowe">
+<meta name="twitter:title" content="Konrad Jendryś, analiza fundamentalna i rynki kapitałowe">
 <meta name="twitter:description" content="Analizy spółek, wyceny i narzędzia analityczne.">
 <meta name="twitter:image" content="https://konradjendrys.github.io/og-image.png">
 
@@ -33,7 +33,38 @@
   --line:#1A1F25;
   --up:#2FD39A;
   --down:#FF6B5A;
+  --veil:5,6,7;
+  --code-bg:#0A0C0F;
+  --code-line:#1C232B;
+  --code-text:#C9D1D9;
+  --panel:rgba(255,255,255,.045);
+  --nav-bg:rgba(9,11,14,.72);
+  --nav-line:#262D35;
+  --nav-idle:#AEB6C0;
+  --ma-line:139,149,161;
+  --chart-op:.95;
 }
+html[data-theme="light"]{
+  --bg:#FAF9F6;
+  --text:#14181D;
+  --muted:#4E5866;
+  --faint:#7C8797;
+  --line:#E2DFD8;
+  --up:#0E8F63;
+  --down:#C0392B;
+  --veil:250,249,246;
+  --code-bg:#F2F1EC;
+  --code-line:#DFDCD4;
+  --code-text:#1E242C;
+  --panel:rgba(0,0,0,.03);
+  --nav-bg:rgba(255,255,255,.78);
+  --nav-line:#DAD6CD;
+  --nav-idle:#5D6775;
+  --ma-line:110,120,133;
+  --chart-op:.85;
+}
+html{color-scheme:dark}
+html[data-theme="light"]{color-scheme:light}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
@@ -55,7 +86,7 @@ body{
   width:100%;
   height:100%;
   z-index:0;
-  opacity:.95;
+  opacity:var(--chart-op);
 }
 /* przyciemnienie promieniste: najjaśniej tam, gdzie kończy się wykres
    (prawa górna część), ciemno przy tekście po lewej i na dole */
@@ -66,14 +97,14 @@ body{
   pointer-events:none;
   background:
     radial-gradient(62% 50% at 74% 26%,
-      rgba(5,6,7,.06) 0%,
-      rgba(5,6,7,.38) 44%,
-      rgba(5,6,7,.78) 80%,
-      rgba(5,6,7,.92) 100%),
+      rgba(var(--veil),.06) 0%,
+      rgba(var(--veil),.38) 44%,
+      rgba(var(--veil),.78) 80%,
+      rgba(var(--veil),.92) 100%),
     linear-gradient(to bottom right,
-      rgba(5,6,7,.66) 0%,
-      rgba(5,6,7,.28) 45%,
-      rgba(5,6,7,.76) 100%);
+      rgba(var(--veil),.66) 0%,
+      rgba(var(--veil),.28) 45%,
+      rgba(var(--veil),.76) 100%);
 }
 
 /* ---------- układ ---------- */
@@ -86,10 +117,13 @@ header{border-bottom:1px solid var(--line)}
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:24px;
+  gap:16px;
   height:72px;
   flex-wrap:wrap;
 }
+.head-in .name{order:1}
+.head-in nav{order:2}
+@media(min-width:621px){.switches{margin-left:auto}}
 .name{
   font-family:'Newsreader',Georgia,serif;
   font-size:21px;
@@ -99,10 +133,10 @@ header{border-bottom:1px solid var(--line)}
 }
 nav{
   display:flex;
-  border:1px solid #262D35;
+  border:1px solid var(--nav-line);
   border-radius:4px;
   overflow:hidden;
-  background:rgba(9,11,14,.72);
+  background:var(--nav-bg);
   backdrop-filter:blur(3px);
 }
 nav button{
@@ -112,7 +146,7 @@ nav button{
   color:#C3CAD3;
   background:none;
   border:none;
-  border-right:1px solid #202730;
+  border-right:1px solid var(--nav-line);
   padding:12px 22px;
   cursor:pointer;
   position:relative;
@@ -120,9 +154,9 @@ nav button{
   transition:color .18s ease,background .18s ease;
 }
 nav button:last-child{border-right:none}
-nav button:hover{color:var(--text);background:rgba(255,255,255,.045)}
+nav button:hover{color:var(--text);background:var(--panel)}
 nav button[aria-selected="true"]{
-  color:#0A0C0E;
+  color:var(--bg);
   background:var(--up);
   font-weight:500;
 }
@@ -131,26 +165,76 @@ nav button:focus-visible{outline:1px solid var(--up);outline-offset:2px;z-index:
 .count{
   font-size:11px;
   color:var(--up);
-  background:rgba(47,211,154,.14);
+  background:color-mix(in srgb, var(--up) 16%, transparent);
   border-radius:9px;
   padding:1px 7px;
   margin-left:6px;
   vertical-align:1px;
 }
-nav button[aria-selected="true"] .count{color:#0A0C0E;background:rgba(0,0,0,.16)}
+nav button[aria-selected="true"] .count{color:var(--bg);background:color-mix(in srgb, var(--bg) 22%, transparent)}
 
 /* przejscie na dole sekcji O mnie */
 .next{
   display:inline-flex;align-items:baseline;gap:9px;
   font-family:'IBM Plex Mono',monospace;font-size:13.5px;
   color:var(--up);text-decoration:none;
-  border-bottom:1px solid rgba(47,211,154,.4);
+  border-bottom:1px solid currentColor;
   padding-bottom:3px;margin-top:42px;
   transition:border-color .18s ease;
 }
 .next:hover{border-bottom-color:var(--up)}
 .next .arw{animation:nudge 2.4s ease-in-out infinite;display:inline-block}
 @keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+
+.switches{display:flex;gap:6px;order:3}
+.sw{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;letter-spacing:.06em;
+  color:var(--nav-idle);
+  background:var(--nav-bg);
+  border:1px solid var(--nav-line);
+  border-radius:4px;
+  height:34px;min-width:38px;
+  display:inline-flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  transition:color .2s ease,border-color .2s ease;
+}
+.sw:hover{color:var(--text);border-color:var(--text)}
+.sw:focus-visible{outline:1px solid var(--up);outline-offset:2px}
+
+.cred{color:var(--text);text-decoration:none;border-bottom:1px solid var(--line);transition:color .2s ease,border-color .2s ease}
+.cred:hover{color:var(--up);border-bottom-color:var(--up)}
+
+.portrait{display:none;margin-bottom:30px}
+.portrait.ready{display:block}
+.portrait img{
+  width:132px;height:132px;border-radius:50%;
+  object-fit:cover;display:block;
+  border:1px solid var(--line);
+  filter:saturate(.92);
+}
+
+.certs{margin-top:76px}
+.rows .row:last-child{border-bottom:none}
+.cert-note{font-size:15px;max-width:640px;margin-bottom:28px}
+.cert-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:760px}
+.cert{
+  display:block;text-decoration:none;color:inherit;
+  border:1px solid var(--line);border-radius:4px;overflow:hidden;
+  background:var(--panel);
+  transition:border-color .25s ease,transform .25s ease;
+}
+.cert:hover{border-color:var(--up);transform:translateY(-2px)}
+.cert img{width:100%;height:auto;display:block;border-bottom:1px solid var(--line)}
+.cert-cap{padding:14px 16px;display:flex;flex-direction:column;gap:5px}
+.cert-name{font-size:14px;color:var(--text);line-height:1.4}
+.cert-meta{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;
+  letter-spacing:.04em;color:var(--faint);
+  transition:color .25s ease;
+}
+.cert:hover .cert-meta{color:var(--up)}
+@media(max-width:640px){.cert-grid{grid-template-columns:1fr}}
 
 /* ---------- panele ---------- */
 main{flex:1;padding:76px 0 90px}
@@ -203,10 +287,10 @@ p strong{color:var(--text);font-weight:500}
   display:block;
   text-decoration:none;
   color:inherit;
-  transition:opacity .18s ease;
+  transition:border-color .3s ease;
 }
 .item:first-of-type{border-top:1px solid var(--line)}
-a.item:hover{opacity:.72}
+
 .item-top{
   display:flex;
   justify-content:space-between;
@@ -247,13 +331,13 @@ a.item:hover{opacity:.72}
   line-height:1.9;
 }
 .facts b{color:var(--text);font-weight:500}
-.facts i{color:#333B44;font-style:normal;margin:0 9px}
+.facts i{color:var(--line);font-style:normal;margin:0 9px}
 
 .cta{
   font-family:'IBM Plex Mono',monospace;
   font-size:13px;
   color:var(--up);
-  border-bottom:1px solid rgba(47,211,154,.4);
+  border-bottom:1px solid currentColor;
   padding-bottom:3px;
   transition:border-color .18s ease;
   text-decoration:none;
@@ -271,7 +355,7 @@ a.item:hover .cta,a.cta:hover{border-bottom-color:var(--up)}
 }
 .excerpt::after{
   content:'';position:absolute;left:0;right:0;bottom:0;height:56px;
-  background:linear-gradient(to bottom,rgba(5,6,7,0),rgba(5,6,7,.97));
+  background:linear-gradient(to bottom,rgba(var(--veil),0),rgba(var(--veil),.97));
   pointer-events:none;transition:opacity .3s ease;
 }
 .excerpt.open{max-height:4200px}
@@ -318,9 +402,9 @@ a.item:hover .cta,a.cta:hover{border-bottom-color:var(--up)}
 pre.code{
   font-family:'IBM Plex Mono',monospace;
   font-size:12px;line-height:1.62;
-  color:#C9D1D9;
-  background:#0A0C0F;
-  border:1px solid #1C232B;
+  color:var(--code-text);
+  background:var(--code-bg);
+  border:1px solid var(--code-line);
   border-radius:4px;
   padding:18px 20px;
   margin:0;
@@ -332,13 +416,13 @@ pre.code{
 pre.out{
   font-family:'IBM Plex Mono',monospace;
   font-size:11.5px;line-height:1.7;
-  color:#A8B2BD;background:#0A0C0F;
-  border:1px solid #1C232B;border-radius:4px;
+  color:var(--muted);background:var(--code-bg);
+  border:1px solid var(--code-line);border-radius:4px;
   padding:16px 20px;margin:0;overflow-x:auto;white-space:pre;
 }
 pre.code::-webkit-scrollbar,pre.out::-webkit-scrollbar{width:9px;height:9px}
 pre.code::-webkit-scrollbar-thumb,pre.out::-webkit-scrollbar-thumb{
-  background:#252D36;border-radius:5px;
+  background:var(--nav-line);border-radius:5px;
 }
 pre.code::-webkit-scrollbar-track,pre.out::-webkit-scrollbar-track{background:transparent}
 
@@ -371,7 +455,7 @@ pre.code::-webkit-scrollbar-track,pre.out::-webkit-scrollbar-track{background:tr
 .perf .chg{font-weight:500}
 .perf .chg.up{color:var(--up)}
 .perf .chg.down{color:var(--down)}
-.perf i{color:#333B44;font-style:normal;margin:0 9px}
+.perf i{color:var(--line);font-style:normal;margin:0 9px}
 .perf b{color:var(--text);font-weight:500}
 .perf .stamp{color:var(--faint)}
 
@@ -381,10 +465,10 @@ pre.code::-webkit-scrollbar-track,pre.out::-webkit-scrollbar-track{background:tr
   width:100%;
   max-width:620px;
   aspect-ratio:16/9;
-  border:1px solid #262D35;
+  border:1px solid var(--nav-line);
   border-radius:4px;
   overflow:hidden;
-  background:#0A0C0E;
+  background:var(--code-bg);
 }
 .embed iframe{
   position:absolute;
@@ -430,8 +514,70 @@ footer{border-top:1px solid var(--line);padding:22px 0 30px}
   .wrap{padding:0 20px}
 }
 
+/* ---------- wejscie tresci ---------- */
+.step{opacity:0;transform:translateY(14px)}
+.step.shown{
+  opacity:1;transform:none;
+  transition:opacity .62s ease, transform .62s cubic-bezier(.2,.8,.2,1);
+}
+
+/* naglowek pisze sie od lewej przy pierwszym wejsciu */
+.lead .swipe{
+  display:inline-block;
+  clip-path:inset(0 100% 0 0);
+  transition:clip-path 1.05s cubic-bezier(.22,.75,.2,1);
+}
+.lead .swipe.shown{clip-path:inset(0 0 0 0)}
+
+/* wiersze tabeli wchodza po kolei */
+.rows .row{opacity:0;transform:translateY(8px)}
+.rows .row.shown{
+  opacity:1;transform:none;
+  transition:opacity .5s ease, transform .5s cubic-bezier(.2,.8,.2,1);
+}
+
+/* pozycje na liscie projektow */
+.item h3,.item .src,.item .cta,.item .more{transition:color .28s ease,border-color .28s ease}
+.item[data-act]{cursor:pointer}
+.item[data-act]:hover h3{color:var(--accent,var(--up))}
+.item[data-act]:hover .cta{color:var(--accent,var(--up));border-bottom-color:var(--accent,var(--up))}
+.item[data-act]:hover .more{color:var(--accent,var(--up))}
+.item[data-act]:hover .src{color:var(--accent,var(--up))}
+.item[data-act]:focus-visible{outline:1px solid var(--accent,var(--up));outline-offset:8px}
+/* wnetrze karty zachowuje wlasny kursor */
+.item[data-act] a,
+.item[data-act] button,
+.item[data-act] iframe,
+.item[data-act] pre{cursor:auto}
+.item[data-act] a,
+.item[data-act] button{cursor:pointer}
+.item h3,.item .src,.item .cta,.item .more{transition:color .28s ease,border-color .28s ease}
+
+/* zakladki: plynniejsza zmiana panelu */
+@keyframes swap{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:none}
+}
+.panel.on{animation:swap .42s cubic-bezier(.2,.8,.2,1) both}
+
+/* podkreslenie linkow kontaktowych rozwija sie z lewej */
+.contact-list .link{position:relative;border-bottom-color:transparent}
+.contact-list .link::after{
+  content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px;
+  background:var(--faint);
+  transform:scaleX(1);transform-origin:left;
+  transition:transform .34s cubic-bezier(.2,.8,.2,1), background .24s ease;
+}
+.contact-list .link:hover::after{background:var(--up)}
+
+/* licznik przy zakladce lekko pulsuje do pierwszego kliknięcia */
+.count{transition:transform .3s ease}
+nav button:hover .count{transform:scale(1.12)}
+
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .step,.rows .row{opacity:1!important;transform:none!important}
+  .lead .swipe{clip-path:none!important}
 }
 </style>
 </head>
@@ -445,10 +591,16 @@ footer{border-top:1px solid var(--line);padding:22px 0 30px}
   <header>
     <div class="wrap head-in">
       <div class="name">Konrad Jendryś</div>
+      <div class="switches">
+        <button class="sw" id="lang" type="button" aria-label="Zmień język">EN</button>
+        <button class="sw" id="theme" type="button" aria-label="Zmień motyw">
+          <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path id="ic" fill="currentColor" d="M10 3a7 7 0 1 0 7 7 5.5 5.5 0 0 1-7-7z"/></svg>
+        </button>
+      </div>
       <nav role="tablist">
-        <button role="tab" aria-selected="true"  data-tab="about">O mnie</button>
-        <button role="tab" aria-selected="false" data-tab="work">Projekty <span class="count">3</span></button>
-        <button role="tab" aria-selected="false" data-tab="contact">Kontakt</button>
+        <button role="tab" aria-selected="true"  data-tab="about" data-i="tab1">O mnie</button>
+        <button role="tab" aria-selected="false" data-tab="work" data-i="tab2">Projekty <span class="count">3</span></button>
+        <button role="tab" aria-selected="false" data-tab="contact" data-i="tab3">Kontakt</button>
       </nav>
     </div>
   </header>
@@ -458,78 +610,104 @@ footer{border-top:1px solid var(--line);padding:22px 0 30px}
 
       <!-- ============ O MNIE ============ -->
       <section class="panel on" id="about" role="tabpanel">
-        <div class="meta">Analiza fundamentalna · Rynki kapitałowe</div>
-        <h1 class="lead">Oceniam spółki po tym, ile <em>gotówki</em> naprawdę zostaje.</h1>
+        <div class="portrait" id="portrait">
+          <img src="foto.jpg" alt="Konrad Jendryś" loading="lazy" width="132" height="132">
+        </div>
+        <div class="meta step" data-i="kick1">Analiza fundamentalna · Rynki kapitałowe</div>
+        <h1 class="lead"><span class="swipe" data-i="lead1">Oceniam spółki po tym, ile <em>gotówki</em> naprawdę zostaje.</span></h1>
 
-        <p>
+        <p class="step" data-i="p1">
           Studiuję Analitykę Finansową na Uniwersytecie Ekonomicznym w Katowicach i przygotowuję się
           do egzaminu na <strong>Maklera Papierów Wartościowych</strong>.
         </p>
-        <p>
+        <p class="step" data-i="p2">
           Prowadzę własny portfel na IKE i przepuszczam każdą spółkę przez ten sam zestaw kryteriów:
           <strong>ROIC</strong>, <strong>Real FCF</strong> liczony jako przepływy operacyjne minus CapEx
           minus wynagrodzenia w akcjach, oraz rentowność wolnych przepływów porównana z obligacjami
-          skarbowymi. Zysk księgowy potrafi być kwestią założeń — gotówka nie.
+          skarbowymi. Zysk księgowy potrafi być kwestią założeń, gotówka nie.
         </p>
-        <p>
+        <p class="step" data-i="p3">
           Ta strona zbiera to, co z tego wychodzi: notatki analityczne, narzędzia i materiały wideo.
         </p>
 
         <div class="rows">
-          <div class="row"><span class="k">Kierunek</span><span class="v">Analityk Finansowy 2.0, UE Katowice</span></div>
-          <div class="row"><span class="k">Egzamin MPW</span><span class="v">październik 2026</span></div>
-          <div class="row"><span class="k">Narzędzia</span><span class="v">Excel · Python · SQL · Power BI</span></div>
-          <div class="row"><span class="k">Koło naukowe</span><span class="v">Modelowanie Finansowe Quantum</span></div>
-          <div class="row"><span class="k">Lokalizacja</span><span class="v">Chorzów / Katowice</span></div>
+          <div class="row"><span class="k" data-i="rk1">Kierunek</span><span class="v" data-i="rv1">Analityk Finansowy 2.0, UE Katowice</span></div>
+          <div class="row"><span class="k" data-i="rk2">Egzamin MPW</span><span class="v" data-i="rv2">październik 2026</span></div>
+          <div class="row"><span class="k" data-i="rk3">Narzędzia</span><span class="v" data-i="rv3">Excel · Python · SQL · Power BI</span></div>
+          <div class="row"><span class="k" data-i="rk4">Koło naukowe</span><span class="v" data-i="rv4">Modelowanie Finansowe Quantum</span></div>
+          <div class="row"><span class="k" data-i="rk5">Lokalizacja</span><span class="v" data-i="rv5">Chorzów / Katowice</span></div>
         </div>
 
-        <a class="next" href="#work" data-goto="work">Zobacz projekty — analiza Mety, screener w Pythonie, wideo <span class="arw">→</span></a>
+        <div class="certs">
+          <div class="meta" data-i="ckick">Certyfikaty</div>
+          <p class="cert-note" data-i="cnote">Dwa kursy z 13. edycji programu Corporate Readiness Certificate, prowadzonego przez Accenture, ING i Kyndryl. Pierwszy pokazał mi, jak instytucja finansowa realnie pracuje na danych, od ich przygotowania po modele decyzyjne. Drugi dał podstawy bezpieczeństwa, bez których nie da się dziś pracować przy danych klientów. Oba były prowadzone przez praktyków z tych firm, więc były to pierwsze zajęcia, na których zobaczyłem branżę od strony operacyjnej, a nie akademickiej.</p>
+
+          <div class="cert-grid">
+            <a class="cert" href="https://credsverse.com/credentials/267c99af-27ad-4aa4-95b9-129318834112" target="_blank" rel="noopener">
+              <img src="cert-ds.png" alt="Certyfikat Data Science w instytucji finansowej" loading="lazy" width="1100" height="778">
+              <div class="cert-cap">
+                <span class="cert-name" data-i="cn1">Data Science w instytucji finansowej</span>
+                <span class="cert-meta" data-i="cm1">ING Hubs Poland · czerwiec 2026 · zweryfikuj →</span>
+              </div>
+            </a>
+
+            <a class="cert" href="https://credsverse.com/credentials/3e4eb7f3-d45a-4cd1-a204-f82265cdd3f2" target="_blank" rel="noopener">
+              <img src="cert-cs.png" alt="Certyfikat Cybersecurity, defense in modern organizations" loading="lazy" width="1100" height="778">
+              <div class="cert-cap">
+                <span class="cert-name" data-i="cn2">Cybersecurity: defense in modern organizations</span>
+                <span class="cert-meta" data-i="cm2">ING Hubs Poland · czerwiec 2026 · zweryfikuj →</span>
+              </div>
+            </a>
+          </div>
+
+          <a class="next" href="#work" data-goto="work" data-i="next">Zobacz projekty: analiza Mety, screener w Pythonie, wideo <span class="arw">→</span></a>
+        </div>
       </section>
 
       <!-- ============ PROJEKTY I NOTATKI ============ -->
       <section class="panel" id="work" role="tabpanel">
-        <div class="meta">Notatki analityczne · Wideo · Narzędzia</div>
-        <h2 class="lead">Projekty</h2>
-        <p style="margin-bottom:38px">
+        <div class="meta step" data-i="kick2">Notatki analityczne · Wideo · Narzędzia</div>
+        <h2 class="lead" data-i="lead2">Projekty</h2>
+        <p style="margin-bottom:38px" data-i="intro">
           Notatki mają stałą strukturę: teza, model biznesowy, wycena, ryzyka, katalizatory
-          i warunki unieważnienia tezy. Wszystkie są datowane — po to, żeby dało się je później rozliczyć.
+          i warunki unieważnienia tezy. Wszystkie są datowane po to, żeby dało się je później rozliczyć.
         </p>
 
         <!-- ===== 1. notatka o Mecie ===== -->
-        <div class="item">
+        <div class="item step" data-act="meta.html" role="link" tabindex="0" style="--accent:#4C8DFF">
           <div class="item-top"><span class="src src-meta">Analiza · META</span><span>19.08.2026</span></div>
-          <h3>Czy rynek wycenia nakłady Mety na AI według złego precedensu</h3>
+          <h3 data-i="h1">Czy rynek wycenia nakłady Mety na AI według złego precedensu</h3>
 
           <div class="excerpt" id="ex-meta">
-            <p>Alphabet, Amazon i Microsoft mają segmenty chmurowe, w których zwrot z nakładów widać wprost w raportowanym przychodzie. Meta nie ma odpowiednika. Wniosek rynku jest prosty: trzej konkurenci pokazują rachunek zwrotu z inwestycji, Meta go nie pokazuje.</p>
-            <p>Uważam ten wniosek za błąd kategorii. Brak osobnej linii przychodowej nie dowodzi braku zwrotu — dowodzi jedynie, że zwrot nie jest raportowany osobno. W przypadku Mety materializuje się on wewnątrz biznesu reklamowego, poprzez wyższą skuteczność targetowania i wyższą cenę uzyskiwaną za tę samą powierzchnię reklamową.</p>
-            <p>Cena za reklamę jest tu miarą właściwą, ponieważ jako jedyna nie poddaje się decyzji produktowej. Liczbę wyświetleń można podnieść, zwiększając gęstość reklam w kanale — cenę podnosi wyłącznie reklamodawca, który uzyskuje lepszy zwrot z wydatku. Rosnąca cena przy rosnącym wolumenie oznacza, że popyt nadąża za podażą powierzchni.</p>
-            <p>Najmocniejszy argument przeciw nie leży w fundamentach, tylko w ryzyku prawnym: federalny proces w Oakland i wyrok w Nowym Meksyku tworzą ekspozycję, której nie da się ująć modelem przepływów. To dlatego wartość oczekiwana wypada u mnie poniżej scenariusza bazowego.</p>
+            <p data-i="ex1">Alphabet, Amazon i Microsoft mają segmenty chmurowe, w których zwrot z nakładów widać wprost w raportowanym przychodzie. Meta nie ma odpowiednika. Wniosek rynku jest prosty: trzej konkurenci pokazują rachunek zwrotu z inwestycji, Meta go nie pokazuje.</p>
+            <p data-i="ex2">Uważam ten wniosek za błąd kategorii. Brak osobnej linii przychodowej nie dowodzi braku zwrotu. Dowodzi jedynie, że zwrot nie jest raportowany osobno. W przypadku Mety materializuje się on wewnątrz biznesu reklamowego, poprzez wyższą skuteczność targetowania i wyższą cenę uzyskiwaną za tę samą powierzchnię reklamową.</p>
+            <p data-i="ex3">Cena za reklamę jest tu miarą właściwą, ponieważ jako jedyna nie poddaje się decyzji produktowej. Liczbę wyświetleń można podnieść, zwiększając gęstość reklam w kanale. Cenę podnosi wyłącznie reklamodawca, który uzyskuje lepszy zwrot z wydatku. Rosnąca cena przy rosnącym wolumenie oznacza, że popyt nadąża za podażą powierzchni.</p>
+            <p data-i="ex4">Najmocniejszy argument przeciw nie leży w fundamentach, tylko w ryzyku prawnym: federalny proces w Oakland i wyrok w Nowym Meksyku tworzą ekspozycję, której nie da się ująć modelem przepływów. To dlatego wartość oczekiwana wypada u mnie poniżej scenariusza bazowego.</p>
           </div>
 
-          <div class="facts">
+          <div class="facts" data-i="f1">
             P/E fwd <b>18x</b><i>/</i>mediana 10 lat <b>27,96x</b><i>/</i>ROIC <b>25,4%</b><i>/</i>cena reklamy <b>+12% r/r</b>
           </div>
 
           <div class="actions">
-            <button class="more" data-target="ex-meta" data-close="Zwiń">Rozwiń <span class="chev">▾</span></button>
-            <a class="cta" href="meta.html">Czytaj całość →</a>
+            <button class="more" data-target="ex-meta" data-o-pl="Rozwiń tezę" data-o-en="Read the thesis" data-c-pl="Zwiń" data-c-en="Collapse">Rozwiń tezę <span class="chev">▾</span></button>
+            <a class="cta" href="meta.html" data-i="c1">Czytaj całość →</a>
           </div>
         </div>
 
         <!-- ===== 2. film o Mastercardzie ===== -->
-        <div class="item">
+        <div class="item step" data-act="https://youtu.be/l_4fF0E6EC8" role="link" tabindex="0" style="--accent:#F79E1B">
           <div class="item-top"><span class="src src-yt">Wideo · YouTube</span><span>30.03.2026</span></div>
-          <h3>Mastercard — analiza spółki</h3>
-          <p style="margin-bottom:20px">Dwudziestominutowe omówienie modelu biznesowego, źródeł przychodu i fundamentów spółki płatniczej.</p>
-          <div class="perf" id="perf-ma">
-            Od nagrania <b id="perf-base">484,24 USD</b><i>/</i><span class="chg" id="perf-chg">—</span><i>/</i>kurs <b id="perf-now">—</b><i>/</i><span class="stamp" id="perf-when"></span>
+          <h3 data-i="h2">Mastercard, analiza spółki</h3>
+          <p style="margin-bottom:20px" data-i="vid">Dwudziestominutowe omówienie modelu biznesowego, źródeł przychodu i fundamentów spółki płatniczej.</p>
+          <div class="perf" id="perf-ma" data-i="perf">
+            Od nagrania <b id="perf-base">484,24 USD</b><i>/</i><span class="chg" id="perf-chg">···</span><i>/</i>kurs <b id="perf-now">···</b><i>/</i><span class="stamp" id="perf-when"></span>
           </div>
 
           <div class="embed" style="margin-top:18px">
             <iframe
               src="https://www.youtube-nocookie.com/embed/l_4fF0E6EC8"
-              title="Analiza Mastercard — Konrad Jendryś"
+              title="Analiza Mastercard, Konrad Jendryś"
               loading="lazy"
               allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               referrerpolicy="strict-origin-when-cross-origin"
@@ -538,13 +716,13 @@ footer{border-top:1px solid var(--line);padding:22px 0 30px}
         </div>
 
         <!-- ===== 3. screener w Pythonie ===== -->
-        <div class="item">
+        <div class="item step" data-act="fold" role="button" tabindex="0" aria-expanded="false" style="--accent:#F0C14B">
           <div class="item-top"><span class="src src-py">Python · Quality Screener v1.2</span><span>21.08.2026</span></div>
-          <h3>Screener jakości: ROIC i Real FCF</h3>
-          <p style="margin-bottom:0">Skrypt przepuszcza listę spółek przez trzy bramki, których używam przy przeglądzie portfela. Nie służy do wyceny — służy do odsiania spółek, którym nie warto poświęcać czasu.</p>
+          <h3 data-i="h3">Screener jakości: ROIC i Real FCF</h3>
+          <p style="margin-bottom:0" data-i="ld1">Skrypt przepuszcza listę spółek przez trzy bramki, których używam przy przeglądzie portfela. Nie służy do wyceny, służy do odsiania spółek, którym nie warto poświęcać czasu.</p>
 
           <div class="excerpt" id="ex-py">
-            <div class="code-head">Kod źródłowy — screener.py</div>
+            <div class="code-head" data-i="ch1">Kod źródłowy: screener.py</div>
 <pre class="code"><span class="c-doc">&quot;&quot;&quot;
 Quality Screener v1.2
 
@@ -851,7 +1029,7 @@ i tak trzeba otworzyc 10-K. To narzedzie do odsiewania, nie do rozstrzygania.
     print_report(build_report(<span class="c-const">TICKERS</span>, yield_10y), yield_10y)
 </pre>
 
-            <div class="code-head">Wynik przebiegu — 21 sierpnia 2026</div>
+            <div class="code-head" data-i="ch2">Wynik przebiegu, 21 sierpnia 2026</div>
 <pre class="out">10Y UST: 4.70%  +  premia za ryzyko 4.5%  =  stopa wymagana 9.20%
 Prog ROIC: 15%   |   sufit wzrostu: 12%
 Oczekiwany zwrot = rentownosc Real FCF + wzrost przychodow.
@@ -874,62 +1052,62 @@ Ostrzezenia:
   [AMZN] niekompletne dane do ROIC</pre>
 
             <div class="gates">
-              <div class="code-head" style="margin-top:28px">Jak to działa</div>
+              <div class="code-head" style="margin-top:28px" data-i="ch3">Jak to działa</div>
 
-              <h4>Bramka 1 — ROIC powyżej 15%</h4>
-              <p>Zwrot z zainwestowanego kapitału liczony jako NOPAT do kapitału zainwestowanego, czyli długu plus kapitału własnego minus gotówki. Odpowiada na pytanie, czy biznes zarabia więcej, niż kosztuje go kapitał.</p>
+              <h4 data-i="g1">Bramka 1: ROIC powyżej 15%</h4>
+              <p data-i="ex5">Zwrot z zainwestowanego kapitału liczony jako NOPAT do kapitału zainwestowanego, czyli długu plus kapitału własnego minus gotówki. Odpowiada na pytanie, czy biznes zarabia więcej, niż kosztuje go kapitał.</p>
 
-              <h4>Bramka 2 — Real FCF powyżej zera</h4>
-              <p>Przepływy operacyjne minus CapEx minus wynagrodzenia w akcjach. Odjęcie SBC jest celowe: to realny koszt dla akcjonariusza, choć nie wypływa z rachunku bankowego. Spółka płacąca akcjami zamiast gotówką rozwadnia udział właścicieli, a klasyczny FCF tego nie pokazuje.</p>
+              <h4 data-i="g2">Bramka 2: Real FCF powyżej zera</h4>
+              <p data-i="ex6">Przepływy operacyjne minus CapEx minus wynagrodzenia w akcjach. Odjęcie SBC jest celowe: to realny koszt dla akcjonariusza, choć nie wypływa z rachunku bankowego. Spółka płacąca akcjami zamiast gotówką rozwadnia udział właścicieli, a klasyczny FCF tego nie pokazuje.</p>
 
-              <h4>Bramka 3 — oczekiwany zwrot ponad stopę wymaganą</h4>
-              <p>Oczekiwany zwrot to rentowność Real FCF powiększona o wzrost, stopa wymagana to dziesięcioletnie obligacje USA plus premia za ryzyko akcji. Konstrukcja wynika z przekształcenia modelu Gordona: skoro cena to przepływ podzielony przez różnicę stopy wymaganej i wzrostu, to oczekiwany zwrot równa się rentowności przepływów plus ich wzrost.</p>
+              <h4 data-i="g3">Bramka 3: oczekiwany zwrot ponad stopę wymaganą</h4>
+              <p data-i="ex7">Oczekiwany zwrot to rentowność Real FCF powiększona o wzrost, stopa wymagana to dziesięcioletnie obligacje USA plus premia za ryzyko akcji. Konstrukcja wynika z przekształcenia modelu Gordona: skoro cena to przepływ podzielony przez różnicę stopy wymaganej i wzrostu, to oczekiwany zwrot równa się rentowności przepływów plus ich wzrost.</p>
 
-              <h4>Dlaczego akurat tak</h4>
-              <p>Pierwsza wersja zestawiała samą rentowność Real FCF z rentownością obligacji. Pierwszy przebieg pokazał, że to porównanie jest nierówne — obligacja płaci stały kupon, a przepływy spółki rosną. Przy rentowności dziesięciolatek na poziomie 4,7% bramka odrzucała wszystkie spółki z portfela, łącznie z Mastercardem przy ROIC 96%. Bramka, która odrzuca każdego, nie niesie informacji.</p>
+              <h4 data-i="g4">Dlaczego akurat tak</h4>
+              <p data-i="ex8">Pierwsza wersja zestawiała samą rentowność Real FCF z rentownością obligacji. Pierwszy przebieg pokazał, że to porównanie jest nierówne, bo obligacja płaci stały kupon, a przepływy spółki rosną. Przy rentowności dziesięciolatek na poziomie 4,7% bramka odrzucała wszystkie spółki z portfela, łącznie z Mastercardem przy ROIC 96%. Bramka, która odrzuca każdego, nie niesie informacji.</p>
 
-              <h4>Czego to narzędzie nie potrafi</h4>
-              <p>Dane pochodzą z Yahoo Finance, więc są wtórne — przy każdej pozycji ważącej na decyzji i tak trzeba otworzyć 10-K. ROIC nie ma sensu dla banków i ubezpieczycieli, bo dług jest u nich surowcem, a nie finansowaniem. Wzrost liczony jest z przychodów, co zakłada stabilne marże. Premia za ryzyko na poziomie 4,5% jest wyborem, nie faktem. Skrypt ostrzega o każdym z tych przypadków zamiast podawać liczbę bez kontekstu.</p>
+              <h4 data-i="g5">Czego to narzędzie nie potrafi</h4>
+              <p data-i="ex9">Dane pochodzą z Yahoo Finance, więc są wtórne. Przy każdej pozycji ważącej na decyzji i tak trzeba otworzyć 10-K. ROIC nie ma sensu dla banków i ubezpieczycieli, bo dług jest u nich surowcem, a nie finansowaniem. Wzrost liczony jest z przychodów, co zakłada stabilne marże. Premia za ryzyko na poziomie 4,5% jest wyborem, nie faktem. Skrypt ostrzega o każdym z tych przypadków zamiast podawać liczbę bez kontekstu.</p>
 
-              <h4>Co pokazał przebieg</h4>
-              <p>Na liście są celowo dwie spółki spoza mojego portfela — Ford i Nucor. Narzędzie, które przepuszcza wyłącznie to, co się już posiada, niczego nie weryfikuje.</p>
-              <p>Nucor wypadł na wszystkich trzech bramkach: ujemny Real FCF, kurczące się przychody, ROIC poniżej progu. Hutnictwo po szczycie cyklu zostało odrzucone dokładnie tak, jak powinno.</p>
-              <p>Ford ujawnił natomiast wadę samego narzędzia. Wypadł na ROIC, ale rentowność przepływów 21,4% wypchnęła go na szczyt rankingu. Ta liczba jest artefaktem: przepływy operacyjne Forda zawierają działalność kredytową Ford Credit, więc nie są gotówką z produkcji samochodów. Wniosek na kolejną wersję: sortowanie po nadwyżce ma sens wyłącznie wśród spółek, które przeszły komplet bramek. W obecnej wersji trzeba czytać kolumnę podsumowania, a nie kolejność wierszy.</p>
+              <h4 data-i="g6">Co pokazał przebieg</h4>
+              <p data-i="ex10">Na liście są celowo dwie spółki spoza mojego portfela: Ford i Nucor. Narzędzie, które przepuszcza wyłącznie to, co się już posiada, niczego nie weryfikuje.</p>
+              <p data-i="ex11">Nucor wypadł na wszystkich trzech bramkach: ujemny Real FCF, kurczące się przychody, ROIC poniżej progu. Hutnictwo po szczycie cyklu zostało odrzucone dokładnie tak, jak powinno.</p>
+              <p data-i="ex12">Ford ujawnił natomiast wadę samego narzędzia. Wypadł na ROIC, ale rentowność przepływów 21,4% wypchnęła go na szczyt rankingu. Ta liczba jest artefaktem: przepływy operacyjne Forda zawierają działalność kredytową Ford Credit, więc nie są gotówką z produkcji samochodów. Wniosek na kolejną wersję: sortowanie po nadwyżce ma sens wyłącznie wśród spółek, które przeszły komplet bramek. W obecnej wersji trzeba czytać kolumnę podsumowania, a nie kolejność wierszy.</p>
             </div>
           </div>
 
-          <div class="facts">
+          <div class="facts" data-i="f2">
             Python<i>/</i>pandas<i>/</i>yfinance<i>/</i>304 linie
           </div>
 
           <div class="actions">
-            <button class="more" data-target="ex-py" data-close="Ukryj kod">Zobacz kod i opis <span class="chev">▾</span></button>
-            <a class="cta" href="https://github.com/konradjendrys/konradjendrys.github.io/tree/main/screener" target="_blank" rel="noopener">Pobierz z GitHuba →</a>
+            <button class="more" data-target="ex-py" data-o-pl="Zobacz kod i opis" data-o-en="View code and notes" data-c-pl="Ukryj kod" data-c-en="Hide code">Zobacz kod i opis <span class="chev">▾</span></button>
+            <a class="cta" href="https://github.com/konradjendrys/konradjendrys.github.io/tree/main/screener" target="_blank" rel="noopener" data-i="c2">Pobierz z GitHuba →</a>
           </div>
         </div>
 
         <!-- ===== w przygotowaniu ===== -->
-        <a class="item" href="#">
+        <div class="item step">
           <div class="item-top"><span class="src src-meta" style="color:#5B8DEF">Notatka · GOOGL</span><span>w przygotowaniu</span></div>
-          <h3>Alphabet — koszt utrzymania pozycji w wyszukiwarce</h3>
-          <p>Co rosnące nakłady na infrastrukturę AI robią z rentownością Google Services i jak to zmienia obraz wolnych przepływów.</p>
-        </a>
+          <h3 data-i="h4">Alphabet, koszt utrzymania pozycji w wyszukiwarce</h3>
+          <p data-i="cp1">Co rosnące nakłady na infrastrukturę AI robią z rentownością Google Services i jak to zmienia obraz wolnych przepływów.</p>
+        </div>
 
-        <a class="item" href="#">
+        <div class="item step">
           <div class="item-top"><span class="src src-xls">Excel</span><span>w przygotowaniu</span></div>
-          <h3>Model DCF z analizą wrażliwości</h3>
-          <p>Wycena metodą zdyskontowanych przepływów w trzech scenariuszach, z tabelą wrażliwości na koszt kapitału i stopę wzrostu rezydualnego.</p>
-        </a>
+          <h3 data-i="h5">Model DCF z analizą wrażliwości</h3>
+          <p data-i="cp2">Wycena metodą zdyskontowanych przepływów w trzech scenariuszach, z tabelą wrażliwości na koszt kapitału i stopę wzrostu rezydualnego.</p>
+        </div>
       </section>
 
       <!-- ============ KONTAKT ============ -->
       <section class="panel" id="contact" role="tabpanel">
-        <div class="meta">Kontakt</div>
-        <h2 class="lead">Otwarty na pierwsze doświadczenie w branży finansowej.</h2>
-        <p>Najszybciej odpowiadam na LinkedInie.</p>
+        <div class="meta step" data-i="kick3">Kontakt</div>
+        <h2 class="lead" data-i="lead3">Otwarty na pierwsze doświadczenie w branży finansowej.</h2>
+        <p data-i="ex13">Najszybciej odpowiadam na LinkedInie.</p>
 
         <div class="contact-list">
-          <a class="link" href="https://www.linkedin.com/in/konradjendrys" target="_blank" rel="noopener">linkedin.com/in/konradjendrys</a>
+          <a class="link" href="https://www.linkedin.com/in/kjendrys" target="_blank" rel="noopener">linkedin.com/in/kjendrys</a>
           <a class="link" href="https://github.com/konradjendrys" target="_blank" rel="noopener">github.com/konradjendrys</a>
           <a class="link" href="mailto:konrad.af.jendrys@gmail.com">konrad.af.jendrys@gmail.com</a>
           <a class="link" href="tel:+48666651206">+48 666 651 206</a>
@@ -941,11 +1119,11 @@ Ostrzezenia:
 
   <footer>
     <div class="wrap foot-in">
-      <span>© 2026 Konrad Jendryś</span>
+      <span data-i="foot">© 2026 Konrad Jendryś</span>
       <span class="readout">
         <span class="lbl">wykres poglądowy</span>
-        <span class="px" id="px">—</span>
-        <span id="tick">—</span>
+        <span class="px" id="px">···</span>
+        <span id="tick">···</span>
       </span>
     </div>
   </footer>
@@ -957,17 +1135,22 @@ Ostrzezenia:
    Żywy wykres świecowy w tle.
    Świece dorastają w czasie rzeczywistym; co kilka sekund
    bieżąca świeca się zamyka i otwiera nowa. Dane są losowe
-   (błądzenie losowe) — to element wizualny, nie notowania.
+   (błądzenie losowe), to element wizualny, nie notowania.
    ============================================================ */
 (function(){
   const cv  = document.getElementById('chart');
   const ctx = cv.getContext('2d');
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const CSS  = getComputedStyle(document.documentElement);
-  const UP   = CSS.getPropertyValue('--up').trim()   || '#2FD39A';
-  const DOWN = CSS.getPropertyValue('--down').trim() || '#FF6B5A';
-  const MA_C = '#8B95A1';
+  let UP, DOWN, MA_RGB;
+  function palette(){
+    const CSS = getComputedStyle(document.documentElement);
+    UP     = CSS.getPropertyValue('--up').trim()   || '#2FD39A';
+    DOWN   = CSS.getPropertyValue('--down').trim() || '#FF6B5A';
+    MA_RGB = CSS.getPropertyValue('--ma-line').trim() || '139,149,161';
+  }
+  palette();
+  window.addEventListener('themechange', () => { palette(); draw(); readout(); });
 
   const MA_PERIOD   = 12;
   const TICK_MS     = 110;   // co ile odświeża się bieżąca świeca
@@ -1099,11 +1282,11 @@ Ostrzezenia:
     }
 
     // średnia krocząca
-    // średnia krocząca — rozjaśnia się ku prawej razem ze świecami
+    // średnia krocząca, rozjaśnia się ku prawej razem ze świecami
     const maGrad = ctx.createLinearGradient(offset, 0, RIGHT, 0);
-    maGrad.addColorStop(0,    'rgba(139,149,161,0.14)');
-    maGrad.addColorStop(0.5,  'rgba(139,149,161,0.42)');
-    maGrad.addColorStop(1,    'rgba(176,187,199,0.85)');
+    maGrad.addColorStop(0,   'rgba(' + MA_RGB + ',0.14)');
+    maGrad.addColorStop(0.5, 'rgba(' + MA_RGB + ',0.42)');
+    maGrad.addColorStop(1,   'rgba(' + MA_RGB + ',0.85)');
     ctx.strokeStyle = maGrad;
     ctx.lineWidth = 1.5;
     ctx.globalAlpha = 1;
@@ -1175,7 +1358,7 @@ Ostrzezenia:
     if (!reduced) timer = setInterval(frame, TICK_MS);
   }
 
-  // pauza, gdy karta jest w tle — nie marnuje baterii
+  // pauza, gdy karta jest w tle, nie marnuje baterii
   document.addEventListener('visibilitychange', () => {
     if (document.hidden){ if (timer){ clearInterval(timer); timer = null; } }
     else if (!reduced && !timer){ timer = setInterval(frame, TICK_MS); }
@@ -1187,71 +1370,167 @@ Ostrzezenia:
 })();
 
 /* ============================================================
-   Wynik MA od dnia nagrania.
-   Kurs pobiera raz dziennie GitHub Actions do data/ma.json -
-   GitHub Pages nie ma serwera, wiec strona czyta gotowy plik.
+   Wynik MA od dnia nagrania. Kurs pobiera raz dziennie
+   GitHub Actions do data/ma.json, bo Pages nie ma serwera.
    ============================================================ */
 (function(){
   const BASE = 484.24;
   const RECORDED = new Date('2026-03-30T00:00:00Z');
-  const box = document.getElementById('perf-ma');
-  if (!box) return;
+  let data = null;
 
-  const pl = n => n.toLocaleString('pl-PL', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-
-  function elapsed(to){
+  function elapsed(to, en){
     let months = (to.getUTCFullYear() - RECORDED.getUTCFullYear()) * 12
                + (to.getUTCMonth() - RECORDED.getUTCMonth());
-    const anchor = new Date(Date.UTC(RECORDED.getUTCFullYear(), RECORDED.getUTCMonth() + months, RECORDED.getUTCDate()));
-    if (anchor > to){ months -= 1; anchor.setUTCMonth(anchor.getUTCMonth() - 1); }
+    let anchor = new Date(Date.UTC(RECORDED.getUTCFullYear(), RECORDED.getUTCMonth() + months, RECORDED.getUTCDate()));
+    if (anchor > to){
+      months -= 1;
+      anchor = new Date(Date.UTC(RECORDED.getUTCFullYear(), RECORDED.getUTCMonth() + months, RECORDED.getUTCDate()));
+    }
     const days = Math.round((to - anchor) / 86400000);
 
-    const mLabel = months === 1 ? 'miesiąc' : (months % 10 >= 2 && months % 10 <= 4 && (months < 12 || months > 14)) ? 'miesiące' : 'miesięcy';
-    if (months < 1) return `${days} dni`;
-    return days > 0 ? `${months} ${mLabel} i ${days} dni` : `${months} ${mLabel}`;
+    if (en){
+      if (months < 1) return days + ' days';
+      const m = months + (months === 1 ? ' month' : ' months');
+      return days > 0 ? m + ' and ' + days + ' days' : m;
+    }
+    if (months < 1) return days + ' dni';
+    const word = months === 1 ? 'miesiąc'
+      : (months % 10 >= 2 && months % 10 <= 4 && (months < 12 || months > 14)) ? 'miesiące' : 'miesięcy';
+    return days > 0 ? months + ' ' + word + ' i ' + days + ' dni' : months + ' ' + word;
   }
 
+  function render(){
+    const box = document.getElementById('perf-ma');
+    if (!box || !data || data.price == null || !data.close_date) return;
+
+    const en = document.documentElement.lang === 'en';
+    const loc = en ? 'en-GB' : 'pl-PL';
+    const num = n => n.toLocaleString(loc, {minimumFractionDigits:2, maximumFractionDigits:2});
+
+    const change = (data.price / BASE - 1) * 100;
+    const closed = new Date(data.close_date + 'T00:00:00Z');
+
+    const chg = document.getElementById('perf-chg');
+    const base = document.getElementById('perf-base');
+    const now = document.getElementById('perf-now');
+    const when = document.getElementById('perf-when');
+    if (!chg || !base || !now || !when) return;
+
+    chg.textContent = (change >= 0 ? '+' : '') + num(change) + '%';
+    chg.className = 'chg ' + (change >= 0 ? 'up' : 'down');
+    base.textContent = num(BASE) + ' USD';
+    now.textContent = num(data.price) + ' USD';
+    when.textContent = elapsed(closed, en) + (en ? ', data from ' : ' · dane z ')
+                     + closed.toLocaleDateString(loc);
+    box.classList.add('on');
+  }
+
+  window.addEventListener('langchange', render);
+
   fetch('data/ma.json', {cache: 'no-store'})
-    .then(response => response.ok ? response.json() : Promise.reject())
-    .then(data => {
-      if (data.price == null || !data.close_date) return;   // automat jeszcze nie zdazyl
-
-      const change = (data.price / BASE - 1) * 100;
-      const closed = new Date(data.close_date + 'T00:00:00Z');
-
-      const chg = document.getElementById('perf-chg');
-      chg.textContent = (change >= 0 ? '+' : '') + pl(change) + '%';
-      chg.classList.add(change >= 0 ? 'up' : 'down');
-
-      document.getElementById('perf-base').textContent = pl(BASE) + ' USD';
-      document.getElementById('perf-now').textContent = pl(data.price) + ' USD';
-      document.getElementById('perf-when').textContent =
-        elapsed(closed) + ' · dane z ' + closed.toLocaleDateString('pl-PL');
-
-      box.classList.add('on');
-    })
-    .catch(() => {});   // brak danych: licznik po prostu sie nie pokazuje
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(d => { data = d; render(); })
+    .catch(() => {});
 })();
 
 /* ============================================================
-   Rozwijane zajawki
+   Zdjęcie pojawia się tylko wtedy, gdy plik istnieje w repozytorium.
    ============================================================ */
 (function(){
+  const box = document.getElementById('portrait');
+  if (!box) return;
+  const img = box.querySelector('img');
+  if (img.complete && img.naturalWidth) box.classList.add('ready');
+  img.addEventListener('load', () => box.classList.add('ready'));
+  img.addEventListener('error', () => box.remove());
+})();
+
+/* ============================================================
+   Wejście treści. Elementy pojawiają się po kolei, raz na panel.
+   ============================================================ */
+function enter(panel){
+  if (!panel) return;
+  const slow = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  panel.querySelectorAll('.step, .rows .row, .lead .swipe').forEach((el, i) => {
+    if (el.dataset.seen){ el.classList.add('shown'); return; }
+    el.dataset.seen = '1';
+    if (slow){ el.classList.add('shown'); return; }
+    setTimeout(() => el.classList.add('shown'), 70 * i);
+  });
+}
+
+/* ============================================================
+   Zwijana treść. Etykiety czytane przy każdym użyciu,
+   żeby przetrwały zmianę języka.
+   ============================================================ */
+(function(){
+  function label(btn, open){
+    const en = document.documentElement.lang === 'en';
+    const key = (open ? 'c' : 'o') + (en ? 'En' : 'Pl');
+    return btn.dataset[key] || (open ? 'Zwiń' : 'Rozwiń');
+  }
+
   document.querySelectorAll('.more').forEach(btn => {
     const box = document.getElementById(btn.dataset.target);
     if (!box) return;
-
-    const labelOpen = btn.firstChild.textContent.trim();
-    const labelClose = btn.dataset.close || 'Zwiń';
-
     btn.addEventListener('click', () => {
       const open = box.classList.toggle('open');
       btn.classList.toggle('open', open);
-      btn.firstChild.textContent = (open ? labelClose : labelOpen) + ' ';
-      // po zwinieciu wracamy na gore karty, zeby nie zostac w prozni
-      if (!open) box.closest('.item').scrollIntoView({block: 'nearest'});
+      btn.firstChild.textContent = label(btn, open) + ' ';
+      if (!open) btn.closest('.item').scrollIntoView({block:'nearest'});
     });
   });
+
+  window.addEventListener('langchange', () => {
+    document.querySelectorAll('.more').forEach(btn => {
+      const box = document.getElementById(btn.dataset.target);
+      btn.firstChild.textContent = label(btn, box && box.classList.contains('open')) + ' ';
+    });
+  });
+})();
+
+/* ============================================================
+   Klikalne karty. Klik w tło karty uruchamia jej działanie,
+   ale przycisk, odnośnik, film i blok kodu obsługują się same.
+   ============================================================ */
+(function(){
+  document.querySelectorAll('.item[data-act]').forEach(card => {
+    const act = card.dataset.act;
+
+    function run(){
+      if (act === 'fold'){
+        const btn = card.querySelector('.more');
+        if (btn) btn.click();
+        return;
+      }
+      if (/^https?:/.test(act)) window.open(act, '_blank', 'noopener');
+      else window.location.href = act;
+    }
+
+    card.addEventListener('click', event => {
+      if (event.target.closest('a, button, iframe, pre, input, textarea')) return;
+      const sel = window.getSelection();
+      if (sel && sel.toString().length > 2) return;
+      run();
+    });
+
+    card.addEventListener('keydown', event => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      if (event.target !== card) return;
+      event.preventDefault();
+      run();
+    });
+  });
+
+  const fold = document.querySelector('.item[data-act="fold"]');
+  const btn = fold && fold.querySelector('.more');
+  if (fold && btn){
+    btn.addEventListener('click', () => {
+      requestAnimationFrame(() => {
+        fold.setAttribute('aria-expanded', btn.classList.contains('open') ? 'true' : 'false');
+      });
+    });
+  }
 })();
 
 /* ============================================================
@@ -1264,8 +1543,9 @@ Ostrzezenia:
   function show(id){
     panels.forEach(p => p.classList.toggle('on', p.id === id));
     tabs.forEach(b => b.setAttribute('aria-selected', b.dataset.tab === id));
-    // w podglądzie w ramce zapis adresu bywa zablokowany — nie przerywamy działania
+    // w podglądzie w ramce zapis adresu bywa zablokowany, nie przerywamy działania
     try { history.replaceState(null, '', '#' + id); } catch (e) {}
+    enter(document.getElementById(id));
   }
 
   tabs.forEach(b => b.addEventListener('click', () => show(b.dataset.tab)));
@@ -1282,7 +1562,129 @@ Ostrzezenia:
   let start = '';
   try { start = location.hash.replace('#', ''); } catch (e) {}
   if (start && document.getElementById(start)) show(start);
+  else enter(document.getElementById('about'));
 })();
+
+/* ============================================================
+   Język i motyw
+   ============================================================ */
+(function(){
+  const EN = {
+    tab1:'About', tab2:'Work <span class="count">3</span>', tab3:'Contact',
+
+    kick1:'Fundamental analysis · Capital markets',
+    lead1:'I judge companies by how much <em>cash</em> is actually left.',
+    p1:'I study Financial Analytics at the University of Economics in Katowice and I am preparing for the Polish Securities Broker examination (<strong>Makler Papierów Wartościowych</strong>).',
+    p2:'I run my own portfolio inside a tax-advantaged retirement account and put every company through the same set of gates: <strong>ROIC</strong>, <strong>Real FCF</strong> calculated as operating cash flow less capital expenditure less stock-based compensation, and the free cash flow yield measured against Treasury yields. Accounting profit can be a matter of assumptions. Cash cannot.',
+    p3:'This site collects what comes out of that work: research notes, tools and video analysis.',
+
+    rk1:'Programme', rv1:'Financial Analyst 2.0, UE Katowice',
+    rk2:'Broker exam', rv2:'October 2026',
+    rk3:'Tools', rv3:'Excel · Python · SQL · Power BI',
+    rk4:'Student society', rv4:'Quantum Financial Modelling',
+    rk5:'Location', rv5:'Chorzów / Katowice, Poland',
+
+    ckick:'Certificates',
+    cnote:'Two courses from the 13th edition of the Corporate Readiness Certificate programme, run by Accenture, ING and Kyndryl. The first showed me how a financial institution actually works with data, from preparing it through to decision models. The second gave me the security fundamentals you cannot work without when client data is involved. Both were taught by practitioners from those firms, so they were the first classes where I saw the industry from an operational rather than an academic angle.',
+    cn1:'Data Science in a financial institution',
+    cm1:'ING Hubs Poland · June 2026 · verify →',
+    cn2:'Cybersecurity: defense in modern organizations',
+    cm2:'ING Hubs Poland · June 2026 · verify →',
+    next:'See the work: Meta research note, Python screener, video <span class="arw">→</span>',
+
+    kick2:'Research notes · Video · Tools',
+    lead2:'Work',
+    intro:'Every note follows the same structure: thesis, business model, valuation, risks, catalysts and the conditions that would invalidate the thesis. All of them are dated so they can be judged later.',
+
+    h1:'Is the market pricing Meta&rsquo;s AI spending against the wrong precedent',
+    f1:'P/E fwd <b>18x</b><i>/</i>10-year median <b>27.96x</b><i>/</i>ROIC <b>25.4%</b><i>/</i>ad price <b>+12% y/y</b>',
+    ex1:'Alphabet, Amazon and Microsoft each have a cloud segment where the return on capital expenditure shows up directly in reported revenue. Meta has no equivalent. The market&rsquo;s conclusion is simple: three competitors show the return, Meta does not.',
+    ex2:'I consider that a category error. The absence of a separate revenue line does not prove the absence of a return. It proves only that the return is not reported separately. In Meta&rsquo;s case it materialises inside the advertising business, through sharper targeting and a higher price for the same inventory.',
+    ex3:'Price per ad is the right measure precisely because it is the one variable management cannot set. Impressions can be increased by a product decision, by packing more ads into the feed. The price rises only when advertisers get a better return on their spend. A rising price alongside rising volume means demand is keeping pace with supply.',
+    ex4:'The strongest argument against does not sit in the fundamentals but in legal exposure: the federal trial in Oakland and the New Mexico judgment create a liability that cannot be captured by a cash flow model. That is why my expected value falls below the base case.',
+    c1:'Read in full →',
+
+    h2:'Mastercard, company analysis',
+    vid:'Twenty minutes on the business model, the revenue streams and what determines the quality of this business.',
+    perf:'Since recording <b id="perf-base">484.24 USD</b><i>/</i><span class="chg" id="perf-chg">···</span><i>/</i>price <b id="perf-now">···</b><i>/</i><span class="stamp" id="perf-when"></span>',
+
+    h3:'Quality screener: ROIC and Real FCF',
+    ld1:'The script puts a list of companies through the three gates I use when reviewing my portfolio. It is not a valuation tool. Its job is to filter out the companies not worth spending time on.',
+    f2:'Python<i>/</i>pandas<i>/</i>yfinance<i>/</i>304 lines',
+    ch1:'Source code: screener.py',
+    ch2:'Run output, 21 August 2026',
+    ch3:'How it works',
+    g1:'Gate 1: ROIC above 15%',
+    ex5:'Return on invested capital calculated as NOPAT over invested capital, that is debt plus equity less cash. It answers whether the business earns more than its capital costs.',
+    g2:'Gate 2: positive Real FCF',
+    ex6:'Operating cash flow less capital expenditure less stock-based compensation. Deducting SBC is deliberate: it is a real cost to the shareholder even though no cash leaves the account. A company paying in shares dilutes its owners, and conventional free cash flow does not show that.',
+    g3:'Gate 3: expected return above the required return',
+    ex7:'The expected return is the Real FCF yield plus growth, and the required return is the ten-year Treasury yield plus an equity risk premium. The construction follows from rearranging the Gordon model: if price equals cash flow divided by the difference between the required return and growth, then the expected return equals the cash flow yield plus growth.',
+    g4:'Why this construction',
+    ex8:'The first version compared the Real FCF yield alone against the bond yield. The first run showed that comparison to be unfair, because a bond pays a fixed coupon while company cash flows grow. With the ten-year at 4.7% the gate rejected every holding in the portfolio, including Mastercard at 96% ROIC. A gate that rejects everyone carries no information.',
+    g5:'What the tool cannot do',
+    ex9:'The data comes from Yahoo Finance and is therefore secondary. For any figure that actually carries a decision the 10-K still has to be opened. ROIC is meaningless for banks and insurers, where debt is raw material rather than financing. Growth is taken from revenue, which assumes stable margins. The 4.5% risk premium is a choice, not a fact. The script warns on each of these cases rather than reporting a number without context.',
+    g6:'What the run showed',
+    ex10:'Two companies outside my portfolio sit on the list on purpose: Ford and Nucor. A tool that only passes what you already own verifies nothing.',
+    ex11:'Nucor failed all three gates: negative Real FCF, shrinking revenue, ROIC below the threshold. Steel past the top of its cycle was rejected exactly as it should have been.',
+    ex12:'Ford, however, exposed a flaw in the tool itself. It failed on ROIC, yet a 21.4% cash flow yield pushed it to the top of the ranking. That figure is an artefact: Ford&rsquo;s operating cash flow includes the lending activity of Ford Credit, so it is not cash generated by building cars. The lesson for the next version is that ranking by spread only makes sense among companies that clear every gate.',
+    c2:'Get it on GitHub →',
+
+    h4:'Alphabet, the cost of defending the search franchise',
+    cp1:'What rising AI infrastructure spending does to the profitability of Google Services and how it changes the free cash flow picture.',
+    h5:'DCF model with sensitivity analysis',
+    cp2:'Discounted cash flow valuation across three scenarios, with a sensitivity table on the cost of capital and the terminal growth rate.',
+
+    kick3:'Contact',
+    lead3:'Looking for my first role in finance.',
+    ex13:'LinkedIn is the fastest way to reach me.',
+    foot:'© 2026 Konrad Jendryś'
+  };
+
+  const html = document.documentElement;
+  const langBtn = document.getElementById('lang');
+  const themeBtn = document.getElementById('theme');
+  const nodes = [...document.querySelectorAll('[data-i]')];
+  nodes.forEach(el => el.dataset.pl = el.innerHTML);
+
+  function setLang(code){
+    nodes.forEach(el => {
+      const key = el.dataset.i;
+      const text = code === 'en' ? EN[key] : el.dataset.pl;
+      if (text) el.innerHTML = text;
+    });
+    document.querySelectorAll('.more').forEach(btn => {
+      const shut = code === 'en' ? btn.dataset.closeEn : btn.dataset.close;
+      if (shut) btn.dataset.active = shut;
+    });
+    html.lang = code === 'en' ? 'en' : 'pl';
+    langBtn.textContent = code === 'en' ? 'PL' : 'EN';
+    try { localStorage.setItem('lang', code); } catch(e){}
+    window.dispatchEvent(new Event('langchange'));
+  }
+
+  function setTheme(mode){
+    if (mode === 'light') html.setAttribute('data-theme', 'light');
+    else html.removeAttribute('data-theme');
+    try { localStorage.setItem('theme', mode); } catch(e){}
+    window.dispatchEvent(new Event('themechange'));
+  }
+
+  let lang = 'pl', theme = 'dark';
+  try {
+    const saved = localStorage.getItem('lang');
+    lang = saved || ((navigator.language || '').startsWith('pl') ? 'pl' : 'en');
+    theme = localStorage.getItem('theme') || 'dark';
+  } catch(e){}
+
+  if (lang === 'en') setLang('en'); else langBtn.textContent = 'EN';
+  if (theme === 'light') setTheme('light');
+
+  langBtn.addEventListener('click', () => setLang(html.lang === 'en' ? 'pl' : 'en'));
+  themeBtn.addEventListener('click', () =>
+    setTheme(html.getAttribute('data-theme') === 'light' ? 'dark' : 'light'));
+})();
+
 </script>
 
 </body>
