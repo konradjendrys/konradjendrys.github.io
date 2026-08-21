@@ -358,6 +358,23 @@ pre.code::-webkit-scrollbar-track,pre.out::-webkit-scrollbar-track{background:tr
 }
 .gates p{font-size:14.5px;margin-bottom:0}
 
+/* ---------- licznik wyniku od nagrania ---------- */
+.perf{
+  display:none;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12.5px;
+  color:var(--muted);
+  margin:18px 0 0;
+  line-height:1.9;
+}
+.perf.on{display:block}
+.perf .chg{font-weight:500}
+.perf .chg.up{color:var(--up)}
+.perf .chg.down{color:var(--down)}
+.perf i{color:#333B44;font-style:normal;margin:0 9px}
+.perf b{color:var(--text);font-weight:500}
+.perf .stamp{color:var(--faint)}
+
 /* ---------- osadzone wideo ---------- */
 .embed{
   position:relative;
@@ -505,7 +522,11 @@ footer{border-top:1px solid var(--line);padding:22px 0 30px}
           <div class="item-top"><span class="src src-yt">Wideo · YouTube</span><span>30.03.2026</span></div>
           <h3>Mastercard — analiza spółki</h3>
           <p style="margin-bottom:20px">Dwudziestominutowe omówienie modelu biznesowego, źródeł przychodu i fundamentów spółki płatniczej.</p>
-          <div class="embed">
+          <div class="perf" id="perf-ma">
+            Od nagrania <b id="perf-base">484,24 USD</b><i>/</i><span class="chg" id="perf-chg">—</span><i>/</i>kurs <b id="perf-now">—</b><i>/</i><span class="stamp" id="perf-when"></span>
+          </div>
+
+          <div class="embed" style="margin-top:18px">
             <iframe
               src="https://www.youtube-nocookie.com/embed/l_4fF0E6EC8"
               title="Analiza Mastercard — Konrad Jendryś"
@@ -518,7 +539,7 @@ footer{border-top:1px solid var(--line);padding:22px 0 30px}
 
         <!-- ===== 3. screener w Pythonie ===== -->
         <div class="item">
-          <div class="item-top"><span class="src src-py">Python</span><span>Quality Screener v1.2</span></div>
+          <div class="item-top"><span class="src src-py">Python · Quality Screener v1.2</span><span>21.08.2026</span></div>
           <h3>Screener jakości: ROIC i Real FCF</h3>
           <p style="margin-bottom:0">Skrypt przepuszcza listę spółek przez trzy bramki, których używam przy przeglądzie portfela. Nie służy do wyceny — służy do odsiania spółek, którym nie warto poświęcać czasu.</p>
 
@@ -878,7 +899,7 @@ Ostrzezenia:
           </div>
 
           <div class="facts">
-            Python<i>/</i>pandas<i>/</i>yfinance<i>/</i>304 linie<i>/</i>testy bez dostępu do sieci
+            Python<i>/</i>pandas<i>/</i>yfinance<i>/</i>304 linie
           </div>
 
           <div class="actions">
@@ -1163,6 +1184,53 @@ Ostrzezenia:
   let rt;
   window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(start, 220); });
   start();
+})();
+
+/* ============================================================
+   Wynik MA od dnia nagrania.
+   Kurs pobiera raz dziennie GitHub Actions do data/ma.json -
+   GitHub Pages nie ma serwera, wiec strona czyta gotowy plik.
+   ============================================================ */
+(function(){
+  const BASE = 484.24;
+  const RECORDED = new Date('2026-03-30T00:00:00Z');
+  const box = document.getElementById('perf-ma');
+  if (!box) return;
+
+  const pl = n => n.toLocaleString('pl-PL', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+  function elapsed(to){
+    let months = (to.getUTCFullYear() - RECORDED.getUTCFullYear()) * 12
+               + (to.getUTCMonth() - RECORDED.getUTCMonth());
+    const anchor = new Date(Date.UTC(RECORDED.getUTCFullYear(), RECORDED.getUTCMonth() + months, RECORDED.getUTCDate()));
+    if (anchor > to){ months -= 1; anchor.setUTCMonth(anchor.getUTCMonth() - 1); }
+    const days = Math.round((to - anchor) / 86400000);
+
+    const mLabel = months === 1 ? 'miesiąc' : (months % 10 >= 2 && months % 10 <= 4 && (months < 12 || months > 14)) ? 'miesiące' : 'miesięcy';
+    if (months < 1) return `${days} dni`;
+    return days > 0 ? `${months} ${mLabel} i ${days} dni` : `${months} ${mLabel}`;
+  }
+
+  fetch('data/ma.json', {cache: 'no-store'})
+    .then(response => response.ok ? response.json() : Promise.reject())
+    .then(data => {
+      if (data.price == null || !data.close_date) return;   // automat jeszcze nie zdazyl
+
+      const change = (data.price / BASE - 1) * 100;
+      const closed = new Date(data.close_date + 'T00:00:00Z');
+
+      const chg = document.getElementById('perf-chg');
+      chg.textContent = (change >= 0 ? '+' : '') + pl(change) + '%';
+      chg.classList.add(change >= 0 ? 'up' : 'down');
+
+      document.getElementById('perf-base').textContent = pl(BASE) + ' USD';
+      document.getElementById('perf-now').textContent = pl(data.price) + ' USD';
+      document.getElementById('perf-when').textContent =
+        elapsed(closed) + ' · dane z ' + closed.toLocaleDateString('pl-PL');
+
+      box.classList.add('on');
+    })
+    .catch(() => {});   // brak danych: licznik po prostu sie nie pokazuje
 })();
 
 /* ============================================================
