@@ -237,7 +237,7 @@ a.item:hover .cta,a.cta:hover{border-bottom-color:var(--up)}
   background:linear-gradient(to bottom,rgba(5,6,7,0),rgba(5,6,7,.97));
   pointer-events:none;transition:opacity .3s ease;
 }
-.excerpt.open{max-height:1400px}
+.excerpt.open{max-height:4200px}
 .excerpt.open::after{opacity:0}
 .excerpt p{font-size:15px;margin-bottom:14px}
 .excerpt p:last-child{margin-bottom:0}
@@ -272,6 +272,54 @@ a.item:hover .cta,a.cta:hover{border-bottom-color:var(--up)}
 }
 
 .actions{display:flex;flex-wrap:wrap;gap:26px;align-items:baseline;margin-top:18px}
+
+/* ---------- blok kodu ---------- */
+.code-head{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--faint);margin:26px 0 10px;
+}
+pre.code{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;line-height:1.62;
+  color:#C9D1D9;
+  background:#0A0C0F;
+  border:1px solid #1C232B;
+  border-radius:4px;
+  padding:18px 20px;
+  margin:0;
+  max-height:460px;
+  overflow:auto;
+  white-space:pre;
+  tab-size:4;
+}
+pre.out{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11.5px;line-height:1.7;
+  color:#A8B2BD;background:#0A0C0F;
+  border:1px solid #1C232B;border-radius:4px;
+  padding:16px 20px;margin:0;overflow-x:auto;white-space:pre;
+}
+pre.code::-webkit-scrollbar,pre.out::-webkit-scrollbar{width:9px;height:9px}
+pre.code::-webkit-scrollbar-thumb,pre.out::-webkit-scrollbar-thumb{
+  background:#252D36;border-radius:5px;
+}
+pre.code::-webkit-scrollbar-track,pre.out::-webkit-scrollbar-track{background:transparent}
+
+.c-doc{color:#6E7A86;font-style:italic}
+.c-com{color:#5E6B77;font-style:italic}
+.c-str{color:#C9A87C}
+.c-kw{color:#C58FD8}
+.c-bi{color:#7BA7D9}
+.c-fn{color:#6FD3A8}
+.c-num{color:#D9906B}
+.c-const{color:#D6C177}
+
+.gates{margin:22px 0 0}
+.gates h4{
+  font-family:'Inter',sans-serif;font-weight:600;font-size:15px;
+  color:var(--text);margin:20px 0 6px;
+}
+.gates p{font-size:14.5px;margin-bottom:0}
 
 /* ---------- osadzone wideo ---------- */
 .embed{
@@ -408,7 +456,7 @@ footer{border-top:1px solid var(--line);padding:22px 0 30px}
           </div>
 
           <div class="actions">
-            <button class="more" data-target="ex-meta">Rozwiń <span class="chev">▾</span></button>
+            <button class="more" data-target="ex-meta" data-close="Zwiń">Rozwiń <span class="chev">▾</span></button>
             <a class="cta" href="meta.html">Czytaj całość →</a>
           </div>
         </div>
@@ -431,24 +479,372 @@ footer{border-top:1px solid var(--line);padding:22px 0 30px}
 
         <!-- ===== 3. screener w Pythonie ===== -->
         <div class="item">
-          <div class="item-top"><span class="src src-py">Python</span><span>kod na GitHubie</span></div>
+          <div class="item-top"><span class="src src-py">Python</span><span>Quality Screener v1.2</span></div>
           <h3>Screener jakości: ROIC i Real FCF</h3>
+          <p style="margin-bottom:0">Skrypt przepuszcza listę spółek przez trzy bramki, których używam przy przeglądzie portfela. Nie służy do wyceny — służy do odsiania spółek, którym nie warto poświęcać czasu.</p>
 
           <div class="excerpt" id="ex-py">
-            <p>Skrypt przepuszcza listę spółek przez trzy bramki, których używam przy przeglądzie portfela. Nie służy do wyceny — służy do odsiania spółek, którym nie warto poświęcać czasu.</p>
-            <p><b>ROIC powyżej 15%</b> — czy biznes zarabia więcej, niż kosztuje go kapitał. Liczony jako NOPAT do kapitału zainwestowanego, czyli długu plus kapitału własnego minus gotówki.</p>
-            <p><b>Real FCF powyżej zera</b> — przepływy operacyjne minus CapEx minus wynagrodzenia w akcjach. Odjęcie SBC jest celowe: to realny koszt dla akcjonariusza, choć nie wypływa z rachunku bankowego.</p>
-            <p><b>Rentowność Real FCF ponad dziesięciolatki</b> — czy w ogóle warto brać na siebie ryzyko akcji zamiast kupić obligację.</p>
-            <p>README opisuje też ograniczenia narzędzia: dane są wtórne, ROIC nie ma sensu dla spółek finansowych, a brakujące pozycje przesuwają wynik w konkretną stronę. Skrypt ostrzega o każdym z tych przypadków zamiast podawać liczbę bez kontekstu.</p>
+            <div class="code-head">Kod źródłowy — screener.py</div>
+<pre class="code"><span class="c-doc">&quot;&quot;&quot;
+Quality Screener v1.2
+
+Trzy bramki, przez ktore przepuszczam spolki przed dokladniejsza analiza:
+    1. ROIC &gt; 15%
+    2. Real FCF = OCF - CapEx - SBC &gt; 0
+    3. Oczekiwany zwrot (FCF yield + wzrost) &gt; stopa wymagana (10Y UST + premia)
+
+Bramka 3 to przeksztalcony model Gordona: P = CF / (r - g), czyli r = CF/P + g.
+Pierwsza wersja porownywala sama rentownosc Real FCF z rentownoscia obligacji
+i odrzucala wszystko - obligacja placi staly kupon, przeplywy spolki rosna.
+
+Dane z Yahoo Finance. Sa wtorne, wiec przy kazdej pozycji wazacej na decyzji
+i tak trzeba otworzyc 10-K. To narzedzie do odsiewania, nie do rozstrzygania.
+&quot;&quot;&quot;</span>
+
+<span class="c-kw">import</span> pandas <span class="c-kw">as</span> pd
+<span class="c-kw">import</span> yfinance <span class="c-kw">as</span> yf
+
+<span class="c-const">TICKERS</span> = [<span class="c-str">&quot;META&quot;</span>, <span class="c-str">&quot;GOOGL&quot;</span>, <span class="c-str">&quot;MA&quot;</span>, <span class="c-str">&quot;AMZN&quot;</span>, <span class="c-str">&quot;NU&quot;</span>, <span class="c-str">&quot;F&quot;</span>, <span class="c-str">&quot;NUE&quot;</span>]
+
+<span class="c-const">ROIC_THRESHOLD</span> = <span class="c-num">0.15</span>
+<span class="c-const">EQUITY_RISK_PREMIUM</span> = <span class="c-num">0.045</span>
+<span class="c-const">GROWTH_CAP</span> = <span class="c-num">0.12</span>
+<span class="c-const">MAX_TAX_RATE</span> = <span class="c-num">0.50</span>
+<span class="c-const">FALLBACK_BOND_YIELD</span> = <span class="c-num">0.042</span>
+
+<span class="c-const">FINANCIAL_SECTORS</span> = {<span class="c-str">&quot;Financial Services&quot;</span>, <span class="c-str">&quot;Financials&quot;</span>}
+<span class="c-com"># Yahoo wrzuca sieci platnicze do sektora finansowego, ale one nie biora</span>
+<span class="c-com"># ryzyka kredytowego ani nie maja bilansu bankowego - ROIC ma dla nich sens.</span>
+<span class="c-const">NOT_REALLY_FINANCIALS</span> = {<span class="c-str">&quot;MA&quot;</span>, <span class="c-str">&quot;V&quot;</span>}
+
+<span class="c-com"># Nazwy wierszy zmieniaja sie miedzy wersjami yfinance. Pierwszy trafiony wygrywa.</span>
+<span class="c-const">ROW_ALIASES</span> = {
+    <span class="c-str">&quot;ocf&quot;</span>: [<span class="c-str">&quot;Operating Cash Flow&quot;</span>, <span class="c-str">&quot;Total Cash From Operating Activities&quot;</span>],
+    <span class="c-str">&quot;capex&quot;</span>: [<span class="c-str">&quot;Capital Expenditure&quot;</span>, <span class="c-str">&quot;Capital Expenditures&quot;</span>],
+    <span class="c-str">&quot;sbc&quot;</span>: [<span class="c-str">&quot;Stock Based Compensation&quot;</span>],
+    <span class="c-str">&quot;ebit&quot;</span>: [<span class="c-str">&quot;EBIT&quot;</span>, <span class="c-str">&quot;Operating Income&quot;</span>],
+    <span class="c-str">&quot;pretax_income&quot;</span>: [<span class="c-str">&quot;Pretax Income&quot;</span>, <span class="c-str">&quot;Income Before Tax&quot;</span>],
+    <span class="c-str">&quot;tax&quot;</span>: [<span class="c-str">&quot;Tax Provision&quot;</span>, <span class="c-str">&quot;Income Tax Expense&quot;</span>],
+    <span class="c-str">&quot;revenue&quot;</span>: [<span class="c-str">&quot;Total Revenue&quot;</span>, <span class="c-str">&quot;Operating Revenue&quot;</span>],
+    <span class="c-str">&quot;total_debt&quot;</span>: [<span class="c-str">&quot;Total Debt&quot;</span>],
+    <span class="c-str">&quot;long_term_debt&quot;</span>: [<span class="c-str">&quot;Long Term Debt&quot;</span>, <span class="c-str">&quot;Long Term Debt And Capital Lease Obligation&quot;</span>],
+    <span class="c-str">&quot;current_debt&quot;</span>: [<span class="c-str">&quot;Current Debt&quot;</span>, <span class="c-str">&quot;Current Debt And Capital Lease Obligation&quot;</span>],
+    <span class="c-str">&quot;equity&quot;</span>: [<span class="c-str">&quot;Stockholders Equity&quot;</span>, <span class="c-str">&quot;Total Stockholder Equity&quot;</span>],
+    <span class="c-str">&quot;cash&quot;</span>: [
+        <span class="c-str">&quot;Cash And Cash Equivalents&quot;</span>,
+        <span class="c-str">&quot;Cash And Cash Equivalents At Carrying Value&quot;</span>,
+        <span class="c-str">&quot;Cash Cash Equivalents And Short Term Investments&quot;</span>,
+    ],
+}
+
+<span class="c-const">GATE_LABELS</span> = {<span class="c-str">&quot;gate_roic&quot;</span>: <span class="c-str">&quot;ROIC&quot;</span>, <span class="c-str">&quot;gate_fcf&quot;</span>: <span class="c-str">&quot;Real FCF&quot;</span>, <span class="c-str">&quot;gate_return&quot;</span>: <span class="c-str">&quot;zwrot&quot;</span>}
+
+<span class="c-const">COLUMNS</span> = [<span class="c-str">&quot;ticker&quot;</span>, <span class="c-str">&quot;roic&quot;</span>, <span class="c-str">&quot;real_fcf_musd&quot;</span>, <span class="c-str">&quot;fcf_yield&quot;</span>, <span class="c-str">&quot;growth&quot;</span>,
+           <span class="c-str">&quot;exp_return&quot;</span>, <span class="c-str">&quot;spread_pp&quot;</span>, <span class="c-str">&quot;gate_roic&quot;</span>, <span class="c-str">&quot;gate_fcf&quot;</span>, <span class="c-str">&quot;gate_return&quot;</span>, <span class="c-str">&quot;summary&quot;</span>]
+
+
+<span class="c-kw">def</span> <span class="c-fn">pick_value</span>(frame, field):
+    <span class="c-doc">&quot;&quot;&quot;Najnowsza niepusta wartosc pozycji plus data okresu, z ktorego pochodzi.&quot;&quot;&quot;</span>
+    <span class="c-kw">if</span> frame <span class="c-kw">is</span> <span class="c-kw">None</span> <span class="c-kw">or</span> <span class="c-bi">getattr</span>(frame, <span class="c-str">&quot;empty&quot;</span>, <span class="c-kw">True</span>):
+        <span class="c-kw">return</span> <span class="c-kw">None</span>, <span class="c-kw">None</span>
+
+    <span class="c-kw">for</span> row_name <span class="c-kw">in</span> <span class="c-const">ROW_ALIASES</span>[field]:
+        <span class="c-kw">if</span> row_name <span class="c-kw">not</span> <span class="c-kw">in</span> frame.index:
+            <span class="c-kw">continue</span>
+
+        selected = frame.loc[row_name]
+        <span class="c-com"># Zdublowany label daje DataFrame zamiast Series i float() sie wywala.</span>
+        <span class="c-kw">if</span> <span class="c-bi">isinstance</span>(selected, pd.DataFrame):
+            selected = selected.iloc[<span class="c-num">0</span>]
+
+        series = selected.dropna()
+        <span class="c-kw">if</span> <span class="c-kw">not</span> series.empty:
+            <span class="c-kw">return</span> <span class="c-bi">float</span>(series.iloc[<span class="c-num">0</span>]), series.index[<span class="c-num">0</span>]
+
+    <span class="c-kw">return</span> <span class="c-kw">None</span>, <span class="c-kw">None</span>
+
+
+<span class="c-kw">def</span> <span class="c-fn">pick_total_debt</span>(balance):
+    value, period = pick_value(balance, <span class="c-str">&quot;total_debt&quot;</span>)
+    <span class="c-kw">if</span> value <span class="c-kw">is</span> <span class="c-kw">not</span> <span class="c-kw">None</span>:
+        <span class="c-kw">return</span> value, period, <span class="c-str">&quot;&quot;</span>
+
+    long_term, p1 = pick_value(balance, <span class="c-str">&quot;long_term_debt&quot;</span>)
+    current, p2 = pick_value(balance, <span class="c-str">&quot;current_debt&quot;</span>)
+    <span class="c-kw">if</span> long_term <span class="c-kw">is</span> <span class="c-kw">None</span> <span class="c-kw">and</span> current <span class="c-kw">is</span> <span class="c-kw">None</span>:
+        <span class="c-kw">return</span> <span class="c-kw">None</span>, <span class="c-kw">None</span>, <span class="c-str">&quot;&quot;</span>
+
+    <span class="c-kw">return</span> (long_term <span class="c-kw">or</span> <span class="c-num">0.0</span>) + (current <span class="c-kw">or</span> <span class="c-num">0.0</span>), (p1 <span class="c-kw">or</span> p2), <span class="c-str">&quot;dlug ze skladowych; &quot;</span>
+
+
+<span class="c-kw">def</span> <span class="c-fn">revenue_cagr</span>(income):
+    <span class="c-doc">&quot;&quot;&quot;
+    Wzrost licze z przychodow, nie z Real FCF. FCF potrafi zmienic sie o kilkadziesiat
+    procent przy jednym cyklu inwestycyjnym i zaburzylby bramke. Cena tego uproszczenia:
+    zakladam stabilne marze.
+    &quot;&quot;&quot;</span>
+    <span class="c-kw">if</span> income <span class="c-kw">is</span> <span class="c-kw">None</span> <span class="c-kw">or</span> <span class="c-bi">getattr</span>(income, <span class="c-str">&quot;empty&quot;</span>, <span class="c-kw">True</span>):
+        <span class="c-kw">return</span> <span class="c-kw">None</span>, <span class="c-str">&quot;brak rachunku wynikow&quot;</span>
+
+    <span class="c-kw">for</span> row_name <span class="c-kw">in</span> <span class="c-const">ROW_ALIASES</span>[<span class="c-str">&quot;revenue&quot;</span>]:
+        <span class="c-kw">if</span> row_name <span class="c-kw">not</span> <span class="c-kw">in</span> income.index:
+            <span class="c-kw">continue</span>
+
+        selected = income.loc[row_name]
+        <span class="c-kw">if</span> <span class="c-bi">isinstance</span>(selected, pd.DataFrame):
+            selected = selected.iloc[<span class="c-num">0</span>]
+
+        series = selected.dropna()
+        <span class="c-kw">if</span> <span class="c-bi">len</span>(series) &lt; <span class="c-num">2</span>:
+            <span class="c-kw">continue</span>
+
+        newest, oldest = <span class="c-bi">float</span>(series.iloc[<span class="c-num">0</span>]), <span class="c-bi">float</span>(series.iloc[-<span class="c-num">1</span>])
+        <span class="c-kw">if</span> oldest &lt;= <span class="c-num">0</span> <span class="c-kw">or</span> newest &lt;= <span class="c-num">0</span>:
+            <span class="c-kw">return</span> <span class="c-kw">None</span>, <span class="c-str">&quot;przychod niedodatni&quot;</span>
+        <span class="c-kw">return</span> (newest / oldest) ** (<span class="c-num">1</span> / (<span class="c-bi">len</span>(series) - <span class="c-num">1</span>)) - <span class="c-num">1</span>, <span class="c-str">&quot;&quot;</span>
+
+    <span class="c-kw">return</span> <span class="c-kw">None</span>, <span class="c-str">&quot;brak pozycji przychodu&quot;</span>
+
+
+<span class="c-kw">def</span> <span class="c-fn">get_bond_yield</span>():
+    <span class="c-kw">try</span>:
+        close = yf.Ticker(<span class="c-str">&quot;^TNX&quot;</span>).history(period=<span class="c-str">&quot;5d&quot;</span>)[<span class="c-str">&quot;Close&quot;</span>].dropna()
+        raw = <span class="c-bi">float</span>(close.iloc[-<span class="c-num">1</span>])
+        <span class="c-kw">if</span> raw &gt; <span class="c-num">20</span>:          <span class="c-com"># ^TNX bywa kwotowany jako 47.0 zamiast 4.70</span>
+            raw /= <span class="c-num">10</span>
+        <span class="c-kw">return</span> raw / <span class="c-num">100</span>
+    <span class="c-kw">except</span> Exception:
+        <span class="c-kw">return</span> <span class="c-const">FALLBACK_BOND_YIELD</span>
+
+
+<span class="c-kw">def</span> <span class="c-fn">screen_ticker</span>(ticker):
+    <span class="c-doc">&quot;&quot;&quot;Liczy wskazniki dla jednej spolki. Bledy trafiaja do &#x27;warning&#x27;, nie do wyjatku.&quot;&quot;&quot;</span>
+    row = {<span class="c-str">&quot;ticker&quot;</span>: ticker, <span class="c-str">&quot;sector&quot;</span>: <span class="c-kw">None</span>, <span class="c-str">&quot;roic&quot;</span>: <span class="c-kw">None</span>, <span class="c-str">&quot;real_fcf_musd&quot;</span>: <span class="c-kw">None</span>,
+           <span class="c-str">&quot;fcf_yield&quot;</span>: <span class="c-kw">None</span>, <span class="c-str">&quot;growth&quot;</span>: <span class="c-kw">None</span>, <span class="c-str">&quot;exp_return&quot;</span>: <span class="c-kw">None</span>, <span class="c-str">&quot;spread_pp&quot;</span>: <span class="c-kw">None</span>,
+           <span class="c-str">&quot;period&quot;</span>: <span class="c-kw">None</span>, <span class="c-str">&quot;warning&quot;</span>: <span class="c-str">&quot;&quot;</span>}
+
+    <span class="c-kw">try</span>:
+        stock = yf.Ticker(ticker)
+        info = stock.info <span class="c-kw">or</span> {}
+        cash_flow, income, balance = stock.cashflow, stock.income_stmt, stock.balance_sheet
+    <span class="c-kw">except</span> Exception <span class="c-kw">as</span> error:
+        row[<span class="c-str">&quot;warning&quot;</span>] = f<span class="c-str">&quot;pobieranie danych nieudane ({type(error).__name__})&quot;</span>
+        <span class="c-kw">return</span> row
+
+    row[<span class="c-str">&quot;sector&quot;</span>] = info.get(<span class="c-str">&quot;sector&quot;</span>)
+    periods = []
+
+    <span class="c-kw">def</span> <span class="c-fn">take</span>(frame, field):
+        value, period = pick_value(frame, field)
+        <span class="c-kw">if</span> period <span class="c-kw">is</span> <span class="c-kw">not</span> <span class="c-kw">None</span>:
+            periods.append(period)
+        <span class="c-kw">return</span> value
+
+    ebit = take(income, <span class="c-str">&quot;ebit&quot;</span>)
+    pretax_income = take(income, <span class="c-str">&quot;pretax_income&quot;</span>)
+    tax = take(income, <span class="c-str">&quot;tax&quot;</span>)
+    equity = take(balance, <span class="c-str">&quot;equity&quot;</span>)
+    cash, _ = pick_value(balance, <span class="c-str">&quot;cash&quot;</span>)
+
+    total_debt, debt_period, debt_note = pick_total_debt(balance)
+    <span class="c-kw">if</span> debt_period <span class="c-kw">is</span> <span class="c-kw">not</span> <span class="c-kw">None</span>:
+        periods.append(debt_period)
+    row[<span class="c-str">&quot;warning&quot;</span>] += debt_note
+
+    <span class="c-kw">if</span> cash <span class="c-kw">is</span> <span class="c-kw">None</span>:
+        cash = <span class="c-num">0.0</span>
+        row[<span class="c-str">&quot;warning&quot;</span>] += <span class="c-str">&quot;brak gotowki, przyjeto 0 (ROIC zanizony); &quot;</span>
+
+    <span class="c-kw">if</span> <span class="c-kw">None</span> <span class="c-kw">not</span> <span class="c-kw">in</span> (ebit, pretax_income, tax, total_debt, equity) <span class="c-kw">and</span> pretax_income != <span class="c-num">0</span>:
+        <span class="c-com"># Sufit na stope podatkowa, bo zdarzenia jednorazowe potrafia dac 87%.</span>
+        tax_rate = <span class="c-bi">min</span>(<span class="c-bi">max</span>(tax / pretax_income, <span class="c-num">0.0</span>), <span class="c-const">MAX_TAX_RATE</span>)
+        invested_capital = total_debt + equity - cash
+        <span class="c-kw">if</span> invested_capital &gt; <span class="c-num">0</span>:
+            row[<span class="c-str">&quot;roic&quot;</span>] = ebit * (<span class="c-num">1</span> - tax_rate) / invested_capital
+        <span class="c-kw">else</span>:
+            row[<span class="c-str">&quot;warning&quot;</span>] += <span class="c-str">&quot;ujemny kapital zainwestowany; &quot;</span>
+    <span class="c-kw">else</span>:
+        row[<span class="c-str">&quot;warning&quot;</span>] += <span class="c-str">&quot;niekompletne dane do ROIC; &quot;</span>
+
+    ocf = take(cash_flow, <span class="c-str">&quot;ocf&quot;</span>)
+    capex = take(cash_flow, <span class="c-str">&quot;capex&quot;</span>)
+    sbc = take(cash_flow, <span class="c-str">&quot;sbc&quot;</span>)
+
+    <span class="c-kw">if</span> sbc <span class="c-kw">is</span> <span class="c-kw">None</span>:
+        sbc = <span class="c-num">0.0</span>
+        row[<span class="c-str">&quot;warning&quot;</span>] += <span class="c-str">&quot;brak SBC, przyjeto 0 (Real FCF zawyzony); &quot;</span>
+
+    <span class="c-kw">if</span> ocf <span class="c-kw">is</span> <span class="c-kw">not</span> <span class="c-kw">None</span> <span class="c-kw">and</span> capex <span class="c-kw">is</span> <span class="c-kw">not</span> <span class="c-kw">None</span>:
+        real_fcf = ocf - <span class="c-bi">abs</span>(capex) - <span class="c-bi">abs</span>(sbc)     <span class="c-com"># CapEx u Yahoo ujemny, SBC dodatni</span>
+        row[<span class="c-str">&quot;real_fcf_musd&quot;</span>] = real_fcf / 1e6
+
+        market_cap = info.get(<span class="c-str">&quot;marketCap&quot;</span>)
+        <span class="c-kw">if</span> <span class="c-kw">not</span> market_cap:
+            row[<span class="c-str">&quot;warning&quot;</span>] += <span class="c-str">&quot;brak kapitalizacji; &quot;</span>
+        <span class="c-kw">else</span>:
+            row[<span class="c-str">&quot;fcf_yield&quot;</span>] = real_fcf / market_cap
+            growth, note = revenue_cagr(income)
+            <span class="c-kw">if</span> growth <span class="c-kw">is</span> <span class="c-kw">None</span>:
+                row[<span class="c-str">&quot;warning&quot;</span>] += note + <span class="c-str">&quot;; &quot;</span>
+            <span class="c-kw">else</span>:
+                row[<span class="c-str">&quot;growth&quot;</span>] = growth
+                <span class="c-kw">if</span> growth &gt; <span class="c-const">GROWTH_CAP</span>:
+                    row[<span class="c-str">&quot;warning&quot;</span>] += f<span class="c-str">&quot;wzrost {growth:.0%} przyciety do {GROWTH_CAP:.0%}; &quot;</span>
+                row[<span class="c-str">&quot;exp_return&quot;</span>] = row[<span class="c-str">&quot;fcf_yield&quot;</span>] + <span class="c-bi">min</span>(growth, <span class="c-const">GROWTH_CAP</span>)
+    <span class="c-kw">else</span>:
+        row[<span class="c-str">&quot;warning&quot;</span>] += <span class="c-str">&quot;niekompletne dane do Real FCF; &quot;</span>
+
+    <span class="c-com"># Bez tego mozna policzyc OCF z 2025 minus CapEx z 2024 i nie zauwazyc,</span>
+    <span class="c-com"># bo wynik wyglada sensownie.</span>
+    <span class="c-kw">if</span> periods:
+        row[<span class="c-str">&quot;period&quot;</span>] = <span class="c-bi">max</span>(periods).date().isoformat()
+        <span class="c-kw">if</span> <span class="c-bi">len</span>(<span class="c-bi">set</span>(periods)) &gt; <span class="c-num">1</span>:
+            span = <span class="c-bi">sorted</span>({p.date().isoformat() <span class="c-kw">for</span> p <span class="c-kw">in</span> periods})
+            row[<span class="c-str">&quot;warning&quot;</span>] += f&quot;dane z roznych okresow ({<span class="c-str">&#x27;, &#x27;</span>.join(span)}); &quot;
+
+    <span class="c-kw">if</span> row[<span class="c-str">&quot;sector&quot;</span>] <span class="c-kw">in</span> <span class="c-const">FINANCIAL_SECTORS</span> <span class="c-kw">and</span> ticker.upper() <span class="c-kw">not</span> <span class="c-kw">in</span> <span class="c-const">NOT_REALLY_FINANCIALS</span>:
+        row[<span class="c-str">&quot;warning&quot;</span>] += <span class="c-str">&quot;spolka finansowa - ROIC nieporownywalny; &quot;</span>
+
+    <span class="c-kw">return</span> row
+
+
+<span class="c-kw">def</span> <span class="c-fn">verdict</span>(value, threshold):
+    <span class="c-kw">if</span> value <span class="c-kw">is</span> <span class="c-kw">None</span> <span class="c-kw">or</span> pd.isna(value):
+        <span class="c-kw">return</span> <span class="c-str">&quot;-&quot;</span>
+    <span class="c-kw">return</span> <span class="c-str">&quot;PASS&quot;</span> <span class="c-kw">if</span> value &gt; threshold <span class="c-kw">else</span> <span class="c-str">&quot;FAIL&quot;</span>
+
+
+<span class="c-kw">def</span> <span class="c-fn">summarize</span>(gates):
+    <span class="c-doc">&quot;&quot;&quot;
+    Liczy tylko bramki, ktore dalo sie policzyc. Brak jednej pozycji w sprawozdaniu
+    nie powinien unieważniać dwoch pozostalych - traci sie wtedy informacje,
+    ktora juz sie ma.
+    &quot;&quot;&quot;</span>
+    available = {name: result <span class="c-kw">for</span> name, result <span class="c-kw">in</span> gates.items() <span class="c-kw">if</span> result != <span class="c-str">&quot;-&quot;</span>}
+    <span class="c-kw">if</span> <span class="c-kw">not</span> available:
+        <span class="c-kw">return</span> <span class="c-str">&quot;brak danych&quot;</span>
+
+    passed = <span class="c-bi">sum</span>(<span class="c-num">1</span> <span class="c-kw">for</span> result <span class="c-kw">in</span> available.values() <span class="c-kw">if</span> result == <span class="c-str">&quot;PASS&quot;</span>)
+    summary = f<span class="c-str">&quot;{passed}/{len(available)}&quot;</span>
+
+    missing = [<span class="c-const">GATE_LABELS</span>[name] <span class="c-kw">for</span> name <span class="c-kw">in</span> gates <span class="c-kw">if</span> gates[name] == <span class="c-str">&quot;-&quot;</span>]
+    <span class="c-kw">if</span> missing:
+        summary += f&quot; (bez {<span class="c-str">&#x27;, &#x27;</span>.join(missing)})&quot;
+    <span class="c-kw">return</span> summary
+
+
+<span class="c-kw">def</span> <span class="c-fn">build_report</span>(tickers, bond_yield):
+    <span class="c-kw">if</span> <span class="c-kw">not</span> tickers:
+        <span class="c-kw">return</span> pd.DataFrame(columns=<span class="c-const">COLUMNS</span> + [<span class="c-str">&quot;sector&quot;</span>, <span class="c-str">&quot;period&quot;</span>, <span class="c-str">&quot;warning&quot;</span>])
+
+    required_return = bond_yield + <span class="c-const">EQUITY_RISK_PREMIUM</span>
+    table = pd.DataFrame([screen_ticker(t) <span class="c-kw">for</span> t <span class="c-kw">in</span> tickers])
+
+    table[<span class="c-str">&quot;gate_roic&quot;</span>] = table[<span class="c-str">&quot;roic&quot;</span>].apply(<span class="c-kw">lambda</span> v: verdict(v, <span class="c-const">ROIC_THRESHOLD</span>))
+    table[<span class="c-str">&quot;gate_fcf&quot;</span>] = table[<span class="c-str">&quot;real_fcf_musd&quot;</span>].apply(<span class="c-kw">lambda</span> v: verdict(v, <span class="c-num">0</span>))
+    table[<span class="c-str">&quot;gate_return&quot;</span>] = table[<span class="c-str">&quot;exp_return&quot;</span>].apply(<span class="c-kw">lambda</span> v: verdict(v, required_return))
+
+    <span class="c-com"># Nadwyzka ponad stope wymagana jest uzyteczniejsza od PASS/FAIL,</span>
+    <span class="c-com"># bo pozwala uszeregowac spolki, ktore bramke przeszly.</span>
+    table[<span class="c-str">&quot;spread_pp&quot;</span>] = table[<span class="c-str">&quot;exp_return&quot;</span>].apply(
+        <span class="c-kw">lambda</span> v: <span class="c-kw">None</span> <span class="c-kw">if</span> v <span class="c-kw">is</span> <span class="c-kw">None</span> <span class="c-kw">or</span> pd.isna(v) <span class="c-kw">else</span> (v - required_return) * <span class="c-num">100</span>
+    )
+
+    table[<span class="c-str">&quot;summary&quot;</span>] = [
+        summarize(gates) <span class="c-kw">for</span> gates <span class="c-kw">in</span>
+        table[<span class="c-bi">list</span>(<span class="c-const">GATE_LABELS</span>)].to_dict(orient=<span class="c-str">&quot;records&quot;</span>)
+    ]
+    <span class="c-kw">return</span> table.sort_values(<span class="c-str">&quot;spread_pp&quot;</span>, ascending=<span class="c-kw">False</span>, na_position=<span class="c-str">&quot;last&quot;</span>)
+
+
+<span class="c-kw">def</span> <span class="c-fn">print_report</span>(table, bond_yield):
+    required_return = bond_yield + <span class="c-const">EQUITY_RISK_PREMIUM</span>
+    <span class="c-bi">print</span>(f<span class="c-str">&quot;10Y UST: {bond_yield:.2%}  +  premia za ryzyko {EQUITY_RISK_PREMIUM:.1%}&quot;</span>
+          f<span class="c-str">&quot;  =  stopa wymagana {required_return:.2%}&quot;</span>)
+    <span class="c-bi">print</span>(f<span class="c-str">&quot;Prog ROIC: {ROIC_THRESHOLD:.0%}   |   sufit wzrostu: {GROWTH_CAP:.0%}&quot;</span>)
+    <span class="c-bi">print</span>(<span class="c-str">&quot;Oczekiwany zwrot = rentownosc Real FCF + wzrost przychodow.&quot;</span>)
+    <span class="c-bi">print</span>(<span class="c-str">&quot;Real FCF w mln USD, dane roczne z ostatniego sprawozdania.\n&quot;</span>)
+
+    <span class="c-kw">if</span> table.empty:
+        <span class="c-bi">print</span>(<span class="c-str">&quot;Brak spolek do przeskanowania.&quot;</span>)
+        <span class="c-kw">return</span>
+
+    pct = <span class="c-kw">lambda</span> v, d=<span class="c-num">1</span>: <span class="c-str">&quot;-&quot;</span> <span class="c-kw">if</span> pd.isna(v) <span class="c-kw">else</span> f<span class="c-str">&quot;{v:.{d}%}&quot;</span>
+    display = table[<span class="c-const">COLUMNS</span>].copy()
+    display[<span class="c-str">&quot;roic&quot;</span>] = table[<span class="c-str">&quot;roic&quot;</span>].map(pct)
+    display[<span class="c-str">&quot;real_fcf_musd&quot;</span>] = table[<span class="c-str">&quot;real_fcf_musd&quot;</span>].map(<span class="c-kw">lambda</span> v: <span class="c-str">&quot;-&quot;</span> <span class="c-kw">if</span> pd.isna(v) <span class="c-kw">else</span> f<span class="c-str">&quot;{v:,.0f}&quot;</span>)
+    display[<span class="c-str">&quot;fcf_yield&quot;</span>] = table[<span class="c-str">&quot;fcf_yield&quot;</span>].map(<span class="c-kw">lambda</span> v: pct(v, <span class="c-num">2</span>))
+    display[<span class="c-str">&quot;growth&quot;</span>] = table[<span class="c-str">&quot;growth&quot;</span>].map(pct)
+    display[<span class="c-str">&quot;exp_return&quot;</span>] = table[<span class="c-str">&quot;exp_return&quot;</span>].map(<span class="c-kw">lambda</span> v: pct(v, <span class="c-num">2</span>))
+    display[<span class="c-str">&quot;spread_pp&quot;</span>] = table[<span class="c-str">&quot;spread_pp&quot;</span>].map(<span class="c-kw">lambda</span> v: <span class="c-str">&quot;-&quot;</span> <span class="c-kw">if</span> pd.isna(v) <span class="c-kw">else</span> f<span class="c-str">&quot;{v:+.1f}pp&quot;</span>)
+    <span class="c-bi">print</span>(display.to_string(index=<span class="c-kw">False</span>))
+
+    flagged = table[table[<span class="c-str">&quot;warning&quot;</span>] != <span class="c-str">&quot;&quot;</span>]
+    <span class="c-kw">if</span> <span class="c-kw">not</span> flagged.empty:
+        <span class="c-bi">print</span>(<span class="c-str">&quot;\nOstrzezenia:&quot;</span>)
+        <span class="c-kw">for</span> _, r <span class="c-kw">in</span> flagged.iterrows():
+            <span class="c-bi">print</span>(f&quot;  [{r[<span class="c-str">&#x27;ticker&#x27;</span>]}] {r[<span class="c-str">&#x27;warning&#x27;</span>].rstrip(<span class="c-str">&#x27;; &#x27;</span>)}&quot;)
+
+
+<span class="c-kw">if</span> __name__ == <span class="c-str">&quot;__main__&quot;</span>:
+    yield_10y = get_bond_yield()
+    print_report(build_report(<span class="c-const">TICKERS</span>, yield_10y), yield_10y)
+</pre>
+
+            <div class="code-head">Wynik przebiegu — 21 sierpnia 2026</div>
+<pre class="out">10Y UST: 4.70%  +  premia za ryzyko 4.5%  =  stopa wymagana 9.20%
+Prog ROIC: 15%   |   sufit wzrostu: 12%
+Oczekiwany zwrot = rentownosc Real FCF + wzrost przychodow.
+Real FCF w mln USD, dane roczne z ostatniego sprawozdania.
+
+ticker  roic real_fcf_musd fcf_yield growth exp_return spread_pp gate_roic gate_fcf gate_return        summary
+     F -4.1%        11,957    21.43%   5.8%     27.25%   +18.1pp      FAIL     PASS        PASS            2/3
+    NU     -         2,888     4.21%  52.9%     16.21%    +7.0pp         -     PASS        PASS 2/2 (bez ROIC)
+    MA 96.2%        15,836     3.15%  13.8%     15.15%    +6.0pp      PASS     PASS        PASS            3/3
+  META 23.1%        25,682     1.85%  19.9%     13.85%    +4.7pp      PASS     PASS        PASS            3/3
+ GOOGL 29.9%        48,313     1.16%  12.5%     13.16%    +4.0pp      PASS     PASS        PASS            3/3
+  AMZN     -       -11,772    -0.42%  11.7%     11.31%    +2.1pp         -     FAIL        PASS 1/2 (bez ROIC)
+   NUE  8.4%          -321    -0.59%  -7.8%     -8.43%   -17.6pp      FAIL     FAIL        FAIL            0/3
+
+Ostrzezenia:
+  [NU] niekompletne dane do ROIC; wzrost 53% przyciety do 12%; spolka finansowa - ROIC nieporownywalny
+  [MA] wzrost 14% przyciety do 12%
+  [META] wzrost 20% przyciety do 12%
+  [GOOGL] wzrost 13% przyciety do 12%
+  [AMZN] niekompletne dane do ROIC</pre>
+
+            <div class="gates">
+              <div class="code-head" style="margin-top:28px">Jak to działa</div>
+
+              <h4>Bramka 1 — ROIC powyżej 15%</h4>
+              <p>Zwrot z zainwestowanego kapitału liczony jako NOPAT do kapitału zainwestowanego, czyli długu plus kapitału własnego minus gotówki. Odpowiada na pytanie, czy biznes zarabia więcej, niż kosztuje go kapitał.</p>
+
+              <h4>Bramka 2 — Real FCF powyżej zera</h4>
+              <p>Przepływy operacyjne minus CapEx minus wynagrodzenia w akcjach. Odjęcie SBC jest celowe: to realny koszt dla akcjonariusza, choć nie wypływa z rachunku bankowego. Spółka płacąca akcjami zamiast gotówką rozwadnia udział właścicieli, a klasyczny FCF tego nie pokazuje.</p>
+
+              <h4>Bramka 3 — oczekiwany zwrot ponad stopę wymaganą</h4>
+              <p>Oczekiwany zwrot to rentowność Real FCF powiększona o wzrost, stopa wymagana to dziesięcioletnie obligacje USA plus premia za ryzyko akcji. Konstrukcja wynika z przekształcenia modelu Gordona: skoro cena to przepływ podzielony przez różnicę stopy wymaganej i wzrostu, to oczekiwany zwrot równa się rentowności przepływów plus ich wzrost.</p>
+
+              <h4>Dlaczego akurat tak</h4>
+              <p>Pierwsza wersja zestawiała samą rentowność Real FCF z rentownością obligacji. Pierwszy przebieg pokazał, że to porównanie jest nierówne — obligacja płaci stały kupon, a przepływy spółki rosną. Przy rentowności dziesięciolatek na poziomie 4,7% bramka odrzucała wszystkie spółki z portfela, łącznie z Mastercardem przy ROIC 96%. Bramka, która odrzuca każdego, nie niesie informacji.</p>
+
+              <h4>Czego to narzędzie nie potrafi</h4>
+              <p>Dane pochodzą z Yahoo Finance, więc są wtórne — przy każdej pozycji ważącej na decyzji i tak trzeba otworzyć 10-K. ROIC nie ma sensu dla banków i ubezpieczycieli, bo dług jest u nich surowcem, a nie finansowaniem. Wzrost liczony jest z przychodów, co zakłada stabilne marże. Premia za ryzyko na poziomie 4,5% jest wyborem, nie faktem. Skrypt ostrzega o każdym z tych przypadków zamiast podawać liczbę bez kontekstu.</p>
+
+              <h4>Co pokazał przebieg</h4>
+              <p>Na liście są celowo dwie spółki spoza mojego portfela — Ford i Nucor. Narzędzie, które przepuszcza wyłącznie to, co się już posiada, niczego nie weryfikuje.</p>
+              <p>Nucor wypadł na wszystkich trzech bramkach: ujemny Real FCF, kurczące się przychody, ROIC poniżej progu. Hutnictwo po szczycie cyklu zostało odrzucone dokładnie tak, jak powinno.</p>
+              <p>Ford ujawnił natomiast wadę samego narzędzia. Wypadł na ROIC, ale rentowność przepływów 21,4% wypchnęła go na szczyt rankingu. Ta liczba jest artefaktem: przepływy operacyjne Forda zawierają działalność kredytową Ford Credit, więc nie są gotówką z produkcji samochodów. Wniosek na kolejną wersję: sortowanie po nadwyżce ma sens wyłącznie wśród spółek, które przeszły komplet bramek. W obecnej wersji trzeba czytać kolumnę podsumowania, a nie kolejność wierszy.</p>
+            </div>
           </div>
 
           <div class="facts">
-            Python<i>/</i>yfinance<i>/</i>pandas<i>/</i>dane z <b>Yahoo Finance</b>
+            Python<i>/</i>pandas<i>/</i>yfinance<i>/</i>304 linie<i>/</i>testy bez dostępu do sieci
           </div>
 
           <div class="actions">
-            <button class="more" data-target="ex-py">Rozwiń opis <span class="chev">▾</span></button>
-            <a class="cta" href="https://github.com/konradjendrys/konradjendrys.github.io/tree/main/screener" target="_blank" rel="noopener">Zobacz kod i README →</a>
+            <button class="more" data-target="ex-py" data-close="Ukryj kod">Zobacz kod i opis <span class="chev">▾</span></button>
+            <a class="cta" href="https://github.com/konradjendrys/konradjendrys.github.io/tree/main/screener" target="_blank" rel="noopener">Pobierz z GitHuba →</a>
           </div>
         </div>
 
@@ -736,12 +1132,16 @@ footer{border-top:1px solid var(--line);padding:22px 0 30px}
   document.querySelectorAll('.more').forEach(btn => {
     const box = document.getElementById(btn.dataset.target);
     if (!box) return;
+
+    const labelOpen = btn.firstChild.textContent.trim();
+    const labelClose = btn.dataset.close || 'Zwiń';
+
     btn.addEventListener('click', () => {
       const open = box.classList.toggle('open');
       btn.classList.toggle('open', open);
-      btn.firstChild.textContent = open
-        ? btn.firstChild.textContent.replace('Rozwiń', 'Zwiń')
-        : btn.firstChild.textContent.replace('Zwiń', 'Rozwiń');
+      btn.firstChild.textContent = (open ? labelClose : labelOpen) + ' ';
+      // po zwinieciu wracamy na gore karty, zeby nie zostac w prozni
+      if (!open) box.closest('.item').scrollIntoView({block: 'nearest'});
     });
   });
 })();
