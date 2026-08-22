@@ -317,10 +317,12 @@ p strong{color:var(--text);font-weight:500}
   content:'';width:7px;height:7px;border-radius:50%;
   background:currentColor;flex:none;
 }
-.src-meta{color:#3E8BFF}
-.src-yt{color:#FF3B30}
-.src-py{color:#F0C14B}
+.src-meta{color:#3B82F6}
+.src-yt{color:#F26522}
+.src-py{color:#25C07A}
 .src-xls{color:#4E9E7F}
+html[data-theme="light"] .src-meta{color:#1A56C4}
+html[data-theme="light"] .src-xls{color:#2C7A5B}
 
 /* ---------- linia danych pod tytułem ---------- */
 .facts{
@@ -538,6 +540,14 @@ footer{border-top:1px solid var(--line);padding:22px 0 30px}
 
 /* pozycje na liscie projektow */
 .item h3,.item .src,.item .cta,.item .more{transition:color .28s ease,border-color .28s ease}
+.tone-meta{--accent:#3B82F6}
+.tone-ma{--accent:#F26522}
+.tone-py{--accent:#25C07A}
+html[data-theme="light"] .tone-meta{--accent:#1A56C4}
+html[data-theme="light"] .tone-ma{--accent:#B03A05}
+html[data-theme="light"] .tone-py{--accent:#0A7A4C}
+/* kropka przy etykiecie w kolorze karty */
+.item[data-act] .src{color:var(--accent)}
 .item[data-act]{cursor:pointer}
 .item[data-act]:hover h3{color:var(--accent,var(--up))}
 .item[data-act]:hover .cta{color:var(--accent,var(--up));border-bottom-color:var(--accent,var(--up))}
@@ -640,7 +650,7 @@ nav button:hover .count{transform:scale(1.12)}
 
         <div class="certs">
           <div class="meta" data-i="ckick">Certyfikaty</div>
-          <p class="cert-note" data-i="cnote">Dwa kursy z 13. edycji programu Corporate Readiness Certificate, prowadzonego przez Accenture, ING i Kyndryl. Pierwszy pokazał mi, jak instytucja finansowa realnie pracuje na danych, od ich przygotowania po modele decyzyjne. Drugi dał podstawy bezpieczeństwa, bez których nie da się dziś pracować przy danych klientów. Oba warsztaty prowadzili praktycy z tych firm, dzięki czemu zobaczyłem branżę od strony operacyjnej, a nie czysto akademickiej.</p>
+          <p class="cert-note" data-i="cnote">Dwa kursy z 13. edycji programu Corporate Readiness Certificate, prowadzonego przez Accenture, ING i Kyndryl. Pierwszy pokazał mi, jak instytucja finansowa realnie pracuje na danych, od ich przygotowania po modele decyzyjne. Drugi dał podstawy bezpieczeństwa, bez których nie da się dziś pracować przy danych klientów. Oba były prowadzone przez praktyków z tych firm, więc były to pierwsze zajęcia, na których zobaczyłem branżę od strony operacyjnej, a nie akademickiej.</p>
 
           <div class="cert-grid">
             <a class="cert" href="https://credsverse.com/credentials/267c99af-27ad-4aa4-95b9-129318834112" target="_blank" rel="noopener">
@@ -674,7 +684,7 @@ nav button:hover .count{transform:scale(1.12)}
         </p>
 
         <!-- ===== 1. notatka o Mecie ===== -->
-        <div class="item step" data-act="meta.html" role="link" tabindex="0" style="--accent:#4C8DFF">
+        <div class="item step tone-meta" data-act="meta.html" role="link" tabindex="0">
           <div class="item-top"><span class="src src-meta">Analiza · META</span><span>19.08.2026</span></div>
           <h3 data-i="h1">Czy rynek wycenia nakłady Mety na AI według złego precedensu</h3>
 
@@ -696,7 +706,7 @@ nav button:hover .count{transform:scale(1.12)}
         </div>
 
         <!-- ===== 2. film o Mastercardzie ===== -->
-        <div class="item step" data-act="https://youtu.be/l_4fF0E6EC8" role="link" tabindex="0" style="--accent:#F79E1B">
+        <div class="item step tone-ma" data-act="https://youtu.be/l_4fF0E6EC8" role="link" tabindex="0">
           <div class="item-top"><span class="src src-yt">Wideo · YouTube</span><span>30.03.2026</span></div>
           <h3 data-i="h2">Mastercard, analiza spółki</h3>
           <p style="margin-bottom:20px" data-i="vid">Dwudziestominutowe omówienie modelu biznesowego, źródeł przychodu i fundamentów spółki płatniczej.</p>
@@ -716,7 +726,7 @@ nav button:hover .count{transform:scale(1.12)}
         </div>
 
         <!-- ===== 3. screener w Pythonie ===== -->
-        <div class="item step" data-act="fold" role="button" tabindex="0" aria-expanded="false" style="--accent:#F0C14B">
+        <div class="item step tone-py" data-act="fold" role="button" tabindex="0" aria-expanded="false">
           <div class="item-top"><span class="src src-py">Python · Quality Screener v1.2</span><span>21.08.2026</span></div>
           <h3 data-i="h3">Screener jakości: ROIC i Real FCF</h3>
           <p style="margin-bottom:0" data-i="ld1">Skrypt przepuszcza listę spółek przez trzy bramki, których używam przy przeglądzie portfela. Nie służy do wyceny, służy do odsiania spółek, którym nie warto poświęcać czasu.</p>
