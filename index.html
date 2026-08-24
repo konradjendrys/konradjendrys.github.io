@@ -214,7 +214,34 @@ nav button[aria-selected="true"] .count{color:var(--bg);background:color-mix(in 
   filter:saturate(.92);
 }
 
-.certs{margin-top:76px}
+.sec-head{display:flex;align-items:center;gap:18px;margin-bottom:22px}
+.sec-head h3{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:13px;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--text);white-space:nowrap;
+}
+.sec-head::after{content:'';height:1px;flex:1;background:var(--line)}
+
+.certs{margin-top:72px}
+.job{margin-top:4px;max-width:660px}
+.job-head{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap}
+.job-role{font-size:17px;color:var(--text);font-weight:500}
+.job-when{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.08em;color:var(--faint)}
+.job-firm{
+  font-family:'IBM Plex Mono',monospace;font-size:12px;
+  letter-spacing:.05em;color:var(--up);margin-top:5px;
+}
+.job-desc{font-size:15px;margin:14px 0 12px}
+.job-list{list-style:none;margin:0;padding:0}
+.job-list li{
+  position:relative;padding-left:18px;margin-bottom:7px;
+  font-size:14.5px;color:var(--muted);
+}
+.job-list li::before{
+  content:'';position:absolute;left:0;top:.62em;
+  width:5px;height:1px;background:var(--faint);
+}
 .rows .row:last-child{border-bottom:none}
 .cert-note{font-size:15px;max-width:640px;margin-bottom:28px}
 .cert-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:760px}
@@ -266,7 +293,7 @@ p strong{color:var(--text);font-weight:500}
 }
 
 /* ---------- dane ---------- */
-.rows{border-top:1px solid var(--line);margin-top:38px}
+.rows{border-top:1px solid var(--line);margin-top:0}
 .row{
   display:flex;
   justify-content:space-between;
@@ -640,6 +667,7 @@ nav button:hover .count{transform:scale(1.12)}
           Ta strona zbiera to, co z tego wychodzi: notatki analityczne, narzędzia i materiały wideo.
         </p>
 
+        <div class="sec-head" style="margin-top:52px"><h3 data-i="skick">W skrócie</h3></div>
         <div class="rows">
           <div class="row"><span class="k" data-i="rk1">Kierunek</span><span class="v" data-i="rv1">Analityk Finansowy 2.0, UE Katowice</span></div>
           <div class="row"><span class="k" data-i="rk2">Egzamin MPW</span><span class="v" data-i="rv2">październik 2026</span></div>
@@ -649,7 +677,25 @@ nav button:hover .count{transform:scale(1.12)}
         </div>
 
         <div class="certs">
-          <div class="meta" data-i="ckick">Certyfikaty</div>
+          <div class="sec-head"><h3 data-i="wkick">Doświadczenie</h3></div>
+          <div class="job">
+            <div class="job-head">
+              <span class="job-role" data-i="wrole">Młodszy analityk danych operacyjnych</span>
+              <span class="job-when" data-i="wwhen">od sierpnia 2026</span>
+            </div>
+            <div class="job-firm" data-i="wfirm">Abi Group · Chorzów</div>
+            <p class="job-desc" data-i="wdesc">Praca analityczna i operacyjna w firmie zarządzającej portfelem około 70 mieszkań na wynajem krótkoterminowy (Airbnb, Booking.com).</p>
+            <ul class="job-list">
+              <li data-i="wl1">Zarządzanie i standaryzacja danych ofert w systemie Hotres PMS</li>
+              <li data-i="wl2">Porządkowanie i organizacja dokumentacji operacyjnej portfela nieruchomości</li>
+              <li data-i="wl3">Analiza i przygotowanie danych w Excelu na potrzeby raportowania</li>
+              <li data-i="wl4">Budowa raportowania i dashboardów w Power BI</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="certs">
+          <div class="sec-head"><h3 data-i="ckick">Certyfikaty</h3></div>
           <p class="cert-note" data-i="cnote">Dwa kursy z 13. edycji programu Corporate Readiness Certificate, prowadzonego przez Accenture, ING i Kyndryl. Pierwszy pokazał mi, jak instytucja finansowa realnie pracuje na danych, od ich przygotowania po modele decyzyjne. Drugi dał podstawy bezpieczeństwa, bez których nie da się dziś pracować przy danych klientów. Oba były prowadzone przez praktyków z tych firm, więc były to pierwsze zajęcia, na których zobaczyłem branżę od strony operacyjnej, a nie akademickiej.</p>
 
           <div class="cert-grid">
@@ -1113,12 +1159,11 @@ Ostrzezenia:
       <!-- ============ KONTAKT ============ -->
       <section class="panel" id="contact" role="tabpanel">
         <div class="meta step" data-i="kick3">Kontakt</div>
-        <h2 class="lead" data-i="lead3">Otwarty na pierwsze doświadczenie w branży finansowej.</h2>
-        <p data-i="ex13">Najszybciej odpowiadam na LinkedInie.</p>
+        <h2 class="lead" data-i="lead3">Otwarty na <em>kolejny krok</em> w świecie finansów.</h2>
+        <p data-i="ex13">Najszybciej odpowiadam na LinkedInie. Chętnie porozmawiam o każdej z tych analiz, także wtedy, gdy uważasz, że się w nich mylę.</p>
 
         <div class="contact-list">
           <a class="link" href="https://www.linkedin.com/in/kjendrys" target="_blank" rel="noopener">linkedin.com/in/kjendrys</a>
-          <a class="link" href="https://github.com/konradjendrys" target="_blank" rel="noopener">github.com/konradjendrys</a>
           <a class="link" href="mailto:konrad.af.jendrys@gmail.com">konrad.af.jendrys@gmail.com</a>
           <a class="link" href="tel:+48666651206">+48 666 651 206</a>
         </div>
@@ -1594,6 +1639,16 @@ function enter(panel){
     rk4:'Student society', rv4:'Quantum Financial Modelling',
     rk5:'Location', rv5:'Chorzów / Katowice, Poland',
 
+    skick:'At a glance',
+    wkick:'Experience',
+    wrole:'Junior Operations Data Analyst',
+    wwhen:'since August 2026',
+    wfirm:'Abi Group · Chorzów, Poland',
+    wdesc:'Analytical and operational work at a company managing a portfolio of around 70 short-term rental apartments (Airbnb, Booking.com).',
+    wl1:'Managing and standardising listing data in the Hotres PMS',
+    wl2:'Organising the operational documentation of the property portfolio',
+    wl3:'Preparing and analysing data in Excel for reporting purposes',
+    wl4:'Building reports and dashboards in Power BI',
     ckick:'Certificates',
     cnote:'Two courses from the 13th edition of the Corporate Readiness Certificate programme, run by Accenture, ING and Kyndryl. The first showed me how a financial institution actually works with data, from preparing it through to decision models. The second gave me the security fundamentals you cannot work without when client data is involved. Both were taught by practitioners from those firms, so they were the first classes where I saw the industry from an operational rather than an academic angle.',
     cn1:'Data Science in a financial institution',
@@ -1646,8 +1701,8 @@ function enter(panel){
     cp2:'Discounted cash flow valuation across three scenarios, with a sensitivity table on the cost of capital and the terminal growth rate.',
 
     kick3:'Contact',
-    lead3:'Looking for my first role in finance.',
-    ex13:'LinkedIn is the fastest way to reach me.',
+    lead3:'Open to the <em>next step</em> in finance.',
+    ex13:'LinkedIn is the fastest way to reach me. I am happy to talk through any of this work, including the parts you think I got wrong.',
     foot:'© 2026 Konrad Jendryś'
   };
 
