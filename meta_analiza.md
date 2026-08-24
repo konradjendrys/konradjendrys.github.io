@@ -21,7 +21,7 @@ Materiał analityczno-edukacyjny. Nie zawiera rekomendacji ani ceny docelowej. P
 
 Meta traci ok. 31% od szczytu i ok. 24% w ujęciu dwunastomiesięcznym. W tym samym okresie dynamika przychodów przyspieszyła z 16% w I kw. 2025 r. do 33% w I kw. 2026 r. i 28% w II kw. 2026 r. Ta rozbieżność jest punktem wyjścia niniejszej analizy.
 
-Za przecenę odpowiadają trzy czynniki: spadek marży wywołany nakładami na infrastrukturę AI, eskalacja ryzyka prawnego oraz brak zewnętrznie monetyzowanego segmentu chmurowego. Moim zdaniem pierwszy i trzeci są przez rynek wyceniane błędnie. Drugi jest wyceniany zasadnie i to on stanowi najmocniejszy argument przeciwko całemu rozumowaniu.
+Za przecenę odpowiadają trzy czynniki: spadek marży wywołany nakładami na infrastrukturę AI, eskalacja ryzyka prawnego oraz brak zewnętrznie monetyzowanego segmentu chmurowego. Dane omówione w dalszej części wskazują, że pierwszy i trzeci czynnik są wyceniane błędnie. Drugi jest wyceniany zasadnie i to on stanowi najmocniejszy argument przeciwko całemu rozumowaniu.
 
 ---
 
@@ -92,11 +92,11 @@ Reality Labs po pięciu latach i ponad 80 mld USD nakładów generuje 2,2 mld US
 
 Na tym polega różnica. Reality Labs był zakładem o powstanie rynku. AI jest usprawnieniem rynku, który już istnieje i już przynosi 200 mld USD rocznie.
 
-### 1.5 O ile dokładnie różnię się od rynku
+### 1.5 Skala rozbieżności wobec wyceny rynkowej
 
 Wycena na poziomie ok. 18x zysk forward wobec mediany dziesięcioletniej 27,96x oznacza, że rynek wycenia już jeden z trzech scenariuszy: trwałe spowolnienie dynamiki przychodów, trwały spadek marży poniżej 30%, albo istotną sankcję prawną.
 
-Mój pogląd: pierwszy scenariusz jest sprzeczny z danymi za ostatnie pięć kwartałów. Drugi jest częściowo uzasadniony, ale ma charakter przejściowy i wynika z fazy cyklu inwestycyjnego, nie z pogorszenia ekonomiki rdzenia, marża Family of Apps wynosi nadal ok. 39%. Trzeci jest realny i nie da się go wykluczyć, co znajduje odzwierciedlenie w tym, że stawiam cenę docelową poniżej mediany sell-side.
+Zestawienie z danymi: pierwszy scenariusz jest sprzeczny z wynikami za ostatnie pięć kwartałów. Drugi jest częściowo uzasadniony, ale ma charakter przejściowy i wynika z fazy cyklu inwestycyjnego, nie z pogorszenia ekonomiki rdzenia, marża Family of Apps wynosi nadal ok. 39%. Trzeci jest realny i nie da się go wykluczyć, co znajduje odzwierciedlenie w tym, że stawiam cenę docelową poniżej mediany sell-side.
 
 Konsensus prognoz EPS na lata 2026–2027, brak danych; wymaga dostępu do terminala Bloomberg lub Refinitiv, którym nie dysponuję. Zamiast tego w sekcji 5.3 podaję, jakiego EPS wymagałyby poszczególne poziomy wyceny przy różnych mnożnikach, a w 5.6 własne scenariusze.
 
